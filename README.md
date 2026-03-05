@@ -12,16 +12,9 @@ AI image and video generation using Vivago AI (智小象) platform.
 | 📝 **文生视频 (Text-to-Video)** | ✅ 已实现 | 支持 v3L(快) / v3Pro(质) / Kling video O1 |
 | 🎬 **图生视频 (Image-to-Video)** | ✅ 已实现 | 支持 v3L / v3Pro / Kling video O1 |
 | 🔄 **图生图 (Image-to-Image)** | ✅ 已实现 | 支持 Kling O1(快) / Nano Banana 2(质)，多图融合 |
-| 🎞️ **视频首尾帧 (Keyframe-to-Video)** | ✅ 已实现 | 支持 v3L，根据首尾帧生成过渡视频 |
+| 🎞️ **视频首尾帧 (Keyframe-to-Video)** | ✅ 已实现 | 支持 v3L / v3Pro |
+| 🎭 **视频模板 (Template-to-Video)** | ✅ 已实现 | 支持 Renovation of Old Photos 等特效 |
 | ⬆️ **图像上传 (Image Upload)** | ✅ 已实现 | 支持自动压缩 |
-
-> **注**：图像编辑、AI肖像、虚拟试衣等功能均可通过图生图实现，无需单独一级功能
-
-### 未来计划
-
-| 一级功能 | 状态 | 说明 |
-|---------|------|------|
-| 🎭 **视频模板 (Template-to-Video)** | ⏳ 规划中 | 特定类型视频特效（固定视频模板） |
 
 ### 二级端口（具体API端点）
 
@@ -74,6 +67,17 @@ AI image and video generation using Vivago AI (智小象) platform.
 > **功能**：根据首尾帧图片生成过渡视频
 > **输入**：`start_image_uuid` + `end_image_uuid`
 > **示例**：皮卡丘 → 柯基的变身动画
+
+#### 视频模板 (Template-to-Video)
+
+| 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
+|---------|-------------|------|------|------|------|------|
+| `renovation_old_photos` | **老照片修复上色** | `/v3/pipeline/proto_transformer/async` | ✅ 已测试 | ✅ | 快 | 良好 |
+
+> **功能**：使用预定义模板生成特效视频
+> **输入**：单张图片 + template_id
+> **特点**：不同模板对应不同端点和参数
+> **示例**：Renovation of Old Photos（老照片上色）
 
 ---
 
@@ -218,6 +222,15 @@ results = client.keyframe_to_video(
     port="v3L",
     duration=5,
     mode="Fast"
+)
+```
+
+**视频模板（Template-to-Video）：**
+```python
+results = client.template_to_video(
+    image_uuid="p_old_photo",           # 输入图片
+    template="renovation_old_photos",   # 模板名称
+    wh_ratio="4:3"
 )
 ```
 
