@@ -56,15 +56,15 @@
         },
         "v3L": {
           "name": "V3 Lite",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/video/video_diffusion_img2vid/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "v3L",
           "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 1,
           "supported_durations": [5, 10],
-          "tested": false,
-          "notes": "快速版本，待测试"
+          "tested": true,
+          "notes": "已测试，生成速度比v3Pro快"
         },
         "kling-video": {
           "name": "Kling Video",

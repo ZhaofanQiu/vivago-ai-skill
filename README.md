@@ -9,7 +9,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 | 一级功能 | 状态 | 说明 |
 |---------|------|------|
 | 🎨 **文生图 (Text-to-Image)** | ✅ 已实现 | 支持多种模型 |
-| 🎬 **图生视频 (Image-to-Video)** | 🧪 调试中 | 支持 v3Pro/v3L |
+| 🎬 **图生视频 (Image-to-Video)** | ✅ 已实现 | 支持 v3Pro/v3L |
 | 🔄 **图生图 (Image-to-Image)** | ✅ 代码就绪 | 待测试 |
 | ✏️ **图像编辑 (Image Edit)** | ✅ 代码就绪 | 待测试 |
 | 👤 **AI肖像 (AI Portrait)** | ⏳ 待实现 | 需要 face/body UUID |
@@ -23,14 +23,14 @@ AI image and video generation using Vivago AI (智小象) platform.
 | 二级端口 | 端点 | 状态 | 默认 | 说明 |
 |---------|------|------|------|------|
 | `kling-image` | `/v3/image/image_gen_kling/async` | ✅ 已测试 | ✅ | Kling 图像模型 |
-| `hidream-txt2img` | `/v3/image/txt2img/async` | ⏳ 待测试 | - | 旧版文生图 |
+| `hidream-txt2img` | `/v3/image/txt2img/async` | ✅ 已测试 | - | HiDream 文生图 |
 
 #### 图生视频 (Image-to-Video)
 
 | 二级端口 | 端点 | 状态 | 默认 | 说明 |
 |---------|------|------|------|------|
-| `v3Pro` | `/v3/video/video_diffusion_img2vid/async` | 🧪 调试中 | ✅ | 高质量，较慢 |
-| `v3L` | `/v3/video/video_diffusion_img2vid/async` | ⏳ 待测试 | - | 快速版本 |
+| `v3Pro` | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | ✅ | 高质量，4分钟 |
+| `v3L` | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | - | 快速版本，已验证 |
 | `kling-video` | `/v3/video/video_diffusion_img2vid/async` | ⏳ 待测试 | - | Kling 视频模型 |
 
 #### 图生图 (Image-to-Image)
@@ -44,7 +44,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 
 | 二级端口 | 端点 | 状态 | 说明 |
 |---------|------|------|------|
-| `video_diffusion` | `/v3/video/video_diffusion/async/results` | 🧪 调试中 | 图生视频结果 |
+| `video_diffusion` | `/v3/video/video_diffusion/async/results` | ✅ 已测试 | 图生视频结果 |
 
 ---
 
@@ -185,6 +185,11 @@ vivago-ai-skill/
 
 ## 📝 更新日志
 
+### v0.2.1 (2026-03-05)
+- ✅ 测试 hidream-txt2img 端口
+- ✅ 测试 v3L 视频生成端口
+- ✅ 更新功能状态表格
+
 ### v0.2.0 (2026-03-05)
 - ✅ 重构层级架构，支持一级/二级端口
 - ✅ 添加 API 端口配置系统
@@ -200,7 +205,7 @@ vivago-ai-skill/
 
 ## 🔧 开发计划
 
-- [ ] 完成图生视频调试
+- [x] 完成图生视频调试 (v3Pro/v3L)
 - [ ] 添加图生图功能测试
 - [ ] 添加图像编辑功能测试
 - [ ] 添加 AI 肖像功能
