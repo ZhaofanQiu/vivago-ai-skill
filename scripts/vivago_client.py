@@ -638,6 +638,92 @@ class VivagoClient:
         
         return ""
     
+    # ==================== Image to Image ====================
+    
+    def image_to_image(
+        self,
+        prompt: str,
+        image_uuids: List[str],
+        port: Optional[str] = None,
+        wh_ratio: str = "16:9",
+        strength: float = 0.8,
+        relevance: Optional[List[float]] = None,
+        **kwargs
+    ) -> Optional[List[Dict]]:
+        """
+        图生图 - 支持多图输入 (Nano Banana 2)
+        
+        使用 Nano Banana 2 模型，支持多张参考图片融合生成
+        
+        Args:
+            prompt: 图像描述
+            image_uuids: 参考图片UUID列表 (最多5张)
+            port: 二级端口 (默认 nano-banana)
+            wh_ratio: 宽高比 (1:1, 4:3, 3:4, 16:9, 9:16)
+            strength: 变化强度 (0.0-1.0, 默认0.8)
+            relevance: 每张图片的参考权重列表 (默认每张0.9)
+            **kwargs: 额外参数
+            
+        Returns:
+            List of generated image results
+        """
+        port_config, port_name = self._get_port_config("image_to_image", port or "nano-banana")
+        
+        display_name = port_config.get("display_name", port_name)
+        
+        # 设置默认 relevance
+        if relevance is None:
+            relevance = [0.9] * len(image_uuids)
+        
+        # 确保 relevance 长度与 image_uuids 一致
+        if len(relevance) != len(image_uuids):
+            logger.warning(f"relevance length ({len(relevance)}) != image count ({len(image_uuids)}), adjusting...")
+            relevance = [0.9] * len(image_uuids)
+        
+        data = {
+            "app": None,
+            "image": image_uuids,  # 多图输入数组
+            "mask": kwargs.get("mask"),
+            "module": "image_gen_std",
+            "negative_prompt": kwargs.get("negative_prompt", ""),
+            "prompt": prompt,
+            "params": {
+                "batch_count": kwargs.get("batch_count", 1),
+                "batch_size": kwargs.get("batch_size", 1),
+                "guidance_scale": kwargs.get("guidance_scale", 7.5),
+                "height": kwargs.get("height", 512),
+                "image_guidance_scale": kwargs.get("image_guidance_scale", 1.5),
+                "sample_steps": kwargs.get("sample_steps", 40),
+                "sampler": kwargs.get("sampler", "Euler a"),
+                "seed": kwargs.get("seed", -1),
+                "strength": strength,
+                "style": kwargs.get("style", "default"),
+                "wh_ratio": wh_ratio,
+                "width": kwargs.get("width", 512),
+                "relevance": relevance,  # 每张图的权重
+                "mode": "2K",  # Nano Banana 2 标识
+                "custom_params": {
+                    "wh_ratio": wh_ratio
+                }
+            },
+            "role": kwargs.get("role", "general"),
+            "images": [],  # 根据抓包，这里为空数组
+            "magic_prompt": kwargs.get("magic_prompt", ""),
+            "audios": [],
+            "videos": [],
+            "request_id": str(uuid.uuid4())
+        }
+        
+        logger.info(f"Using port: {port_name} ({display_name}) with {len(image_uuids)} images")
+        
+        return self.call_api(
+            endpoint=port_config["endpoint"],
+            data=data,
+            result_endpoint=port_config["result_endpoint"],
+            max_retries=kwargs.get("max_retries", 60),
+            retry_delay=kwargs.get("retry_delay", 3)
+        )
+    
     def get_image_result(self, image_id: str) -> dict:
         """
         获取图片结果信息

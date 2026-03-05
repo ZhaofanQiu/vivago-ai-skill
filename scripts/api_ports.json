@@ -200,6 +200,21 @@
           "max_batch_size": 1,
           "tested": false,
           "notes": "简易图像编辑，待测试"
+        },
+        "nano-banana": {
+          "name": "Nano Banana Img2Img",
+          "display_name": "Nano Banana 2",
+          "status": "testing",
+          "endpoint": "/v3/image/image_gen_std/async",
+          "result_endpoint": "/v3/image/image/async/results/batch",
+          "version": "nano-banana-2",
+          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 1,
+          "max_images": 5,
+          "tested": false,
+          "speed": "slow",
+          "quality": "excellent",
+          "notes": "Nano Banana 2 图生图，支持多图输入，使用 image_gen_std 端点"
         }
       }
     },
