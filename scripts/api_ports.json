@@ -23,14 +23,14 @@
         },
         "hidream-txt2img": {
           "name": "HiDream Txt2Img",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/txt2img/async",
           "result_endpoint": "/v3/image/txt2img/async/results",
           "version": "v3L",
           "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 4,
-          "tested": false,
-          "notes": "旧版接口，待测试"
+          "tested": true,
+          "notes": "已测试，可用"
         }
       }
     },
