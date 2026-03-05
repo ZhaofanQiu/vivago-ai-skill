@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-生成图片并保存到本地 - 修复版
+生成图片并保存到本地 - 自动发送结果版本
 """
 import os
 import sys
@@ -17,15 +17,14 @@ def main():
     parser.add_argument('prompt', help='Image description')
     parser.add_argument('--port', default='kling-image', help='Model port (kling-image, hidream-txt2img, nano-banana)')
     parser.add_argument('--ratio', default='16:9', help='Aspect ratio (1:1, 4:3, 3:4, 16:9, 9:16)')
-    parser.add_argument('--output', '-o', help='Output file path')
     parser.add_argument('--batch-size', type=int, default=1, help='Number of images to generate (1-4)')
     
     args = parser.parse_args()
     
-    print(f"🎨 Generating image...")
+    print(f"🎨 正在生成图片...")
     print(f"   Prompt: {args.prompt}")
-    print(f"   Model: {args.port}")
-    print(f"   Ratio: {args.ratio}")
+    print(f"   模型: {args.port}")
+    print(f"   比例: {args.ratio}")
     print()
     
     try:
@@ -40,77 +39,45 @@ def main():
         )
         
         if not results:
-            print("❌ Generation failed")
+            print("❌ 生成失败")
             return 1
         
         # 下载并保存每张图片
         saved_files = []
-        image_results = []
         for i, result in enumerate(results):
             image_id = result.get('image')
             if not image_id:
                 continue
             
-            print(f"📥 Processing image {i+1}/{len(results)}: {image_id}")
+            print(f"📥 正在下载图片 {i+1}/{len(results)}...")
             
             # 尝试下载
-            output_path = f"/tmp/{image_id}.png"
+            output_path = f"/tmp/{image_id}.jpg"
             downloaded_path = client.download_image(image_id, output_path)
-            
-            image_info = {
-                "index": i + 1,
-                "image_id": image_id,
-                "vivago_url": f"https://vivago.ai/history/image",
-                "storage_url": f"https://storage.vivago.ai/image/{image_id}.jpg",
-                "local_path": downloaded_path if downloaded_path else None,
-                "downloaded": os.path.exists(downloaded_path) if downloaded_path else False
-            }
-            image_results.append(image_info)
             
             if downloaded_path and os.path.exists(downloaded_path):
                 file_size = os.path.getsize(downloaded_path)
-                print(f"   ✅ Downloaded: {downloaded_path} ({file_size} bytes)")
+                print(f"   ✅ 已保存: {downloaded_path} ({file_size/1024:.1f} KB)")
                 saved_files.append(downloaded_path)
             else:
-                print(f"   ⚠️  Download blocked by Vivago")
-                print(f"   🌐 View at: https://vivago.ai/history/image")
-                print(f"   📋 Image ID: {image_id}")
+                print(f"   ❌ 下载失败")
         
         print()
         print("=" * 60)
-        print(f"✅ Generated: {len(results)} images")
-        print(f"💾 Downloaded: {len(saved_files)} images")
-        print()
         
-        # 输出详细结果
-        for info in image_results:
-            print(f"Image {info['index']}:")
-            print(f"  ID: {info['image_id']}")
-            print(f"  Vivago URL: {info['vivago_url']}")
-            if info['downloaded']:
-                print(f"  Local File: {info['local_path']}")
-            print()
-        
-        # 输出JSON结果供其他工具使用
-        import json
-        result_json = {
-            "success": True,
-            "count": len(results),
-            "saved": len(saved_files),
-            "files": saved_files,
-            "results": results
-        }
-        
-        # 保存JSON结果
-        json_path = "/tmp/vivago_result.json"
-        with open(json_path, 'w') as f:
-            json.dump(result_json, f, indent=2)
-        print(f"📄 Result JSON: {json_path}")
-        
-        return 0
+        if saved_files:
+            print(f"✅ 成功生成并下载 {len(saved_files)} 张图片")
+            # 输出文件路径供外部工具读取
+            with open('/tmp/vivago_output_files.txt', 'w') as f:
+                for path in saved_files:
+                    f.write(path + '\n')
+            return 0
+        else:
+            print("❌ 图片下载失败")
+            return 1
         
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"❌ 错误: {e}")
         import traceback
         traceback.print_exc()
         return 1

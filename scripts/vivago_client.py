@@ -588,12 +588,10 @@ class VivagoClient:
         if output_path is None:
             output_path = f"/tmp/{image_id}.png"
         
-        # 尝试多种URL格式
+        # 使用正确的 storage URL 格式
         urls_to_try = [
             f"https://storage.vivago.ai/image/{image_id}.jpg",
             f"https://storage.vivago.ai/image/{image_id}.png",
-            f"{self.base_url}/v3/resource/image/{image_id}/download",
-            f"https://static.vivago.ai/image/{image_id}.png",
         ]
         
         for url in urls_to_try:
@@ -607,6 +605,35 @@ class VivagoClient:
             except Exception as e:
                 logger.debug(f"Failed to download from {url}: {e}")
                 continue
+        
+        return ""
+    
+    def download_video(self, video_id: str, output_path: Optional[str] = None) -> str:
+        """
+        下载视频到本地
+        
+        Args:
+            video_id: 视频文件名 (如 "xxxxxx.mp4")
+            output_path: 保存路径，默认保存到 /tmp/
+            
+        Returns:
+            本地文件路径，如果下载失败返回空字符串
+        """
+        if output_path is None:
+            output_path = f"/tmp/{video_id}"
+        
+        # 使用正确的 media URL 格式
+        url = f"https://media.vivago.ai/{video_id}"
+        
+        try:
+            resp = requests.get(url, headers=self.headers, timeout=120, allow_redirects=True)
+            if resp.status_code == 200 and len(resp.content) > 10000:  # 视频至少 10KB
+                with open(output_path, 'wb') as f:
+                    f.write(resp.content)
+                logger.info(f"Video downloaded: {output_path}")
+                return output_path
+        except Exception as e:
+            logger.debug(f"Failed to download video: {e}")
         
         return ""
     
