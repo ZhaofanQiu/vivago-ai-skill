@@ -22,7 +22,7 @@ class VivagoClient:
     
     # API Endpoints
     BASE_URL = "https://vivago.ai/api/gw"
-    IMAGE_RESULT_URL = f"{BASE_URL}/v3/image/image/async/results"
+    IMAGE_RESULT_URL = f"{BASE_URL}/v3/image/txt2img/async/results"
     VIDEO_RESULT_URL = f"{BASE_URL}/v3/video/video_diffusion/async/results"
     
     # Storage configuration
@@ -187,9 +187,14 @@ class VivagoClient:
         """
         url = f"{result_url}?task_id={task_id}"
         
+        # Use simpler headers for GET request
+        poll_headers = {
+            "Authorization": self.headers["Authorization"]
+        }
+        
         for attempt in range(max_retries):
             try:
-                response = requests.get(url, headers=self.headers)
+                response = requests.get(url, headers=poll_headers)
                 
                 if response.status_code != 200:
                     logger.warning(f"Poll failed: {response.status_code}")

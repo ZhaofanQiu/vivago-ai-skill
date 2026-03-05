@@ -156,7 +156,19 @@ def main():
     logger.info(f"Results saved to: {args.output}")
     
     # Print image URLs
+    if not results:
+        logger.error("No results returned")
+        sys.exit(1)
+    
+    if isinstance(results, dict):
+        # Error response
+        print(f"\nError: {results.get('message', 'Unknown error')}")
+        sys.exit(1)
+    
     for i, result in enumerate(results):
+        if isinstance(result, str):
+            print(f"\n[{i+1}] Error: {result}")
+            continue
         status = result.get('task_status')
         status_text = {1: '✓ Completed', 3: '✗ Failed', 4: '⊘ Rejected'}.get(status, '? Unknown')
         image_url = result.get('image', 'N/A')
