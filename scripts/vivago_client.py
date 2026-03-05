@@ -163,8 +163,11 @@ class VivagoClient:
         for port_id, config in cat_config.get("ports", {}).items():
             ports[port_id] = {
                 "name": config.get("name", port_id),
+                "display_name": config.get("display_name", port_id),
                 "status": config.get("status", "unknown"),
                 "tested": config.get("tested", False),
+                "speed": config.get("speed", "unknown"),
+                "quality": config.get("quality", "unknown"),
                 "notes": config.get("notes", "")
             }
         return ports
@@ -333,11 +336,22 @@ class VivagoClient:
         """
         port_config, port_name = self._get_port_config("text_to_image", port)
         
+        # 根据端点推断 module 名称
+        endpoint = port_config["endpoint"]
+        if "image_gen_kling" in endpoint:
+            module = "image_gen_kling"
+        elif "image_gen_std" in endpoint:
+            module = "image_gen_std"
+        else:
+            module = "txt2img"
+        
+        display_name = port_config.get("display_name", port_name)
+        
         data = {
             "app": None,
             "image": None,
             "mask": None,
-            "module": "image_gen_kling",
+            "module": module,
             "negative_prompt": negative_prompt,
             "prompt": prompt,
             "params": {
@@ -368,7 +382,7 @@ class VivagoClient:
             "request_id": str(uuid.uuid4())
         }
         
-        logger.info(f"Using port: {port_name}")
+        logger.info(f"Using port: {port_name} ({display_name})")
         
         return self.call_api(
             endpoint=port_config["endpoint"],
@@ -407,6 +421,8 @@ class VivagoClient:
             **kwargs: 额外参数
         """
         port_config, port_name = self._get_port_config("image_to_video", port)
+        
+        display_name = port_config.get("display_name", port_name)
         
         data = {
             "image": None,
@@ -449,7 +465,7 @@ class VivagoClient:
             "request_id": str(uuid.uuid4())
         }
         
-        logger.info(f"Using port: {port_name} (⚠️ Video generation takes 2-3 minutes)")
+        logger.info(f"Using port: {port_name} ({display_name}) ⚠️ 2-3 minutes")
         
         return self.call_api(
             endpoint=port_config["endpoint"],

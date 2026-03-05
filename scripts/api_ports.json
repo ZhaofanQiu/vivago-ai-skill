@@ -1,7 +1,13 @@
 {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "last_updated": "2026-03-05",
   "base_url": "https://vivago.ai/api/gw",
+  "_architecture_notes": {
+    "level_1": "一级功能（大功能划分）",
+    "level_2": "二级端口（具体API端点配置）",
+    "naming": "display_name 与 Vivago 网站模型名称对齐",
+    "endpoint_version": "相同端点 + 不同 version = 不同模型名称"
+  },
   "categories": {
     "text_to_image": {
       "name": "文生图",
@@ -12,6 +18,7 @@
       "ports": {
         "kling-image": {
           "name": "Kling Image",
+          "display_name": "Kling O1",
           "status": "tested",
           "endpoint": "/v3/image/image_gen_kling/async",
           "result_endpoint": "/v3/image/txt2img/async/results",
@@ -19,10 +26,13 @@
           "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 4,
           "tested": true,
-          "notes": "已测试通过，推荐使用"
+          "speed": "fast",
+          "quality": "good",
+          "notes": "速度快，质量优秀，推荐使用"
         },
         "hidream-txt2img": {
           "name": "HiDream Txt2Img",
+          "display_name": "Vivago.ai 2.0",
           "status": "tested",
           "endpoint": "/v3/image/txt2img/async",
           "result_endpoint": "/v3/image/txt2img/async/results",
@@ -30,32 +40,52 @@
           "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 4,
           "tested": true,
-          "notes": "已测试，可用"
+          "speed": "medium",
+          "quality": "good",
+          "notes": "已测试，质量良好"
+        },
+        "nano-banana": {
+          "name": "Nano Banana",
+          "display_name": "Nano Banana 2",
+          "status": "debugging",
+          "endpoint": "/v3/image/image_gen_std/async",
+          "result_endpoint": "/v3/image/image/async/results/batch",
+          "version": "nano-banana-2",
+          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 4,
+          "tested": false,
+          "speed": "slow",
+          "quality": "excellent",
+          "notes": "生成较慢，但效果优秀（调试中：参数格式待确认）"
         }
       }
     },
     "image_to_video": {
       "name": "图生视频",
       "name_en": "Image to Video",
-      "status": "testing",
+      "status": "active",
       "default_port": "v3Pro",
       "description": "从静态图像生成视频",
       "warning": "生成时间较长(2-3分钟)，请谨慎调用",
       "ports": {
         "v3Pro": {
           "name": "V3 Pro",
-          "status": "testing",
+          "display_name": "Vivago.ai 2.0",
+          "status": "tested",
           "endpoint": "/v3/video/video_diffusion_img2vid/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "v3Pro",
           "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 1,
           "supported_durations": [5, 10],
-          "tested": false,
-          "notes": "高质量，生成较慢，调试中"
+          "tested": true,
+          "speed": "slow",
+          "quality": "excellent",
+          "notes": "高质量，生成较慢"
         },
         "v3L": {
           "name": "V3 Lite",
+          "display_name": "Vivago.ai 2.0 360p",
           "status": "tested",
           "endpoint": "/v3/video/video_diffusion_img2vid/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
@@ -64,10 +94,13 @@
           "max_batch_size": 1,
           "supported_durations": [5, 10],
           "tested": true,
-          "notes": "已测试，生成速度比v3Pro快"
+          "speed": "fast",
+          "quality": "good",
+          "notes": "360p分辨率，生成速度快"
         },
         "kling-video": {
           "name": "Kling Video",
+          "display_name": "Kling video O1",
           "status": "tested",
           "endpoint": "/v3/video/video_diffusion_img2vid/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
@@ -76,7 +109,9 @@
           "max_batch_size": 1,
           "supported_durations": [5, 10],
           "tested": true,
-          "notes": "已测试，生成质量优秀"
+          "speed": "medium",
+          "quality": "excellent",
+          "notes": "Kling视频模型，质量优秀"
         }
       }
     },
@@ -89,6 +124,7 @@
       "ports": {
         "img2img": {
           "name": "Image to Image",
+          "display_name": "TBD",
           "status": "untested",
           "endpoint": "/v3/image/img2img/async",
           "result_endpoint": "/v3/image/image/async/results",
@@ -100,6 +136,7 @@
         },
         "image_edit": {
           "name": "Image Easy Edit",
+          "display_name": "TBD",
           "status": "untested",
           "endpoint": "/v2/image/image_easy_edit/async",
           "result_endpoint": "/v3/image/image/async/results",
@@ -120,6 +157,7 @@
       "ports": {
         "ip_portrait": {
           "name": "IP Portrait",
+          "display_name": "TBD",
           "status": "untested",
           "endpoint": "/v2/image/ip_portrait/async",
           "result_endpoint": "/v3/image/image/async/results",
@@ -141,6 +179,7 @@
       "ports": {
         "try_on": {
           "name": "Try On",
+          "display_name": "TBD",
           "status": "untested",
           "endpoint": "/v2/image/try_on/async",
           "result_endpoint": "/v3/image/image/async/results",
@@ -153,6 +192,7 @@
         },
         "try_on_dress": {
           "name": "Try On Dress",
+          "display_name": "TBD",
           "status": "untested",
           "endpoint": "/v2/image/try_on_dress/async",
           "result_endpoint": "/v3/image/image/async/results",

@@ -9,7 +9,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 | 一级功能 | 状态 | 说明 |
 |---------|------|------|
 | 🎨 **文生图 (Text-to-Image)** | ✅ 已实现 | 支持多种模型 |
-| 🎬 **图生视频 (Image-to-Video)** | ✅ 已实现 | 支持 v3Pro/v3L |
+| 🎬 **图生视频 (Image-to-Video)** | ✅ 已实现 | 支持 v3Pro/v3L/kling-video |
 | 🔄 **图生图 (Image-to-Image)** | ✅ 代码就绪 | 待测试 |
 | ✏️ **图像编辑 (Image Edit)** | ✅ 代码就绪 | 待测试 |
 | 👤 **AI肖像 (AI Portrait)** | ⏳ 待实现 | 需要 face/body UUID |
@@ -20,31 +20,68 @@ AI image and video generation using Vivago AI (智小象) platform.
 
 #### 文生图 (Text-to-Image)
 
-| 二级端口 | 端点 | 状态 | 默认 | 说明 |
-|---------|------|------|------|------|
-| `kling-image` | `/v3/image/image_gen_kling/async` | ✅ 已测试 | ✅ | Kling 图像模型 |
-| `hidream-txt2img` | `/v3/image/txt2img/async` | ✅ 已测试 | - | HiDream 文生图 |
+| 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
+|---------|-------------|------|------|------|------|------|
+| `kling-image` | **Kling O1** | `/v3/image/image_gen_kling/async` | ✅ 已测试 | ✅ | 快 | 优秀 |
+| `hidream-txt2img` | **Vivago.ai 2.0** | `/v3/image/txt2img/async` | ✅ 已测试 | - | 中等 | 良好 |
+| `nano-banana` | **Nano Banana 2** | `/v3/image/image_gen_std/async` | ⏳ 待测试 | - | 慢 | 极优 |
 
 #### 图生视频 (Image-to-Video)
 
-| 二级端口 | 端点 | 状态 | 默认 | 说明 |
-|---------|------|------|------|------|
-| `v3Pro` | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | ✅ | 高质量，4分钟 |
-| `v3L` | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | - | 快速版本，已验证 |
-| `kling-video` | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | - | Kling 视频模型，质量优秀 |
+| 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
+|---------|-------------|------|------|------|------|------|
+| `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | ✅ | 慢 | 极优 |
+| `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | - | 快 | 良好 |
+| `kling-video` | **Kling video O1** | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | - | 中等 | 极优 |
 
-#### 图生图 (Image-to-Image)
+> **注意**：相同端点 + 不同 version 参数 = 不同模型名称
 
-| 二级端口 | 端点 | 状态 | 说明 |
-|---------|------|------|------|
-| `img2img` | `/v3/image/img2img/async` | ⏳ 待测试 | 图像风格转换 |
-| `image_edit` | `/v2/image/image_easy_edit/async` | ⏳ 待测试 | 简易图像编辑 |
+---
 
-#### 视频结果查询
+## 🏗️ 架构设计
 
-| 二级端口 | 端点 | 状态 | 说明 |
-|---------|------|------|------|
-| `video_diffusion` | `/v3/video/video_diffusion/async/results` | ✅ 已测试 | 图生视频结果 |
+### 层级机制
+
+```
+Vivago AI Skill
+├── 一级功能 (Category)          # 大功能划分
+│   ├── text_to_image            # 文生图
+│   ├── image_to_video           # 图生视频
+│   ├── image_to_image           # 图生图
+│   └── ...
+│
+└── 二级端口 (Port)              # 具体API配置
+    ├── 端点路径 (endpoint)       # API提交地址
+    ├── 回调路径 (result_endpoint) # 结果查询地址
+    ├── 版本参数 (version)        # 模型版本标识
+    └── 显示名称 (display_name)   # Vivago网站显示名称
+```
+
+### 核心设计原则
+
+1. **一级功能** = 业务功能划分（文生图、图生视频等）
+2. **二级端口** = 具体API配置（端点、版本、回调路径）
+3. **display_name** = 与 Vivago 网站模型名称对齐
+4. **相同端点 + 不同 version = 不同模型**（关键架构点）
+
+### 示例：图生视频端口配置
+
+```json
+{
+  "v3Pro": {
+    "display_name": "Vivago.ai 2.0",
+    "endpoint": "/v3/video/video_diffusion_img2vid/async",
+    "result_endpoint": "/v3/video/video_diffusion/async/results",
+    "version": "v3Pro"
+  },
+  "v3L": {
+    "display_name": "Vivago.ai 2.0 360p",
+    "endpoint": "/v3/video/video_diffusion_img2vid/async",  // 相同端点
+    "result_endpoint": "/v3/video/video_diffusion/async/results",
+    "version": "v3L"  // 不同版本 = 不同模型
+  }
+}
+```
 
 ---
 
@@ -66,35 +103,37 @@ export STORAGE_SK="your_storage_secret_key"
 
 ### 3. 使用示例
 
-**文生图（Kling模型）:**
+**查看可用模型：**
 ```python
 from scripts.vivago_client import create_client
 
 client = create_client()
 
-# 使用默认端口 (kling-image)
-results = client.text_to_image(
-    prompt="一只可爱的小熊猫",
-    wh_ratio="1:1",
-    batch_size=1
-)
+# 查看所有一级功能
+for cat_id, info in client.list_categories().items():
+    print(f"{info['name']} ({info['name_en']})")
 
-# 或使用指定端口
+# 查看文生图可用模型
+for port_id, info in client.list_ports("text_to_image").items():
+    print(f"  {info['display_name']}: {info['speed']}, {info['quality']}")
+```
+
+**文生图（Kling O1）：**
+```python
 results = client.text_to_image(
     prompt="一只可爱的小熊猫",
-    port="kling-image",  # 指定二级端口
+    port="kling-image",  # 或 "hidream-txt2img", "nano-banana"
     wh_ratio="1:1",
     batch_size=1
 )
 ```
 
-**图生视频（v3Pro模型）:**
+**图生视频（Kling video O1）：**
 ```python
-# 注意：视频生成需要2-3分钟，请谨慎调用
 results = client.image_to_video(
     prompt="熊猫慢慢转头",
     image_uuid="j_xxxxx",
-    port="v3Pro",  # 或 "v3L" 快速版本
+    port="kling-video",  # 或 "v3Pro", "v3L"
     duration=5,
     mode="Slow"
 )
@@ -102,49 +141,17 @@ results = client.image_to_video(
 
 ---
 
-## 🏗️ 架构设计
-
-### 层级机制
-
-```
-一级功能 (大功能)
-├── 文生图 (text_to_image)
-│   ├── kling-image (默认)
-│   ├── hidream-txt2img
-│   └── ... (未来扩展)
-│
-├── 图生视频 (image_to_video)
-│   ├── v3Pro (默认)
-│   ├── v3L
-│   └── kling-video
-│
-└── 图生图 (image_to_image)
-    ├── img2img
-    └── image_edit
-```
-
-### 端口配置
-
-端口配置存储在 `scripts/api_ports.json`，便于动态扩展：
-
-```json
-{
-  "text_to_image": {
-    "default": "kling-image",
-    "ports": {
-      "kling-image": {
-        "endpoint": "/v3/image/image_gen_kling/async",
-        "result_endpoint": "/v3/image/txt2img/async/results",
-        "version": "kling-image-o1"
-      }
-    }
-  }
-}
-```
-
----
-
 ## ⚠️ 重要提示
+
+### 模型选择建议
+
+| 场景 | 推荐模型 | 说明 |
+|------|---------|------|
+| 快速生成 | Kling O1 | 速度快，质量优秀 |
+| 高质量图片 | Nano Banana 2 | 慢但效果最佳 |
+| 高清视频 | Vivago.ai 2.0 | 高质量，4分钟 |
+| 快速视频 | Vivago.ai 2.0 360p | 360p，速度快 |
+| 最佳视频 | Kling video O1 | 质量最优 |
 
 ### 视频生成注意事项
 
@@ -153,15 +160,12 @@ results = client.image_to_video(
 - 📶 **网络稳定性**: 长时间等待可能导致回调失败
 - 💰 **Credits消耗**: 视频生成消耗更多 credits
 
-### 测试建议
+### 回调路径差异
 
-```bash
-# 先运行简单测试
-python tests/test_suite.py --test txt2img_basic
-
-# 视频测试请单独运行，并耐心等待
-python tests/test_suite.py --test img2video_basic
-```
+不同端口可能使用不同的回调路径：
+- 普通图片：`/v3/image/txt2img/async/results`
+- Nano Banana：`/v3/image/image/async/results/batch`
+- 视频：`/v3/video/video_diffusion/async/results`
 
 ---
 
@@ -171,7 +175,7 @@ python tests/test_suite.py --test img2video_basic
 vivago-ai-skill/
 ├── scripts/
 │   ├── vivago_client.py      # 核心客户端（支持层级调用）
-│   ├── api_ports.json        # 端口配置
+│   ├── api_ports.json        # 端口配置（含 display_name）
 │   ├── txt2img.py            # 文生图 CLI
 │   ├── img2video.py          # 图生视频 CLI
 │   └── ...
@@ -185,35 +189,30 @@ vivago-ai-skill/
 
 ## 📝 更新日志
 
-### v0.2.1 (2026-03-05)
-- ✅ 测试 hidream-txt2img 端口
-- ✅ 测试 v3L 视频生成端口
-- ✅ 更新功能状态表格
+### v0.3.0 (2026-03-05)
+- ✅ 添加 Nano Banana 2 模型支持
+- ✅ 添加 `display_name` 字段，与 Vivago 网站对齐
+- ✅ 整理模型名称对应表
+- ✅ 更新架构说明文档
+
+### v0.2.2 (2026-03-05)
+- ✅ 测试 kling-video 端口
+- ✅ 所有图生视频端口测试完成
 
 ### v0.2.0 (2026-03-05)
 - ✅ 重构层级架构，支持一级/二级端口
 - ✅ 添加 API 端口配置系统
-- 🧪 图生视频功能调试中
-- ✅ 更新 README 功能状态表格
 
 ### v0.1.0 (2026-03-05)
 - ✅ 初始版本
-- ✅ 文生图功能（Kling模型）
-- ✅ 基础测试套件
-
----
-
-## 🔧 开发计划
-
-- [x] 完成图生视频调试 (v3Pro/v3L)
-- [ ] 添加图生图功能测试
-- [ ] 添加图像编辑功能测试
-- [ ] 添加 AI 肖像功能
-- [ ] 添加虚拟试衣功能
-- [ ] 工作流引擎（功能组合）
+- ✅ 文生图功能（Kling O1）
 
 ---
 
 ## 📞 问题反馈
 
 如有问题，请查看 `test_reports/` 目录下的测试报告。
+
+### 模型名称确认
+
+如果不确定某个二级端口的 Vivago 网站显示名称，可以询问我确认后再添加。
