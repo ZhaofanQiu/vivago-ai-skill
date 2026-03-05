@@ -196,14 +196,14 @@
         "v3Pro": {
           "name": "V3 Pro Keyframe",
           "display_name": "Vivago.ai 2.0",
-          "status": "testing",
+          "status": "tested",
           "endpoint": "/v3/video/video_diffusion_keyframes/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "v3Pro",
           "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 1,
           "supported_durations": [5, 10],
-          "tested": false,
+          "tested": true,
           "speed": "slow",
           "quality": "excellent",
           "notes": "高质量版本，慢但效果更好"

@@ -69,7 +69,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 | 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
 |---------|-------------|------|------|------|------|------|
 | `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion_keyframes/async` | ✅ 已测试 | ✅ | 快 | 良好 |
-| `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion_keyframes/async` | ⏳ 待测试 | - | 慢 | 极优 |
+| `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion_keyframes/async` | ✅ 已测试 | - | 慢 | 极优 |
 
 > **功能**：根据首尾帧图片生成过渡视频
 > **输入**：`start_image_uuid` + `end_image_uuid`
