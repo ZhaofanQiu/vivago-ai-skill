@@ -31,7 +31,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 |---------|------|------|------|------|
 | `v3Pro` | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | ✅ | 高质量，4分钟 |
 | `v3L` | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | - | 快速版本，已验证 |
-| `kling-video` | `/v3/video/video_diffusion_img2vid/async` | ⏳ 待测试 | - | Kling 视频模型 |
+| `kling-video` | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | - | Kling 视频模型，质量优秀 |
 
 #### 图生图 (Image-to-Image)
 

@@ -68,15 +68,15 @@
         },
         "kling-video": {
           "name": "Kling Video",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/video/video_diffusion_img2vid/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "kling-video-o1",
           "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 1,
           "supported_durations": [5, 10],
-          "tested": false,
-          "notes": "Kling视频模型，待测试"
+          "tested": true,
+          "notes": "已测试，生成质量优秀"
         }
       }
     },
