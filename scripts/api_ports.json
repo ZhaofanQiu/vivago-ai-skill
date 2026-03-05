@@ -249,24 +249,35 @@
           "notes": "Nano Banana 2 图生图，质量优秀但较慢，支持多图输入"
         }
       }
+    },
+    "template_to_video": {
+      "name": "视频模板",
+      "name_en": "Template-to-Video",
+      "status": "testing",
+      "default_port": "renovation_old_photos",
+      "description": "特定类型视频特效（固定视频模板）",
+      "notes": "不同template对应不同端点和参数",
+      "ports": {
+        "renovation_old_photos": {
+          "name": "Renovation of Old Photos",
+          "display_name": "老照片修复上色",
+          "status": "tested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "060c47d2-bb44-4a2f-85aa-00165843a07b.mp4",
+          "supported_ratios": ["16:9", "1:1", "9:16", "3:4", "4:3"],
+          "max_batch_size": 1,
+          "tested": true,
+          "speed": "fast",
+          "quality": "good",
+          "notes": "将黑白老照片转换为彩色现代照片效果，回调使用 video_diffusion 路径"
+        }
+      }
     }
   },
   "_future_features": {
-    "planned": [
-      {
-        "id": "keyframe_to_video",
-        "name": "视频首尾帧",
-        "name_en": "Keyframe-to-Video",
-        "description": "根据首尾帧生成过渡视频",
-        "status": "testing",
-        "note": "已添加，调试中"
-      },
-      {
-        "id": "template_to_video",
-        "name": "视频模板",
-        "name_en": "Template-to-Video",
-        "description": "特定类型视频特效（固定视频模板）"
-      }
-    ]
+    "planned": []
   }
 }

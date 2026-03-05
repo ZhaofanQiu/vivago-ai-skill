@@ -671,6 +671,88 @@ class VivagoClient:
             retry_delay=kwargs.get("retry_delay", 3)
         )
     
+    # ==================== Template to Video ====================
+    
+    def template_to_video(
+        self,
+        image_uuid: str,
+        template: str = "renovation_old_photos",
+        wh_ratio: str = "1:1",
+        **kwargs
+    ) -> Optional[List[Dict]]:
+        """
+        视频模板 - 特定类型视频特效
+        
+        使用预定义模板生成特效视频，不同模板对应不同端点和参数
+        
+        Args:
+            image_uuid: 输入图片UUID
+            template: 模板名称 (renovation_old_photos)
+            wh_ratio: 宽高比 (16:9, 1:1, 9:16, 3:4, 4:3)
+            **kwargs: 额外参数
+            
+        Returns:
+            List of generated video results
+        """
+        port_config, port_name = self._get_port_config("template_to_video", template)
+        
+        display_name = port_config.get("display_name", port_name)
+        template_id = port_config.get("template_id")
+        
+        # 构建 custom_params，包含 prompts 和 master_template_id
+        custom_params = {
+            "wh_ratio": wh_ratio,
+            "prompts": kwargs.get("prompts", [
+                "Convert the uploaded black-and-white photo into a vivid, fully modern color photograph. Every object, surface, and detail must be in full bright color. Absolutely no grayscale, monochrome, or faded tones are allowed. Use saturated yet realistic modern colors, natural skin tones, and clear, well-balanced lighting. The result must look like a contemporary digital color photo, polished and consistent across the entire image",
+                " Convert the uploaded black-and-white photo into a vivid, fully modern color photograph. Every object, surface, and detail must be in full bright color. Absolutely no grayscale, monochrome, or faded tones are allowed. Use saturated yet realistic modern colors, natural skin tones, and clear, well-balanced lighting. The result must look like a contemporary digital color photo, polished and consistent across the entire image "
+            ]),
+            "master_template_id": template_id
+        }
+        
+        data = {
+            "module": port_config.get("algo_type", "proto_transformer"),
+            "version": port_config.get("version", "v1"),
+            "prompt": kwargs.get("prompt", ""),
+            "images": [image_uuid],
+            "masks": [],
+            "videos": [],
+            "audios": [],
+            "params": {
+                "mode": kwargs.get("mode", "Fast"),
+                "style": kwargs.get("style", "default"),
+                "height": kwargs.get("height", -1),
+                "width": kwargs.get("width", -1),
+                "seed": kwargs.get("seed", -1),
+                "duration": kwargs.get("duration", 5),
+                "motion": kwargs.get("motion", 0),
+                "x": kwargs.get("x", 0),
+                "y": kwargs.get("y", 0),
+                "z": kwargs.get("z", 0),
+                "reserved_str": kwargs.get("reserved_str", ""),
+                "batch_size": 1,
+                "wh_ratio": wh_ratio,
+                "custom_params": custom_params
+            },
+            "en_prompt": kwargs.get("en_prompt", ""),
+            "negative_prompt": kwargs.get("negative_prompt", ""),
+            "en_negative_prompt": kwargs.get("en_negative_prompt", ""),
+            "magic_prompt": kwargs.get("magic_prompt", ""),
+            "template_id": template_id,
+            "upstream_id": kwargs.get("upstream_id", ""),
+            "pipeline_id": kwargs.get("pipeline_id", ""),
+            "request_id": str(uuid.uuid4())
+        }
+        
+        logger.info(f"Using template: {port_name} ({display_name}) ⚠️ 2-3 minutes")
+        
+        return self.call_api(
+            endpoint=port_config["endpoint"],
+            data=data,
+            result_endpoint=port_config["result_endpoint"],
+            max_retries=kwargs.get("max_retries", 60),
+            retry_delay=kwargs.get("retry_delay", 3)
+        )
+    
     def download_image(self, image_id: str, output_path: Optional[str] = None) -> str:
         """
         下载图片到本地
