@@ -141,32 +141,32 @@
         "v3Pro": {
           "name": "V3 Pro",
           "display_name": "Vivago.ai 2.0",
-          "status": "testing",
+          "status": "tested",
           "endpoint": "/v3/video/video_diffusion/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "v3Pro",
           "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 1,
           "supported_durations": [5, 10],
-          "tested": false,
+          "tested": true,
           "speed": "slow",
           "quality": "excellent",
-          "notes": "高质量文生视频"
+          "notes": "高质量文生视频/图生视频"
         },
         "kling-video": {
           "name": "Kling Video",
           "display_name": "Kling video O1",
-          "status": "testing",
+          "status": "tested",
           "endpoint": "/v3/video/video_diffusion/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "kling-video-o1",
           "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 1,
           "supported_durations": [5, 10],
-          "tested": false,
+          "tested": true,
           "speed": "medium",
           "quality": "excellent",
-          "notes": "Kling文生视频模型"
+          "notes": "图生视频已测试，文生视频参数待确认"
         }
       }
     },

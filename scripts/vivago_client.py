@@ -518,9 +518,12 @@ class VivagoClient:
         
         display_name = port_config.get("display_name", port_name)
         
+        # 文生视频的 module 固定为 "video_diffusion"
+        module = "video_diffusion"
+        
         data = {
             "image": None,
-            "module": "video_diffusion_txt2vid",
+            "module": module,
             "params": {
                 "batch_size": 1,
                 "guidance_scale": kwargs.get("guidance_scale", 7),
