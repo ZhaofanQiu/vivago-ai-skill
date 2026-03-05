@@ -590,10 +590,10 @@ class VivagoClient:
         
         # 尝试多种URL格式
         urls_to_try = [
+            f"https://storage.vivago.ai/image/{image_id}.jpg",
+            f"https://storage.vivago.ai/image/{image_id}.png",
             f"{self.base_url}/v3/resource/image/{image_id}/download",
-            f"{self.base_url}/v1/resource/image/{image_id}/download",
             f"https://static.vivago.ai/image/{image_id}.png",
-            f"https://vivago.ai/api/gw/v3/image/{image_id}/download",
         ]
         
         for url in urls_to_try:

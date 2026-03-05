@@ -61,7 +61,7 @@ def main():
                 "index": i + 1,
                 "image_id": image_id,
                 "vivago_url": f"https://vivago.ai/history/image",
-                "direct_url": f"https://static.vivago.ai/image/{image_id}.png",
+                "storage_url": f"https://storage.vivago.ai/image/{image_id}.jpg",
                 "local_path": downloaded_path if downloaded_path else None,
                 "downloaded": os.path.exists(downloaded_path) if downloaded_path else False
             }
