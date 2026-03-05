@@ -12,6 +12,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 | 📝 **文生视频 (Text-to-Video)** | ✅ 已实现 | 支持 v3L(快) / v3Pro(质) / Kling video O1 |
 | 🎬 **图生视频 (Image-to-Video)** | ✅ 已实现 | 支持 v3L / v3Pro / Kling video O1 |
 | 🔄 **图生图 (Image-to-Image)** | ✅ 已实现 | 支持 Kling O1(快) / Nano Banana 2(质)，多图融合 |
+| 🎞️ **视频首尾帧 (Keyframe-to-Video)** | ✅ 已实现 | 支持 v3L，根据首尾帧生成过渡视频 |
 | ⬆️ **图像上传 (Image Upload)** | ✅ 已实现 | 支持自动压缩 |
 
 > **注**：图像编辑、AI肖像、虚拟试衣等功能均可通过图生图实现，无需单独一级功能
@@ -20,8 +21,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 
 | 一级功能 | 状态 | 说明 |
 |---------|------|------|
-| 🎞️ **视频首尾帧 (Keyframe-to-Video)** | ⏳ 规划中 | 根据首尾帧生成过渡视频 |
-| 🎭 **视频模板 (Template-to-Video)** | ⏳ 规划中 | 特定类型视频特效（固定模板） |
+| 🎭 **视频模板 (Template-to-Video)** | ⏳ 规划中 | 特定类型视频特效（固定视频模板） |
 
 ### 二级端口（具体API端点）
 
@@ -64,6 +64,16 @@ AI image and video generation using Vivago AI (智小象) platform.
 | `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion/async` | ✅ 已测试 | - | 慢 | 极优 |
 | `kling-video` | **Kling video O1** | `/v3/video/video_diffusion_gen2vid/async` | ✅ 已测试 | - | 中等 | 极优 |
 
+#### 视频首尾帧 (Keyframe-to-Video)
+
+| 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
+|---------|-------------|------|------|------|------|------|
+| `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion_keyframes/async` | ✅ 已测试 | ✅ | 快 | 良好 |
+
+> **功能**：根据首尾帧图片生成过渡视频
+> **输入**：`start_image_uuid` + `end_image_uuid`
+> **示例**：皮卡丘 → 柯基的变身动画
+
 ---
 
 ## 🏗️ 架构设计
@@ -76,6 +86,7 @@ Vivago AI Skill
 │   ├── text_to_image            # 文生图
 │   ├── image_to_video           # 图生视频
 │   ├── image_to_image           # 图生图
+│   ├── keyframe_to_video        # 视频首尾帧
 │   └── ...
 │
 └── 二级端口 (Port)              # 具体API配置
@@ -197,6 +208,18 @@ results = client.text_to_video(
 )
 ```
 
+**视频首尾帧（Keyframe-to-Video）：**
+```python
+results = client.keyframe_to_video(
+    prompt="皮卡丘变成了一只柯基",
+    start_image_uuid="p_pikachu",  # 起始帧
+    end_image_uuid="p_corgi",      # 结束帧
+    port="v3L",
+    duration=5,
+    mode="Fast"
+)
+```
+
 ---
 
 ## ⚠️ 重要提示
@@ -221,9 +244,7 @@ results = client.text_to_video(
 | 高清视频 | Vivago.ai 2.0 (v3Pro) | 高质量，4分钟 |
 | 快速视频 | Vivago.ai 2.0 360p (v3L) | 360p，速度快 |
 | 最佳视频 | Kling video O1 | 质量最优 |
-| 高清视频 | Vivago.ai 2.0 | 高质量，4分钟 |
-| 快速视频 | Vivago.ai 2.0 360p | 360p，速度快 |
-| 最佳视频 | Kling video O1 | 质量最优 |
+| 首尾帧视频 | Vivago.ai 2.0 360p (v3L) | 支持关键帧过渡 |
 
 ### 视频生成注意事项
 
@@ -260,6 +281,13 @@ vivago-ai-skill/
 ---
 
 ## 📝 更新日志
+
+### v0.7.0 (2026-03-06)
+- ✅ 新增 **视频首尾帧 (Keyframe-to-Video)** 功能
+- ✅ 支持根据首尾帧生成过渡视频
+- ✅ 添加 v3L 端口支持
+- ✅ 测试成功：皮卡丘 → 柯基变身视频
+- ✅ 更新文档和端口配置
 
 ### v0.6.0 (2026-03-06)
 - ✅ 重构功能架构，简化一级功能
