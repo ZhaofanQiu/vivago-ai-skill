@@ -484,6 +484,88 @@ class VivagoClient:
             max_retries=kwargs.get("max_retries", 60),  # 视频需要更多重试
             retry_delay=kwargs.get("retry_delay", 3)     # 视频间隔更长
         )
+    
+    # ==================== Text to Video ====================
+    
+    def text_to_video(
+        self,
+        prompt: str,
+        port: Optional[str] = None,
+        wh_ratio: str = "16:9",
+        duration: int = 5,
+        mode: str = "Slow",
+        fast_mode: bool = False,
+        **kwargs
+    ) -> Optional[List[Dict]]:
+        """
+        文生视频 - 从文本描述生成视频
+        
+        ⚠️ 注意：视频生成需要 2-3 分钟，请谨慎调用
+        
+        Args:
+            prompt: 视频内容描述
+            port: 二级端口 (v3Pro/v3L/kling-video, None=使用默认)
+            wh_ratio: 宽高比 (1:1, 4:3, 3:4, 16:9, 9:16)
+            duration: 视频时长 (5或10秒)
+            mode: 生成模式 (Slow/Fast)
+            fast_mode: 快速模式
+            **kwargs: 额外参数
+            
+        Returns:
+            List of generated video results
+        """
+        port_config, port_name = self._get_port_config("text_to_video", port)
+        
+        display_name = port_config.get("display_name", port_name)
+        
+        data = {
+            "image": None,
+            "module": "video_diffusion_txt2vid",
+            "params": {
+                "batch_size": 1,
+                "guidance_scale": kwargs.get("guidance_scale", 7),
+                "sample_steps": kwargs.get("sample_steps", 80),
+                "width": kwargs.get("width", 1920),
+                "height": kwargs.get("height", 1080),
+                "fast_mode": fast_mode,
+                "frame_num": kwargs.get("frame_num", 16),
+                "seed": kwargs.get("seed", -1),
+                "motion_strength": kwargs.get("motion_strength", 9),
+                "max_width": kwargs.get("max_width", 1024),
+                "wh_ratio": wh_ratio,
+                "cm_x": kwargs.get("cm_x", 0),
+                "cm_y": kwargs.get("cm_y", 0),
+                "cm_d": kwargs.get("cm_d", 0),
+                "custom_params": {},
+                "mode": mode,
+                "duration": duration,
+                "x": kwargs.get("x", 0),
+                "y": kwargs.get("y", 0),
+                "z": kwargs.get("z", 0),
+                "style": kwargs.get("style", "default")
+            },
+            "prompt": prompt,
+            "negative_prompt": kwargs.get("negative_prompt", ""),
+            "role": kwargs.get("role", "general"),
+            "style": kwargs.get("style", "default"),
+            "wh_ratio": wh_ratio,
+            "version": port_config.get("version", "v3Pro"),
+            "magic_prompt": kwargs.get("magic_prompt", ""),
+            "images": [],
+            "videos": [],
+            "audios": [],
+            "request_id": str(uuid.uuid4())
+        }
+        
+        logger.info(f"Using port: {port_name} ({display_name}) ⚠️ 2-3 minutes")
+        
+        return self.call_api(
+            endpoint=port_config["endpoint"],
+            data=data,
+            result_endpoint=port_config["result_endpoint"],
+            max_retries=kwargs.get("max_retries", 60),
+            retry_delay=kwargs.get("retry_delay", 3)
+        )
 
 
 def create_client(

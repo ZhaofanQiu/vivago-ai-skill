@@ -9,6 +9,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 | 一级功能 | 状态 | 说明 |
 |---------|------|------|
 | 🎨 **文生图 (Text-to-Image)** | ✅ 已实现 | 支持多种模型 |
+| 📝 **文生视频 (Text-to-Video)** | ✅ 已实现 | 支持 v3L/v3Pro/kling-video |
 | 🎬 **图生视频 (Image-to-Video)** | ✅ 已实现 | 支持 v3Pro/v3L/kling-video |
 | 🔄 **图生图 (Image-to-Image)** | ✅ 代码就绪 | 待测试 |
 | ✏️ **图像编辑 (Image Edit)** | ✅ 代码就绪 | 待测试 |
@@ -30,11 +31,21 @@ AI image and video generation using Vivago AI (智小象) platform.
 
 | 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
 |---------|-------------|------|------|------|------|------|
-| `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | ✅ | 慢 | 极优 |
-| `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | - | 快 | 良好 |
-| `kling-video` | **Kling video O1** | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | - | 中等 | 极优 |
+| `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion/async` | ✅ 已测试 | ✅ | 慢 | 极优 |
+| `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion/async` | ✅ 已测试 | - | 快 | 良好 |
+| `kling-video` | **Kling video O1** | `/v3/video/video_diffusion/async` | ✅ 已测试 | - | 中等 | 极优 |
 
-> **注意**：相同端点 + 不同 version 参数 = 不同模型名称
+> **关键架构**：文生视频和图生视频使用**相同端点** `/v3/video/video_diffusion/async`
+> - 图生视频：`images` 数组包含图片 UUID
+> - 文生视频：`images` 数组为空 `[]`
+
+#### 文生视频 (Text-to-Video)
+
+| 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
+|---------|-------------|------|------|------|------|------|
+| `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion/async` | ✅ 已测试 | ✅ | 快 | 良好 |
+| `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion/async` | ⏳ 待测试 | - | 慢 | 极优 |
+| `kling-video` | **Kling video O1** | `/v3/video/video_diffusion/async` | ⏳ 待测试 | - | 中等 | 极优 |
 
 ---
 
@@ -188,6 +199,17 @@ vivago-ai-skill/
 ---
 
 ## 📝 更新日志
+
+### v0.4.0 (2026-03-05)
+- ✅ 新增 **文生视频** 一级功能
+- ✅ 测试 Vivago.ai 2.0 360p 文生视频 (v3L)
+- ✅ 关键发现：文生视频和图生视频共用 `/v3/video/video_diffusion/async` 端点
+- ✅ 修复 `text_to_video()` 方法，支持 `magic_prompt` 参数
+
+### v0.3.1 (2026-03-05)
+- ✅ 修复 Nano Banana 2 支持
+- ✅ 修正 `result_endpoint` 路径
+- ✅ 添加 `mode=2K` 参数
 
 ### v0.3.0 (2026-03-05)
 - ✅ 添加 Nano Banana 2 模型支持
