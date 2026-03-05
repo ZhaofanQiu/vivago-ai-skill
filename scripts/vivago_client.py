@@ -573,6 +573,56 @@ class VivagoClient:
             max_retries=kwargs.get("max_retries", 60),
             retry_delay=kwargs.get("retry_delay", 3)
         )
+    
+    def download_image(self, image_id: str, output_path: Optional[str] = None) -> str:
+        """
+        下载图片到本地
+        
+        Args:
+            image_id: 图片ID (如 "p_xxxxx")
+            output_path: 保存路径，默认保存到 /tmp/
+            
+        Returns:
+            本地文件路径，如果下载失败返回空字符串
+        """
+        if output_path is None:
+            output_path = f"/tmp/{image_id}.png"
+        
+        # 尝试多种URL格式
+        urls_to_try = [
+            f"{self.base_url}/v3/resource/image/{image_id}/download",
+            f"{self.base_url}/v1/resource/image/{image_id}/download",
+            f"https://static.vivago.ai/image/{image_id}.png",
+            f"https://vivago.ai/api/gw/v3/image/{image_id}/download",
+        ]
+        
+        for url in urls_to_try:
+            try:
+                resp = requests.get(url, headers=self.headers, timeout=30, allow_redirects=True)
+                if resp.status_code == 200 and len(resp.content) > 1000:
+                    with open(output_path, 'wb') as f:
+                        f.write(resp.content)
+                    logger.info(f"Image downloaded: {output_path}")
+                    return output_path
+            except Exception as e:
+                logger.debug(f"Failed to download from {url}: {e}")
+                continue
+        
+        return ""
+    
+    def get_image_result(self, image_id: str) -> dict:
+        """
+        获取图片结果信息
+        
+        Returns:
+            包含图片信息的字典
+        """
+        return {
+            "image_id": image_id,
+            "vivago_url": f"https://vivago.ai/history/image",
+            "direct_url": f"https://static.vivago.ai/image/{image_id}.png",
+            "note": "图片需在Vivago网站查看，API限制无法直接下载"
+        }
 
 
 def create_client(

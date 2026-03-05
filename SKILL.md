@@ -15,6 +15,7 @@ Integration with Vivago AI (智小象) platform for AI-powered image and video g
 - **Image Edit** (`image_easy_edit`): Edit images with easy edit mode
 
 ### Video Generation
+- **Text to Video** (`txt2vid`): Generate videos from text descriptions
 - **Image to Video** (`img2vid`): Generate videos from static images
 - Supports multiple model versions (v3Pro, v3L, kling-video-o1)
 
@@ -124,8 +125,18 @@ vivago-ai-skill/
 └── SKILL.md               # This file
 ```
 
-## Notes
+## Important Notes
 
+### Image Download Limitation
+
+⚠️ **Vivago AI images have access restrictions**: Due to hotlink protection, generated images cannot be directly downloaded via API.
+
+**Workaround:**
+1. Images are generated successfully and saved to your Vivago account
+2. View and download images from: https://vivago.ai/history/image
+3. The API returns image IDs that you can use to locate your images
+
+### Asynchronous Processing
 - API calls are asynchronous with automatic polling
 - Images are automatically resized to max 1024px on longest side before upload
 - Video generation supports 5 or 10 second durations
