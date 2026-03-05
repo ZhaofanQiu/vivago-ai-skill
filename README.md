@@ -44,6 +44,26 @@ AI image and video generation using Vivago AI (智小象) platform.
 
 > **关键参数**：`strength`(变化强度), `relevance`[权重数组], `image_guidance_scale`
 
+#### 图生视频 (Image-to-Video)
+
+| 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
+|---------|-------------|------|------|------|------|------|
+| `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion/async` | ✅ 已测试 | ✅ | 慢 | 极优 |
+| `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion/async` | ✅ 已测试 | - | 快 | 良好 |
+| `kling-video` | **Kling video O1** | `/v3/video/video_diffusion/async` | ✅ 已测试 | - | 中等 | 极优 |
+
+> **关键架构**：文生视频和图生视频使用**相同端点** `/v3/video/video_diffusion/async`
+> - 图生视频：`images` 数组包含图片 UUID
+> - 文生视频：`images` 数组为空 `[]`
+
+#### 文生视频 (Text-to-Video)
+
+| 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
+|---------|-------------|------|------|------|------|------|
+| `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion/async` | ✅ 已测试 | ✅ | 快 | 良好 |
+| `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion/async` | ✅ 已测试 | - | 慢 | 极优 |
+| `kling-video` | **Kling video O1** | `/v3/video/video_diffusion_gen2vid/async` | ✅ 已测试 | - | 中等 | 极优 |
+
 ---
 
 ## 🏗️ 架构设计
@@ -147,6 +167,36 @@ results = client.image_to_video(
 )
 ```
 
+**图生图（Kling O1 - 多图融合）：**
+```python
+# 单图风格迁移
+results = client.image_to_image(
+    prompt="将图片转换为水彩画风格",
+    image_uuids=["p_xxxxx"],
+    port="kling-image",
+    strength=0.8
+)
+
+# 多图融合（皮卡丘 + 绿头鸭）
+results = client.image_to_image(
+    prompt="一只皮卡丘骑在绿头鸭背上",
+    image_uuids=["p_pikachu", "p_duck"],
+    port="kling-image",  # 或 "nano-banana" (质量更好但慢)
+    strength=0.8,
+    relevance=[0.9, 0.9]  # 两张图的参考权重
+)
+```
+
+**文生视频（v3L 快速版）：**
+```python
+results = client.text_to_video(
+    prompt="一只金毛犬在草地上奔跑",
+    port="v3L",  # 快速版本
+    duration=5,
+    mode="Fast"
+)
+```
+
 ---
 
 ## ⚠️ 重要提示
@@ -155,8 +205,13 @@ results = client.image_to_video(
 
 | 场景 | 推荐模型 | 说明 |
 |------|---------|------|
-| 快速生成 | Kling O1 | 速度快，质量优秀 |
+| 快速生成图片 | Kling O1 | 速度快，质量优秀 |
 | 高质量图片 | Nano Banana 2 | 慢但效果最佳 |
+| 图生图/风格迁移 | Kling O1 | 速度快，支持多图融合 |
+| 图生图高质量 | Nano Banana 2 | 质量最优，适合精细编辑 |
+| 高清视频 | Vivago.ai 2.0 (v3Pro) | 高质量，4分钟 |
+| 快速视频 | Vivago.ai 2.0 360p (v3L) | 360p，速度快 |
+| 最佳视频 | Kling video O1 | 质量最优 |
 | 高清视频 | Vivago.ai 2.0 | 高质量，4分钟 |
 | 快速视频 | Vivago.ai 2.0 360p | 360p，速度快 |
 | 最佳视频 | Kling video O1 | 质量最优 |
@@ -196,6 +251,24 @@ vivago-ai-skill/
 ---
 
 ## 📝 更新日志
+
+### v0.6.0 (2026-03-06)
+- ✅ 重构功能架构，简化一级功能
+- ✅ 图像编辑、AI肖像、虚拟试衣并入图生图
+- ✅ 图生图支持 Kling O1 (快) 和 Nano Banana 2 (质)
+- ✅ 支持多图输入融合 (`image_uuids` + `relevance`)
+- ✅ 规划未来功能：视频首尾帧、视频模板
+- ✅ 更新完整文档和端口配置
+
+### v0.5.3 (2026-03-06)
+- ✅ 添加 Kling O1 图生图支持
+- ✅ 测试成功：多图融合生成
+- ✅ Kling O1 速度优于 Nano Banana 2
+
+### v0.5.0 (2026-03-06)
+- ✅ 添加 Nano Banana 2 图生图（多图输入）
+- ✅ 支持 `strength`, `relevance`, `image_guidance_scale` 参数
+- ✅ 实现图像风格迁移、编辑、融合功能
 
 ### v0.4.1 (2026-03-05)
 - ✅ 测试 v3Pro 文生视频 - 成功
