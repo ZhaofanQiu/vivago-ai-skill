@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
 生成视频 - Feishu专用版本 (发送视频URL)
+
+注意：飞书API不支持直接发送可播放视频，只能发送链接
 """
 import os
 import sys
@@ -66,12 +68,38 @@ def generate_video(prompt: str, port: str = 'v3L', wh_ratio: str = '16:9', durat
         return False, {}, f"错误: {str(e)}"
 
 
+def format_feishu_message(video_data: dict) -> str:
+    """
+    格式化飞书消息内容
+    
+    由于飞书API限制，视频只能发送链接格式，不能直接发送文件
+    """
+    port_display = {
+        'v3L': 'Vivago.ai 2.0 360p (快速)',
+        'v3Pro': 'Vivago.ai 2.0 (高质量)',
+        'kling-video': 'Kling video O1 (最优)'
+    }
+    
+    return f"""🎬 视频生成完成！
+
+📹 视频链接：{video_data['video_url']}
+
+📋 视频信息：
+• 模型：{port_display.get(video_data['port'], video_data['port'])}
+• 时长：{video_data['duration']}秒
+• Prompt：{video_data['prompt']}
+• Video ID：{video_data['video_id']}
+
+💡 提示：点击链接即可观看和下载视频"""
+
+
 if __name__ == '__main__':
     # 命令行调用
     if len(sys.argv) < 2:
         print("Usage: python generate_video_for_feishu.py <prompt> [port] [ratio] [duration]")
         print("  port: v3L (fast), v3Pro (quality), kling-video")
         print("  duration: 5 or 10")
+        print("\n注意：飞书API不支持直接发送视频文件，将返回视频链接")
         sys.exit(1)
     
     prompt = sys.argv[1]
@@ -88,6 +116,10 @@ if __name__ == '__main__':
         print(f"PROMPT:{video_data['prompt']}")
         print(f"PORT:{video_data['port']}")
         print(f"DURATION:{video_data['duration']}")
+        
+        # 输出飞书消息格式
+        feishu_msg = format_feishu_message(video_data)
+        print(f"FEISHU_MSG:{feishu_msg}")
     else:
         print(f"ERROR:{message}", file=sys.stderr)
         sys.exit(1)
