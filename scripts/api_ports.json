@@ -215,6 +215,21 @@
           "speed": "slow",
           "quality": "excellent",
           "notes": "Nano Banana 2 图生图，支持多图输入，使用 txt2img 回调路径"
+        },
+        "kling-image": {
+          "name": "Kling Image Img2Img",
+          "display_name": "Kling O1",
+          "status": "testing",
+          "endpoint": "/v3/image/image_gen_kling/async",
+          "result_endpoint": "/v3/image/txt2img/async/results",
+          "version": "kling-image-o1",
+          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 4,
+          "max_images": 5,
+          "tested": false,
+          "speed": "fast",
+          "quality": "excellent",
+          "notes": "Kling O1 图生图，速度快，支持多图输入，enhance=2k"
         }
       }
     },

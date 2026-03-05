@@ -651,14 +651,14 @@ class VivagoClient:
         **kwargs
     ) -> Optional[List[Dict]]:
         """
-        图生图 - 支持多图输入 (Nano Banana 2)
+        图生图 - 支持多图输入 (Nano Banana 2 / Kling O1)
         
-        使用 Nano Banana 2 模型，支持多张参考图片融合生成
+        支持 Nano Banana 2 和 Kling O1 模型，支持多张参考图片融合生成
         
         Args:
             prompt: 图像描述
             image_uuids: 参考图片UUID列表 (最多5张)
-            port: 二级端口 (默认 nano-banana)
+            port: 二级端口 (nano-banana/kling-image, 默认 nano-banana)
             wh_ratio: 宽高比 (1:1, 4:3, 3:4, 16:9, 9:16)
             strength: 变化强度 (0.0-1.0, 默认0.8)
             relevance: 每张图片的参考权重列表 (默认每张0.9)
@@ -670,6 +670,13 @@ class VivagoClient:
         port_config, port_name = self._get_port_config("image_to_image", port or "nano-banana")
         
         display_name = port_config.get("display_name", port_name)
+        version = port_config.get("version", "nano-banana-2")
+        
+        # 根据端口确定 module
+        if "kling" in port_name:
+            module = "image_gen_kling"
+        else:
+            module = "image_gen_std"
         
         # 设置默认 relevance
         if relevance is None:
@@ -680,11 +687,16 @@ class VivagoClient:
             logger.warning(f"relevance length ({len(relevance)}) != image count ({len(image_uuids)}), adjusting...")
             relevance = [0.9] * len(image_uuids)
         
+        # 构建 custom_params
+        custom_params = {"wh_ratio": wh_ratio}
+        if "kling" in port_name:
+            custom_params["enhance"] = "2k"
+        
         data = {
             "app": None,
             "image": image_uuids,  # 多图输入数组
             "mask": kwargs.get("mask"),
-            "module": "image_gen_std",
+            "module": module,
             "negative_prompt": kwargs.get("negative_prompt", ""),
             "prompt": prompt,
             "params": {
@@ -701,18 +713,20 @@ class VivagoClient:
                 "wh_ratio": wh_ratio,
                 "width": kwargs.get("width", 512),
                 "relevance": relevance,  # 每张图的权重
-                "mode": "2K",  # Nano Banana 2 标识
-                "custom_params": {
-                    "wh_ratio": wh_ratio
-                }
+                "custom_params": custom_params
             },
             "role": kwargs.get("role", "general"),
+            "version": version,
             "images": [],  # 根据抓包，这里为空数组
             "magic_prompt": kwargs.get("magic_prompt", ""),
             "audios": [],
             "videos": [],
             "request_id": str(uuid.uuid4())
         }
+        
+        # Nano Banana 2 需要 mode 参数
+        if "nano" in port_name:
+            data["params"]["mode"] = "2K"
         
         logger.info(f"Using port: {port_name} ({display_name}) with {len(image_uuids)} images")
         
