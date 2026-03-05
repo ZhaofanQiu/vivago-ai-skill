@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-生成视频并通过飞书发送 - Feishu专用版本
+生成视频 - Feishu专用版本 (发送视频URL)
 """
 import os
 import sys
@@ -11,12 +11,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'scripts'))
 from vivago_client import create_client
 
 
-def generate_and_send_video(prompt: str, port: str = 'v3L', wh_ratio: str = '16:9', duration: int = 5):
+def generate_video(prompt: str, port: str = 'v3L', wh_ratio: str = '16:9', duration: int = 5):
     """
-    生成视频并保存到本地，返回文件路径供飞书发送
+    生成视频，返回视频URL供飞书发送
     
     Returns:
-        tuple: (success: bool, file_paths: list, message: str)
+        tuple: (success: bool, video_info: dict, message: str)
     """
     try:
         client = create_client()
@@ -38,38 +38,36 @@ def generate_and_send_video(prompt: str, port: str = 'v3L', wh_ratio: str = '16:
         )
         
         if not results:
-            return False, [], "生成失败"
+            return False, {}, "生成失败"
         
-        # 下载视频
-        saved_files = []
-        for result in results:
-            video_id = result.get('video')
-            if not video_id:
-                continue
-            
-            print(f"📥 正在下载视频...")
-            
-            output_path = f"/tmp/{video_id}"
-            downloaded_path = client.download_video(video_id, output_path)
-            
-            if downloaded_path and os.path.exists(downloaded_path):
-                file_size = os.path.getsize(downloaded_path)
-                print(f"   ✅ 已保存: {downloaded_path} ({file_size/1024/1024:.1f} MB)")
-                saved_files.append(downloaded_path)
-            else:
-                print(f"   ❌ 下载失败")
+        # 获取视频信息
+        video_info = results[0]
+        video_id = video_info.get('video')
         
-        if saved_files:
-            return True, saved_files, f"成功生成 {len(saved_files)} 个视频"
-        else:
-            return False, [], "视频下载失败"
+        if not video_id:
+            return False, {}, "未获取到视频ID"
+        
+        # 构建视频信息
+        video_data = {
+            'video_id': video_id,
+            'video_url': f"https://media.vivago.ai/{video_id}",
+            'prompt': prompt,
+            'port': port,
+            'duration': duration,
+            'algo_version': video_info.get('algo_version'),
+            'seed': video_info.get('seed')
+        }
+        
+        return True, video_data, "视频生成成功"
             
     except Exception as e:
-        return False, [], f"错误: {str(e)}"
+        import traceback
+        traceback.print_exc()
+        return False, {}, f"错误: {str(e)}"
 
 
 if __name__ == '__main__':
-    # 命令行调用，输出文件路径
+    # 命令行调用
     if len(sys.argv) < 2:
         print("Usage: python generate_video_for_feishu.py <prompt> [port] [ratio] [duration]")
         print("  port: v3L (fast), v3Pro (quality), kling-video")
@@ -81,12 +79,15 @@ if __name__ == '__main__':
     ratio = sys.argv[3] if len(sys.argv) > 3 else '16:9'
     duration = int(sys.argv[4]) if len(sys.argv) > 4 else 5
     
-    success, files, message = generate_and_send_video(prompt, port, ratio, duration)
+    success, video_data, message = generate_video(prompt, port, ratio, duration)
     
-    # 输出文件路径到 stdout，供外部读取
-    if success and files:
-        for f in files:
-            print(f)
+    if success and video_data:
+        # 输出视频URL供外部读取
+        print(f"VIDEO_URL:{video_data['video_url']}")
+        print(f"VIDEO_ID:{video_data['video_id']}")
+        print(f"PROMPT:{video_data['prompt']}")
+        print(f"PORT:{video_data['port']}")
+        print(f"DURATION:{video_data['duration']}")
     else:
-        print(f"ERROR: {message}", file=sys.stderr)
+        print(f"ERROR:{message}", file=sys.stderr)
         sys.exit(1)
