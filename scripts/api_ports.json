@@ -1,0 +1,169 @@
+{
+  "version": "0.2.0",
+  "last_updated": "2026-03-05",
+  "base_url": "https://vivago.ai/api/gw",
+  "categories": {
+    "text_to_image": {
+      "name": "文生图",
+      "name_en": "Text to Image",
+      "status": "active",
+      "default_port": "kling-image",
+      "description": "从文本描述生成图像",
+      "ports": {
+        "kling-image": {
+          "name": "Kling Image",
+          "status": "tested",
+          "endpoint": "/v3/image/image_gen_kling/async",
+          "result_endpoint": "/v3/image/txt2img/async/results",
+          "version": "kling-image-o1",
+          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 4,
+          "tested": true,
+          "notes": "已测试通过，推荐使用"
+        },
+        "hidream-txt2img": {
+          "name": "HiDream Txt2Img",
+          "status": "untested",
+          "endpoint": "/v3/image/txt2img/async",
+          "result_endpoint": "/v3/image/txt2img/async/results",
+          "version": "v3L",
+          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 4,
+          "tested": false,
+          "notes": "旧版接口，待测试"
+        }
+      }
+    },
+    "image_to_video": {
+      "name": "图生视频",
+      "name_en": "Image to Video",
+      "status": "testing",
+      "default_port": "v3Pro",
+      "description": "从静态图像生成视频",
+      "warning": "生成时间较长(2-3分钟)，请谨慎调用",
+      "ports": {
+        "v3Pro": {
+          "name": "V3 Pro",
+          "status": "testing",
+          "endpoint": "/v3/video/video_diffusion_img2vid/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "version": "v3Pro",
+          "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 1,
+          "supported_durations": [5, 10],
+          "tested": false,
+          "notes": "高质量，生成较慢，调试中"
+        },
+        "v3L": {
+          "name": "V3 Lite",
+          "status": "untested",
+          "endpoint": "/v3/video/video_diffusion_img2vid/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "version": "v3L",
+          "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 1,
+          "supported_durations": [5, 10],
+          "tested": false,
+          "notes": "快速版本，待测试"
+        },
+        "kling-video": {
+          "name": "Kling Video",
+          "status": "untested",
+          "endpoint": "/v3/video/video_diffusion_img2vid/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "version": "kling-video-o1",
+          "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 1,
+          "supported_durations": [5, 10],
+          "tested": false,
+          "notes": "Kling视频模型，待测试"
+        }
+      }
+    },
+    "image_to_image": {
+      "name": "图生图",
+      "name_en": "Image to Image",
+      "status": "ready",
+      "default_port": "img2img",
+      "description": "图像风格转换和编辑",
+      "ports": {
+        "img2img": {
+          "name": "Image to Image",
+          "status": "untested",
+          "endpoint": "/v3/image/img2img/async",
+          "result_endpoint": "/v3/image/image/async/results",
+          "version": "v1",
+          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 4,
+          "tested": false,
+          "notes": "图像风格转换，待测试"
+        },
+        "image_edit": {
+          "name": "Image Easy Edit",
+          "status": "untested",
+          "endpoint": "/v2/image/image_easy_edit/async",
+          "result_endpoint": "/v3/image/image/async/results",
+          "version": "v1",
+          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "简易图像编辑，待测试"
+        }
+      }
+    },
+    "ai_portrait": {
+      "name": "AI肖像",
+      "name_en": "AI Portrait",
+      "status": "planned",
+      "default_port": "ip_portrait",
+      "description": "生成AI人像",
+      "ports": {
+        "ip_portrait": {
+          "name": "IP Portrait",
+          "status": "untested",
+          "endpoint": "/v2/image/ip_portrait/async",
+          "result_endpoint": "/v3/image/image/async/results",
+          "version": "v1",
+          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 1,
+          "requires": ["face_uuid", "body_uuid"],
+          "tested": false,
+          "notes": "需要上传参考图片获取UUID"
+        }
+      }
+    },
+    "try_on": {
+      "name": "虚拟试衣",
+      "name_en": "Virtual Try On",
+      "status": "planned",
+      "default_port": "try_on",
+      "description": "虚拟试穿服装",
+      "ports": {
+        "try_on": {
+          "name": "Try On",
+          "status": "untested",
+          "endpoint": "/v2/image/try_on/async",
+          "result_endpoint": "/v3/image/image/async/results",
+          "version": "v1",
+          "supported_categories": ["upper_body", "lower_body"],
+          "max_batch_size": 1,
+          "requires": ["model_uuid", "cloth_uuid"],
+          "tested": false,
+          "notes": "上身/下身试衣"
+        },
+        "try_on_dress": {
+          "name": "Try On Dress",
+          "status": "untested",
+          "endpoint": "/v2/image/try_on_dress/async",
+          "result_endpoint": "/v3/image/image/async/results",
+          "version": "v1",
+          "supported_categories": ["full_body"],
+          "max_batch_size": 1,
+          "requires": ["model_uuid", "cloth_uuid"],
+          "tested": false,
+          "notes": "全身试衣（连衣裙）"
+        }
+      }
+    }
+  }
+}
