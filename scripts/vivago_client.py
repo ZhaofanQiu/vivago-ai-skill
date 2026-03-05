@@ -622,11 +622,12 @@ class VivagoClient:
         if output_path is None:
             output_path = f"/tmp/{video_id}"
         
-        # 使用正确的 media URL 格式
+        # 使用正确的 media URL 格式 (不需要认证)
         url = f"https://media.vivago.ai/{video_id}"
         
         try:
-            resp = requests.get(url, headers=self.headers, timeout=120, allow_redirects=True)
+            # 视频下载不需要 Authorization header
+            resp = requests.get(url, timeout=120, allow_redirects=True)
             if resp.status_code == 200 and len(resp.content) > 10000:  # 视频至少 10KB
                 with open(output_path, 'wb') as f:
                     f.write(resp.content)
