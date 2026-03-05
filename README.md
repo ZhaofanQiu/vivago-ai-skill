@@ -45,7 +45,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 |---------|-------------|------|------|------|------|------|
 | `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion/async` | ✅ 已测试 | ✅ | 快 | 良好 |
 | `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion/async` | ⏳ 待测试 | - | 慢 | 极优 |
-| `kling-video` | **Kling video O1** | `/v3/video/video_diffusion/async` | ⏳ 待测试 | - | 中等 | 极优 |
+| `kling-video` | **Kling video O1** | `/v3/video/video_diffusion_gen2vid/async` | ✅ 已测试 | - | 中等 | 极优 |
 
 ---
 
@@ -199,6 +199,14 @@ vivago-ai-skill/
 ---
 
 ## 📝 更新日志
+
+### v0.4.1 (2026-03-05)
+- ✅ 测试 v3Pro 文生视频 - 成功
+- ✅ 测试 Kling video O1 文生视频 - 成功
+  - 关键发现：使用 `/v3/video/video_diffusion_gen2vid/async` 端点
+  - module: `video_diffusion_gen2vid`
+- ✅ 修复 `text_to_video()` 方法，根据 endpoint 动态设置 module
+- ✅ 所有文生视频端口测试完成
 
 ### v0.4.0 (2026-03-05)
 - ✅ 新增 **文生视频** 一级功能

@@ -157,7 +157,7 @@
           "name": "Kling Video",
           "display_name": "Kling video O1",
           "status": "tested",
-          "endpoint": "/v3/video/video_diffusion/async",
+          "endpoint": "/v3/video/video_diffusion_gen2vid/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "kling-video-o1",
           "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
@@ -166,7 +166,7 @@
           "tested": true,
           "speed": "medium",
           "quality": "excellent",
-          "notes": "图生视频已测试，文生视频参数待确认"
+          "notes": "文生视频/图生视频已测试，使用 gen2vid 端点"
         }
       }
     },

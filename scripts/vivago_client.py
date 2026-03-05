@@ -518,8 +518,12 @@ class VivagoClient:
         
         display_name = port_config.get("display_name", port_name)
         
-        # 文生视频的 module 固定为 "video_diffusion"
-        module = "video_diffusion"
+        # 根据 endpoint 确定 module
+        endpoint = port_config["endpoint"]
+        if "gen2vid" in endpoint:
+            module = "video_diffusion_gen2vid"
+        else:
+            module = "video_diffusion"
         
         data = {
             "image": None,
