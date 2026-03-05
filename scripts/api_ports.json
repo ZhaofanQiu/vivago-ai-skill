@@ -171,6 +171,30 @@
         }
       }
     },
+    "keyframe_to_video": {
+      "name": "视频首尾帧",
+      "name_en": "Keyframe-to-Video",
+      "status": "testing",
+      "default_port": "v3L",
+      "description": "根据首尾帧生成过渡视频",
+      "ports": {
+        "v3L": {
+          "name": "V3 Lite Keyframe",
+          "display_name": "Vivago.ai 2.0 360p",
+          "status": "testing",
+          "endpoint": "/v3/video/video_diffusion_keyframes/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "version": "v3L",
+          "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
+          "max_batch_size": 1,
+          "supported_durations": [5, 10],
+          "tested": false,
+          "speed": "fast",
+          "quality": "good",
+          "notes": "根据首尾帧生成过渡视频，使用 video_diffusion_keyframes 端点"
+        }
+      }
+    },
     "image_to_image": {
       "name": "图生图",
       "name_en": "Image to Image",
@@ -218,7 +242,9 @@
         "id": "keyframe_to_video",
         "name": "视频首尾帧",
         "name_en": "Keyframe-to-Video",
-        "description": "根据首尾帧生成过渡视频"
+        "description": "根据首尾帧生成过渡视频",
+        "status": "testing",
+        "note": "已添加，调试中"
       },
       {
         "id": "template_to_video",

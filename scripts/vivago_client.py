@@ -574,6 +574,103 @@ class VivagoClient:
             retry_delay=kwargs.get("retry_delay", 3)
         )
     
+    # ==================== Keyframe to Video ====================
+    
+    def keyframe_to_video(
+        self,
+        prompt: str,
+        start_image_uuid: str,
+        end_image_uuid: str,
+        port: Optional[str] = None,
+        wh_ratio: str = "keep",
+        duration: int = 5,
+        mode: str = "Fast",
+        fast_mode: bool = True,
+        **kwargs
+    ) -> Optional[List[Dict]]:
+        """
+        视频首尾帧 - 根据首尾帧生成过渡视频
+        
+        使用首尾两张图片生成从首帧到尾帧的过渡视频
+        
+        Args:
+            prompt: 视频内容描述
+            start_image_uuid: 起始帧图片UUID
+            end_image_uuid: 结束帧图片UUID
+            port: 二级端口 (v3L/v3Pro, 默认 v3L)
+            wh_ratio: 宽高比 (keep/1:1/4:3/3:4/16:9/9:16)
+            duration: 视频时长 (5或10秒)
+            mode: 生成模式 (Fast/Slow)
+            fast_mode: 快速模式
+            **kwargs: 额外参数
+            
+        Returns:
+            List of generated video results
+        """
+        port_config, port_name = self._get_port_config("keyframe_to_video", port or "v3L")
+        
+        display_name = port_config.get("display_name", port_name)
+        
+        # 构建 custom_params
+        custom_params = {"wh_ratio": wh_ratio}
+        if wh_ratio != "keep":
+            # 解析 wh_ratio 为 width:height
+            try:
+                w, h = wh_ratio.split(":")
+                custom_params["wh_ratio"] = f"{w}:{h}"
+            except:
+                custom_params["wh_ratio"] = "16:9"
+        
+        data = {
+            "image": None,
+            "module": "video_diffusion_keyframes",
+            "params": {
+                "batch_size": 1,
+                "guidance_scale": kwargs.get("guidance_scale", 7),
+                "sample_steps": kwargs.get("sample_steps", 80),
+                "width": kwargs.get("width", 1360),
+                "height": kwargs.get("height", 768),
+                "fast_mode": fast_mode,
+                "frame_num": kwargs.get("frame_num", 16),
+                "seed": kwargs.get("seed", -1),
+                "motion_strength": kwargs.get("motion_strength", 9),
+                "max_width": kwargs.get("max_width", 1024),
+                "wh_ratio": wh_ratio,
+                "cm_x": kwargs.get("cm_x", 0),
+                "cm_y": kwargs.get("cm_y", 0),
+                "cm_d": kwargs.get("cm_d", 0),
+                "custom_params": custom_params,
+                "mode": mode,
+                "duration": duration,
+                "x": kwargs.get("x", 0),
+                "y": kwargs.get("y", 0),
+                "z": kwargs.get("z", 0),
+                "style": kwargs.get("style", "default")
+            },
+            "prompt": prompt,
+            "negative_prompt": kwargs.get("negative_prompt", ""),
+            "role": kwargs.get("role", "general"),
+            "style": kwargs.get("style", "default"),
+            "wh_ratio": wh_ratio if wh_ratio != "keep" else custom_params.get("wh_ratio", "16:9"),
+            "version": port_config.get("version", "v3L"),
+            "magic_prompt": kwargs.get("magic_prompt", ""),
+            "images": [start_image_uuid, end_image_uuid],  # 首尾帧图片
+            "videos": [],
+            "upstream_id": end_image_uuid,  # 根据抓包，与第二张图片相同
+            "audios": [],
+            "request_id": str(uuid.uuid4())
+        }
+        
+        logger.info(f"Using port: {port_name} ({display_name}) with 2 keyframes ⚠️ 2-3 minutes")
+        
+        return self.call_api(
+            endpoint=port_config["endpoint"],
+            data=data,
+            result_endpoint=port_config["result_endpoint"],
+            max_retries=kwargs.get("max_retries", 60),
+            retry_delay=kwargs.get("retry_delay", 3)
+        )
+    
     def download_image(self, image_id: str, output_path: Optional[str] = None) -> str:
         """
         下载图片到本地
