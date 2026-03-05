@@ -24,7 +24,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 |---------|-------------|------|------|------|------|------|
 | `kling-image` | **Kling O1** | `/v3/image/image_gen_kling/async` | ✅ 已测试 | ✅ | 快 | 优秀 |
 | `hidream-txt2img` | **Vivago.ai 2.0** | `/v3/image/txt2img/async` | ✅ 已测试 | - | 中等 | 良好 |
-| `nano-banana` | **Nano Banana 2** | `/v3/image/image_gen_std/async` | ⏳ 待测试 | - | 慢 | 极优 |
+| `nano-banana` | **Nano Banana 2** | `/v3/image/image_gen_std/async` | ✅ 已测试 | - | 慢 | 极优 |
 
 #### 图生视频 (Image-to-Video)
 

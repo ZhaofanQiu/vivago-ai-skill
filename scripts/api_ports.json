@@ -47,16 +47,16 @@
         "nano-banana": {
           "name": "Nano Banana",
           "display_name": "Nano Banana 2",
-          "status": "debugging",
+          "status": "tested",
           "endpoint": "/v3/image/image_gen_std/async",
-          "result_endpoint": "/v3/image/image/async/results/batch",
+          "result_endpoint": "/v3/image/txt2img/async/results",
           "version": "nano-banana-2",
           "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 4,
-          "tested": false,
+          "tested": true,
           "speed": "slow",
           "quality": "excellent",
-          "notes": "生成较慢，但效果优秀（调试中：参数格式待确认）"
+          "notes": "已测试，效果优秀，回调使用 txt2img 路径"
         }
       }
     },

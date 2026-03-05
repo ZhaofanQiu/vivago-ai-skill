@@ -347,6 +347,31 @@ class VivagoClient:
         
         display_name = port_config.get("display_name", port_name)
         
+        # 构建参数
+        params = {
+            "batch_count": 1,
+            "batch_size": batch_size,
+            "guidance_scale": kwargs.get("guidance_scale", 7.5),
+            "height": kwargs.get("height", 512),
+            "image_guidance_scale": kwargs.get("image_guidance_scale", 1.5),
+            "sample_steps": kwargs.get("sample_steps", 40),
+            "sampler": kwargs.get("sampler", "Euler a"),
+            "seed": kwargs.get("seed", -1),
+            "strength": kwargs.get("strength", 0.8),
+            "style": kwargs.get("style", "default"),
+            "wh_ratio": wh_ratio,
+            "width": kwargs.get("width", 512),
+            "relevance": kwargs.get("relevance", []),
+            "custom_params": {
+                "wh_ratio": wh_ratio
+            }
+        }
+        
+        # Nano Banana 2 特殊参数
+        is_nano_banana = "image_gen_std" in endpoint
+        if is_nano_banana:
+            params["mode"] = kwargs.get("mode", "2K")
+        
         data = {
             "app": None,
             "image": None,
@@ -354,33 +379,18 @@ class VivagoClient:
             "module": module,
             "negative_prompt": negative_prompt,
             "prompt": prompt,
-            "params": {
-                "batch_count": 1,
-                "batch_size": batch_size,
-                "guidance_scale": kwargs.get("guidance_scale", 7.5),
-                "height": kwargs.get("height", 512),
-                "image_guidance_scale": kwargs.get("image_guidance_scale", 1.5),
-                "sample_steps": kwargs.get("sample_steps", 40),
-                "sampler": kwargs.get("sampler", "Euler a"),
-                "seed": kwargs.get("seed", -1),
-                "strength": kwargs.get("strength", 0.8),
-                "style": kwargs.get("style", "default"),
-                "wh_ratio": wh_ratio,
-                "width": kwargs.get("width", 512),
-                "relevance": kwargs.get("relevance", []),
-                "custom_params": {
-                    "enhance": kwargs.get("enhance", "1k"),
-                    "wh_ratio": wh_ratio
-                }
-            },
+            "params": params,
             "role": kwargs.get("role", "general"),
-            "version": port_config.get("version", "kling-image-o1"),
             "images": [],
-            "magic_prompt": kwargs.get("magic_prompt", ""),
+            "magic_prompt": kwargs.get("magic_prompt", prompt if is_nano_banana else ""),
             "audios": [],
             "videos": [],
             "request_id": str(uuid.uuid4())
         }
+        
+        # 非 Nano Banana 2 才传 version
+        if not is_nano_banana:
+            data["version"] = port_config.get("version", "kling-image-o1")
         
         logger.info(f"Using port: {port_name} ({display_name})")
         
