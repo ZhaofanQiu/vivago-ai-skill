@@ -1,12 +1,13 @@
 {
-  "version": "0.3.0",
-  "last_updated": "2026-03-05",
+  "version": "0.6.0",
+  "last_updated": "2026-03-06",
   "base_url": "https://vivago.ai/api/gw",
   "_architecture_notes": {
     "level_1": "一级功能（大功能划分）",
     "level_2": "二级端口（具体API端点配置）",
     "naming": "display_name 与 Vivago 网站模型名称对齐",
-    "endpoint_version": "相同端点 + 不同 version = 不同模型名称"
+    "endpoint_version": "相同端点 + 不同 version = 不同模型名称",
+    "extensibility": "未来可扩展的一级功能包括: keyframe_to_video, template_to_video"
   },
   "categories": {
     "text_to_image": {
@@ -173,122 +174,58 @@
     "image_to_image": {
       "name": "图生图",
       "name_en": "Image to Image",
-      "status": "ready",
-      "default_port": "img2img",
-      "description": "图像风格转换和编辑",
+      "status": "active",
+      "default_port": "kling-image",
+      "description": "图像风格转换、编辑、AI肖像、虚拟试衣等功能",
+      "notes": "支持多图输入融合，可用于风格迁移、图像编辑、AI换脸、虚拟试衣等场景",
       "ports": {
-        "img2img": {
-          "name": "Image to Image",
-          "display_name": "TBD",
-          "status": "untested",
-          "endpoint": "/v3/image/img2img/async",
-          "result_endpoint": "/v3/image/image/async/results",
-          "version": "v1",
-          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
-          "max_batch_size": 4,
-          "tested": false,
-          "notes": "图像风格转换，待测试"
-        },
-        "image_edit": {
-          "name": "Image Easy Edit",
-          "display_name": "TBD",
-          "status": "untested",
-          "endpoint": "/v2/image/image_easy_edit/async",
-          "result_endpoint": "/v3/image/image/async/results",
-          "version": "v1",
-          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
-          "max_batch_size": 1,
-          "tested": false,
-          "notes": "简易图像编辑，待测试"
-        },
-        "nano-banana": {
-          "name": "Nano Banana Img2Img",
-          "display_name": "Nano Banana 2",
-          "status": "testing",
-          "endpoint": "/v3/image/image_gen_std/async",
-          "result_endpoint": "/v3/image/txt2img/async/results",
-          "version": "nano-banana-2",
-          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
-          "max_batch_size": 1,
-          "max_images": 5,
-          "tested": false,
-          "speed": "slow",
-          "quality": "excellent",
-          "notes": "Nano Banana 2 图生图，支持多图输入，使用 txt2img 回调路径"
-        },
         "kling-image": {
           "name": "Kling Image Img2Img",
           "display_name": "Kling O1",
-          "status": "testing",
+          "status": "tested",
           "endpoint": "/v3/image/image_gen_kling/async",
           "result_endpoint": "/v3/image/txt2img/async/results",
           "version": "kling-image-o1",
           "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 4,
           "max_images": 5,
-          "tested": false,
+          "tested": true,
           "speed": "fast",
           "quality": "excellent",
-          "notes": "Kling O1 图生图，速度快，支持多图输入，enhance=2k"
-        }
-      }
-    },
-    "ai_portrait": {
-      "name": "AI肖像",
-      "name_en": "AI Portrait",
-      "status": "planned",
-      "default_port": "ip_portrait",
-      "description": "生成AI人像",
-      "ports": {
-        "ip_portrait": {
-          "name": "IP Portrait",
-          "display_name": "TBD",
-          "status": "untested",
-          "endpoint": "/v2/image/ip_portrait/async",
-          "result_endpoint": "/v3/image/image/async/results",
-          "version": "v1",
+          "notes": "Kling O1 图生图，速度快，支持多图输入，enhance=2k，推荐使用"
+        },
+        "nano-banana": {
+          "name": "Nano Banana Img2Img",
+          "display_name": "Nano Banana 2",
+          "status": "tested",
+          "endpoint": "/v3/image/image_gen_std/async",
+          "result_endpoint": "/v3/image/txt2img/async/results",
+          "version": "nano-banana-2",
           "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
           "max_batch_size": 1,
-          "requires": ["face_uuid", "body_uuid"],
-          "tested": false,
-          "notes": "需要上传参考图片获取UUID"
-        }
-      }
-    },
-    "try_on": {
-      "name": "虚拟试衣",
-      "name_en": "Virtual Try On",
-      "status": "planned",
-      "default_port": "try_on",
-      "description": "虚拟试穿服装",
-      "ports": {
-        "try_on": {
-          "name": "Try On",
-          "display_name": "TBD",
-          "status": "untested",
-          "endpoint": "/v2/image/try_on/async",
-          "result_endpoint": "/v3/image/image/async/results",
-          "version": "v1",
-          "supported_categories": ["upper_body", "lower_body"],
-          "max_batch_size": 1,
-          "requires": ["model_uuid", "cloth_uuid"],
-          "tested": false,
-          "notes": "上身/下身试衣"
-        },
-        "try_on_dress": {
-          "name": "Try On Dress",
-          "display_name": "TBD",
-          "status": "untested",
-          "endpoint": "/v2/image/try_on_dress/async",
-          "result_endpoint": "/v3/image/image/async/results",
-          "version": "v1",
-          "supported_categories": ["full_body"],
-          "max_batch_size": 1,
-          "requires": ["model_uuid", "cloth_uuid"],
-          "tested": false,
-          "notes": "全身试衣（连衣裙）"
+          "max_images": 5,
+          "tested": true,
+          "speed": "slow",
+          "quality": "excellent",
+          "notes": "Nano Banana 2 图生图，质量优秀但较慢，支持多图输入"
         }
       }
     }
+  },
+  "_future_features": {
+    "planned": [
+      {
+        "id": "keyframe_to_video",
+        "name": "视频首尾帧",
+        "name_en": "Keyframe-to-Video",
+        "description": "根据首尾帧生成过渡视频"
+      },
+      {
+        "id": "template_to_video",
+        "name": "视频模板",
+        "name_en": "Template-to-Video",
+        "description": "特定类型视频特效（固定视频模板）"
+      }
+    ]
   }
 }
