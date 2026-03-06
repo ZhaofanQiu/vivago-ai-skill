@@ -1,0 +1,47 @@
+[
+  {
+    "master_template": {
+      "uuid": "056c8f3b-3b9f-4b7c-bc1b-c790b1512dc8.mp4",
+      "name": "Static Shot"
+    },
+    "gen_params": {
+      "algo_type": "video_diffusion_img2vid",
+      "generate_path": "/api/gw/v3/video/video_diffusion_img2vid/async",
+      "result_path": "/api/gw/v3/video/video_diffusion_img2vid/async/results",
+      "template_id": "056c8f3b-3b9f-4b7c-bc1b-c790b1512dc8.mp4",
+      "module": "video_diffusion_img2vid",
+      "version": "v3L",
+      "prompt": "Use a static camera angle with no movement. Keep the uploaded image still and cinematic, enhancing lighting or atmosphere subtly without motion."
+    }
+  },
+  {
+    "master_template": {
+      "uuid": "0c5806e2-9324-4652-8a2e-59276de345a1.mp4",
+      "name": "Ash out"
+    },
+    "gen_params": {
+      "algo_type": "video_diffusion_img2vid",
+      "generate_path": "/api/gw/v3/video/video_diffusion_img2vid/async",
+      "result_path": "/api/gw/v3/video/video_diffusion_img2vid/async/results",
+      "template_id": "0c5806e2-9324-4652-8a2e-59276de345a1.mp4",
+      "module": "video_diffusion_img2vid",
+      "version": "v3L",
+      "prompt": "The entire character and nearby objects begin to crumble into fine, gray ash from the bottom up..."
+    }
+  },
+  {
+    "master_template": {
+      "uuid": "104e7ce0-6996-4802-9d60-ea2c20dc518d.mp4",
+      "name": "Mystic Traveler"
+    },
+    "gen_params": {
+      "algo_type": "proto_transformer",
+      "generate_path": "/api/gw/v3/pipeline/proto_transformer/async",
+      "result_path": "/api/gw/v3/video/video_diffusion/async/results",
+      "template_id": "104e7ce0-6996-4802-9d60-ea2c20dc518d.mp4",
+      "module": "proto_transformer",
+      "version": "v1",
+      "prompt": "Transform the person from the reference photo into a cinematic character within the world of The Lord of the Rings..."
+    }
+  }
+]

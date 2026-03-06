@@ -24,7 +24,13 @@
           "endpoint": "/v3/image/image_gen_kling/async",
           "result_endpoint": "/v3/image/txt2img/async/results",
           "version": "kling-image-o1",
-          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 4,
           "tested": true,
           "speed": "fast",
@@ -38,7 +44,13 @@
           "endpoint": "/v3/image/txt2img/async",
           "result_endpoint": "/v3/image/txt2img/async/results",
           "version": "v3L",
-          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 4,
           "tested": true,
           "speed": "medium",
@@ -52,7 +64,13 @@
           "endpoint": "/v3/image/image_gen_std/async",
           "result_endpoint": "/v3/image/txt2img/async/results",
           "version": "nano-banana-2",
-          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 4,
           "tested": true,
           "speed": "slow",
@@ -76,9 +94,19 @@
           "endpoint": "/v3/video/video_diffusion_img2vid/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "v3Pro",
-          "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "keep",
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 1,
-          "supported_durations": [5, 10],
+          "supported_durations": [
+            5,
+            10
+          ],
           "tested": true,
           "speed": "slow",
           "quality": "excellent",
@@ -91,9 +119,19 @@
           "endpoint": "/v3/video/video_diffusion_img2vid/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "v3L",
-          "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "keep",
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 1,
-          "supported_durations": [5, 10],
+          "supported_durations": [
+            5,
+            10
+          ],
           "tested": true,
           "speed": "fast",
           "quality": "good",
@@ -106,9 +144,19 @@
           "endpoint": "/v3/video/video_diffusion_img2vid/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "kling-video-o1",
-          "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "keep",
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 1,
-          "supported_durations": [5, 10],
+          "supported_durations": [
+            5,
+            10
+          ],
           "tested": true,
           "speed": "medium",
           "quality": "excellent",
@@ -131,9 +179,18 @@
           "endpoint": "/v3/video/video_diffusion/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "v3L",
-          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 1,
-          "supported_durations": [5, 10],
+          "supported_durations": [
+            5,
+            10
+          ],
           "tested": true,
           "speed": "fast",
           "quality": "good",
@@ -146,9 +203,18 @@
           "endpoint": "/v3/video/video_diffusion/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "v3Pro",
-          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 1,
-          "supported_durations": [5, 10],
+          "supported_durations": [
+            5,
+            10
+          ],
           "tested": true,
           "speed": "slow",
           "quality": "excellent",
@@ -161,9 +227,18 @@
           "endpoint": "/v3/video/video_diffusion_gen2vid/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "kling-video-o1",
-          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 1,
-          "supported_durations": [5, 10],
+          "supported_durations": [
+            5,
+            10
+          ],
           "tested": true,
           "speed": "medium",
           "quality": "excellent",
@@ -185,9 +260,19 @@
           "endpoint": "/v3/video/video_diffusion_keyframes/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "v3L",
-          "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "keep",
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 1,
-          "supported_durations": [5, 10],
+          "supported_durations": [
+            5,
+            10
+          ],
           "tested": true,
           "speed": "fast",
           "quality": "good",
@@ -200,9 +285,19 @@
           "endpoint": "/v3/video/video_diffusion_keyframes/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "version": "v3Pro",
-          "supported_ratios": ["keep", "1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "keep",
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 1,
-          "supported_durations": [5, 10],
+          "supported_durations": [
+            5,
+            10
+          ],
           "tested": true,
           "speed": "slow",
           "quality": "excellent",
@@ -225,7 +320,13 @@
           "endpoint": "/v3/image/image_gen_kling/async",
           "result_endpoint": "/v3/image/txt2img/async/results",
           "version": "kling-image-o1",
-          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 4,
           "max_images": 5,
           "tested": true,
@@ -240,7 +341,13 @@
           "endpoint": "/v3/image/image_gen_std/async",
           "result_endpoint": "/v3/image/txt2img/async/results",
           "version": "nano-banana-2",
-          "supported_ratios": ["1:1", "4:3", "3:4", "16:9", "9:16"],
+          "supported_ratios": [
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
           "max_batch_size": 1,
           "max_images": 5,
           "tested": true,
@@ -267,12 +374,208 @@
           "algo_type": "proto_transformer",
           "version": "v1",
           "template_id": "060c47d2-bb44-4a2f-85aa-00165843a07b.mp4",
-          "supported_ratios": ["16:9", "1:1", "9:16", "3:4", "4:3"],
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "9:16",
+            "3:4",
+            "4:3"
+          ],
           "max_batch_size": 1,
           "tested": true,
           "speed": "fast",
           "quality": "good",
           "notes": "将黑白老照片转换为彩色现代照片效果，回调使用 video_diffusion 路径"
+        },
+        "static_shot": {
+          "name": "Static Shot",
+          "display_name": "Static Shot",
+          "status": "untested",
+          "endpoint": "/v3/video/video_diffusion_img2vid/async",
+          "result_endpoint": "/v3/video/video_diffusion_img2vid/async/results",
+          "algo_type": "video_diffusion_img2vid",
+          "template_id": "056c8f3b-3b9f-4b7c-bc1b-c790b1512dc8.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "9:16",
+            "3:4",
+            "4:3"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Static Shot"
+        },
+        "ash_out": {
+          "name": "Ash out",
+          "display_name": "Ash out",
+          "status": "untested",
+          "endpoint": "/v3/video/video_diffusion_img2vid/async",
+          "result_endpoint": "/v3/video/video_diffusion_img2vid/async/results",
+          "algo_type": "video_diffusion_img2vid",
+          "template_id": "0c5806e2-9324-4652-8a2e-59276de345a1.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "9:16",
+            "3:4",
+            "4:3"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Ash out"
+        },
+        "mystic_traveler": {
+          "name": "Mystic Traveler",
+          "display_name": "Mystic Traveler",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "template_id": "104e7ce0-6996-4802-9d60-ea2c20dc518d.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "9:16",
+            "3:4",
+            "4:3"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Mystic Traveler"
+        },
+        "shake_it_down": {
+          "name": "Shake It Down",
+          "display_name": "Shake It Down",
+          "status": "untested",
+          "endpoint": "/v3/video/video_diffusion_template/async",
+          "result_endpoint": "/v3/video/video_diffusion_template/async/results",
+          "algo_type": "video_diffusion_template",
+          "template_id": "10d8747c-0afd-4af1-88fa-cc4e464b5383.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "9:16",
+            "3:4",
+            "4:3"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Shake It Down"
+        },
+        "1930s_vintage_style": {
+          "name": "1930s vintage style",
+          "display_name": "1930s vintage style",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "template_id": "113f556f-1c3b-4493-a169-fdc6d265ff55.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "9:16",
+            "3:4",
+            "4:3"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: 1930s vintage style"
+        },
+        "barbie": {
+          "name": "Barbie",
+          "display_name": "Barbie",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/avatar_transformer/async",
+          "result_endpoint": "/v3/pipeline/avatar_transformer/async/results",
+          "algo_type": "avatar_transformer",
+          "template_id": "120e0a05-d4d5-4b04-9afd-62b2a6bd6f94.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "9:16",
+            "3:4",
+            "4:3"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Barbie"
+        },
+        "autumn_feast": {
+          "name": "Autumn Feast",
+          "display_name": "Autumn Feast",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "template_id": "1340d4d6-1a9d-44b5-ba5f-25a451f435d5.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "9:16",
+            "3:4",
+            "4:3"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Autumn Feast"
+        },
+        "paparazzi_rush": {
+          "name": "Paparazzi Rush",
+          "display_name": "Paparazzi Rush",
+          "status": "untested",
+          "endpoint": "/v3/video/video_diffusion_img2vid/async",
+          "result_endpoint": "/v3/video/video_diffusion_img2vid/async/results",
+          "algo_type": "video_diffusion_img2vid",
+          "template_id": "14041335-fcde-4013-8e47-f9c047da700d.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "9:16",
+            "3:4",
+            "4:3"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Paparazzi Rush"
+        },
+        "kiss_kiss": {
+          "name": "Kiss Kiss",
+          "display_name": "Kiss Kiss",
+          "status": "untested",
+          "endpoint": "/v3/video/video_diffusion_template/async",
+          "result_endpoint": "/v3/video/video_diffusion_template/async/results",
+          "algo_type": "video_diffusion_template",
+          "template_id": "165f52b8-3e14-4e3e-a39d-9491f2ce24ed.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "9:16",
+            "3:4",
+            "4:3"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Kiss Kiss"
+        },
+        "hip_twist": {
+          "name": "Hip Twist",
+          "display_name": "Hip Twist",
+          "status": "untested",
+          "endpoint": "/v3/video/video_diffusion_template/async",
+          "result_endpoint": "/v3/video/video_diffusion_template/async/results",
+          "algo_type": "video_diffusion_template",
+          "template_id": "18d7276f-b4d3-4078-a7bc-f196575ab258.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "9:16",
+            "3:4",
+            "4:3"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Hip Twist"
         }
       }
     }
