@@ -683,35 +683,69 @@ class VivagoClient:
         """
         视频模板 - 特定类型视频特效
         
-        使用预定义模板生成特效视频，不同模板对应不同端点和参数
+        使用预定义模板生成特效视频，支持动态加载模板配置
         
         Args:
             image_uuid: 输入图片UUID
-            template: 模板名称 (renovation_old_photos)
+            template: 模板名称 (renovation_old_photos, barbie, ash_out 等)
             wh_ratio: 宽高比 (16:9, 1:1, 9:16, 3:4, 4:3)
             **kwargs: 额外参数
             
         Returns:
             List of generated video results
         """
-        port_config, port_name = self._get_port_config("template_to_video", template)
+        # 使用模板管理器获取配置
+        from template_manager import get_template_manager
         
-        display_name = port_config.get("display_name", port_name)
-        template_id = port_config.get("template_id")
+        manager = get_template_manager()
+        template_config = manager.get_template(template)
         
-        # 构建 custom_params，包含 prompts 和 master_template_id
-        custom_params = {
-            "wh_ratio": wh_ratio,
-            "prompts": kwargs.get("prompts", [
-                "Convert the uploaded black-and-white photo into a vivid, fully modern color photograph. Every object, surface, and detail must be in full bright color. Absolutely no grayscale, monochrome, or faded tones are allowed. Use saturated yet realistic modern colors, natural skin tones, and clear, well-balanced lighting. The result must look like a contemporary digital color photo, polished and consistent across the entire image",
-                " Convert the uploaded black-and-white photo into a vivid, fully modern color photograph. Every object, surface, and detail must be in full bright color. Absolutely no grayscale, monochrome, or faded tones are allowed. Use saturated yet realistic modern colors, natural skin tones, and clear, well-balanced lighting. The result must look like a contemporary digital color photo, polished and consistent across the entire image "
-            ]),
-            "master_template_id": template_id
-        }
+        if not template_config:
+            # 回退到 api_ports.json 配置
+            port_config, port_name = self._get_port_config("template_to_video", template)
+            display_name = port_config.get("display_name", port_name)
+            endpoint = port_config["endpoint"]
+            result_endpoint = port_config["result_endpoint"]
+            template_id = port_config.get("template_id")
+            module = port_config.get("algo_type", "proto_transformer")
+            version = port_config.get("version", "v1")
+        else:
+            # 使用模板管理器的配置
+            display_name = template_config['name']
+            endpoint = template_config['endpoint']
+            result_endpoint = template_config['result_endpoint']
+            template_id = template_config['template_id']
+            module = template_config['module']
+            version = template_config['version']
+            port_name = template
         
-        data = {
-            "module": port_config.get("algo_type", "proto_transformer"),
-            "version": port_config.get("version", "v1"),
+        # 构建请求数据
+        try:
+            data = manager.build_request_data(template, image_uuid, wh_ratio=wh_ratio, **kwargs)
+        except ValueError:
+            # 如果模板管理器中没有，使用默认构建逻辑
+            data = self._build_default_template_data(
+                image_uuid, template, wh_ratio, module, version, template_id, **kwargs
+            )
+        
+        logger.info(f"Using template: {port_name} ({display_name}) ⚠️ 2-3 minutes")
+        
+        return self.call_api(
+            endpoint=endpoint,
+            data=data,
+            result_endpoint=result_endpoint,
+            max_retries=kwargs.get("max_retries", 60),
+            retry_delay=kwargs.get("retry_delay", 3)
+        )
+    
+    def _build_default_template_data(
+        self, image_uuid: str, template: str, wh_ratio: str,
+        module: str, version: str, template_id: str, **kwargs
+    ) -> Dict[str, Any]:
+        """构建默认的模板请求数据"""
+        return {
+            "module": module,
+            "version": version,
             "prompt": kwargs.get("prompt", ""),
             "images": [image_uuid],
             "masks": [],
@@ -731,7 +765,10 @@ class VivagoClient:
                 "reserved_str": kwargs.get("reserved_str", ""),
                 "batch_size": 1,
                 "wh_ratio": wh_ratio,
-                "custom_params": custom_params
+                "custom_params": {
+                    "prompts": kwargs.get("prompts", []),
+                    "master_template_id": template_id
+                }
             },
             "en_prompt": kwargs.get("en_prompt", ""),
             "negative_prompt": kwargs.get("negative_prompt", ""),
@@ -742,16 +779,6 @@ class VivagoClient:
             "pipeline_id": kwargs.get("pipeline_id", ""),
             "request_id": str(uuid.uuid4())
         }
-        
-        logger.info(f"Using template: {port_name} ({display_name}) ⚠️ 2-3 minutes")
-        
-        return self.call_api(
-            endpoint=port_config["endpoint"],
-            data=data,
-            result_endpoint=port_config["result_endpoint"],
-            max_retries=kwargs.get("max_retries", 60),
-            retry_delay=kwargs.get("retry_delay", 3)
-        )
     
     def download_image(self, image_id: str, output_path: Optional[str] = None) -> str:
         """
