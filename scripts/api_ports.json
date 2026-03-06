@@ -428,7 +428,7 @@
         "mystic_traveler": {
           "name": "Mystic Traveler",
           "display_name": "Mystic Traveler",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/pipeline/proto_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "proto_transformer",
@@ -442,8 +442,9 @@
             "4:3"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Mystic Traveler"
+          "tested": true,
+          "notes": "Template: Mystic Traveler",
+          "result_type": "video"
         },
         "shake_it_down": {
           "name": "Shake It Down",
@@ -505,7 +506,7 @@
         "autumn_feast": {
           "name": "Autumn Feast",
           "display_name": "Autumn Feast",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/pipeline/proto_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "proto_transformer",
@@ -519,8 +520,9 @@
             "9:16"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Autumn Feast"
+          "tested": true,
+          "notes": "Template: Autumn Feast",
+          "result_type": "video"
         },
         "paparazzi_rush": {
           "name": "Paparazzi Rush",
@@ -699,7 +701,7 @@
         "moving_figure": {
           "name": "Moving Figure",
           "display_name": "Moving Figure",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/pipeline/proto_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "proto_transformer",
@@ -713,8 +715,9 @@
             "4:3"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Moving Figure"
+          "tested": true,
+          "notes": "Template: Moving Figure",
+          "result_type": "video"
         },
         "1940s_suit_portrait": {
           "name": "1940s suit portrait",
@@ -779,7 +782,7 @@
         "1960s_elegant": {
           "name": "1960s Elegant",
           "display_name": "1960s Elegant",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/pipeline/proto_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "proto_transformer",
@@ -793,8 +796,9 @@
             "4:3"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: 1960s Elegant"
+          "tested": true,
+          "notes": "Template: 1960s Elegant",
+          "result_type": "video"
         },
         "color_the_lines": {
           "name": "Color the Lines",
@@ -959,7 +963,7 @@
         "doodle_alive": {
           "name": "Doodle Alive",
           "display_name": "Doodle Alive",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/pipeline/proto_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "proto_transformer",
@@ -973,8 +977,9 @@
             "4:3"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Doodle Alive"
+          "tested": true,
+          "notes": "Template: Doodle Alive",
+          "result_type": "video"
         },
         "sexy_pants": {
           "name": "Sexy Pants",
@@ -999,7 +1004,7 @@
         "1970s": {
           "name": "1970s",
           "display_name": "1970s",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/pipeline/proto_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "proto_transformer",
@@ -1013,8 +1018,9 @@
             "4:3"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: 1970s"
+          "tested": true,
+          "notes": "Template: 1970s",
+          "result_type": "video"
         },
         "gratitude_photo": {
           "name": "Gratitude Photo",
@@ -1211,7 +1217,7 @@
         "a_family": {
           "name": "A Family",
           "display_name": "A Family",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/pipeline/proto_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "proto_transformer",
@@ -1225,8 +1231,9 @@
             "9:16"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: A Family"
+          "tested": true,
+          "notes": "Template: A Family",
+          "result_type": "video"
         },
         "turkey_chasing": {
           "name": "Turkey Chasing",
