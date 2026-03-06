@@ -2,6 +2,17 @@
 
 AI image and video generation using Vivago AI (智小象) platform.
 
+[![CI](https://github.com/ZhaofanQiu/vivago-ai-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/ZhaofanQiu/vivago-ai-skill/actions)
+
+## 📚 文档
+
+- [快速开始](docs/quickstart.md) - 5分钟上手
+- [API参考](docs/api_reference.md) - 完整API文档
+- [架构设计](docs/architecture.md) - 系统设计
+- [测试指南](docs/testing.md) - 如何测试
+- [故障排查](docs/troubleshooting.md) - 常见问题
+- [更新日志](docs/CHANGELOG.md) - 版本历史
+
 ## 📊 功能状态
 
 ### 一级功能（大功能划分）
