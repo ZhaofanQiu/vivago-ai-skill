@@ -1254,7 +1254,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
+          "notes": "✅ Prompt已修复"
         },
         "1970s_punk_animation": {
           "name": "1970s punk animation",
@@ -1856,7 +1856,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
+          "notes": "✅ Prompt已修复"
         },
         "bald_me": {
           "name": "Bald Me",
@@ -2013,7 +2013,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
+          "notes": "✅ Prompt已修复"
         },
         "satisfying_cut": {
           "name": "Satisfying Cut",
@@ -2367,7 +2367,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
+          "notes": "✅ Prompt已修复"
         },
         "cat_woman": {
           "name": "Cat Woman",
@@ -3535,7 +3535,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
+          "notes": "✅ Prompt已修复"
         },
         "christmas_girl": {
           "name": "Christmas Girl",
@@ -3571,7 +3571,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
+          "notes": "✅ Prompt已修复"
         },
         "night_chat": {
           "name": "Night Chat",
@@ -3669,7 +3669,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
+          "notes": "✅ Prompt已修复"
         },
         "black_rose": {
           "name": "Black Rose",
