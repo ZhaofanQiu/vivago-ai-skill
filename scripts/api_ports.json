@@ -904,13 +904,13 @@
           "result_endpoint": "/v3/video/video_diffusion_template/async/results",
           "algo_type": "video_diffusion_template",
           "version": "v3Pro",
-          "template_id": "3c6cc2cc-79c3-49fa-8755-9fd72773bd1d.mp4",
+          "template_id": "e942eec6-9b14-42db-815f-38723322ce98.mp4",
           "supported_ratios": [
             "16:9",
             "1:1",
-            "9:16",
             "3:4",
-            "4:3"
+            "4:3",
+            "9:16"
           ],
           "max_batch_size": 1,
           "tested": false,
@@ -1992,7 +1992,7 @@
           "display_name": "Glam Cat",
           "status": "untested",
           "endpoint": "/v3/pipeline/figure_transformer/async",
-          "result_endpoint": "/v3/pipeline/figure_transformer/async/results",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "figure_transformer",
           "version": "v1",
           "template_id": "ae5e1f9c-0411-4960-9b74-3d4251c6523b.mp4",
@@ -2981,6 +2981,770 @@
           "max_batch_size": 1,
           "tested": false,
           "notes": "Template: Back to School"
+        },
+        "christmas_baby": {
+          "name": "Christmas Baby",
+          "display_name": "Christmas Baby",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/pet_dance/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "pet_dance",
+          "version": "v1",
+          "template_id": "2d4b1db7-b804-4b91-a668-631e69a85ffb.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Christmas Baby"
+        },
+        "christmas_gift": {
+          "name": "Christmas Gift",
+          "display_name": "Christmas Gift",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "e4846223-eb80-4289-be6a-fe2ab516da1b.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Christmas Gift"
+        },
+        "2026": {
+          "name": "2026",
+          "display_name": "2026",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "adf3f8f9-4d1f-4e95-8501-565fd9b89d14.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: 2026"
+        },
+        "crystal_ball": {
+          "name": "Crystal Ball",
+          "display_name": "Crystal Ball",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "23294ef6-3ce1-4e97-8d09-d2e418e55c03.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Crystal Ball"
+        },
+        "battle": {
+          "name": "Battle",
+          "display_name": "Battle",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/outfit_transformer/async",
+          "result_endpoint": "/v3/pipeline/outfit_transformer/async/results",
+          "algo_type": "outfit_transformer",
+          "version": "v1",
+          "template_id": "46c702a7-e13e-408d-8876-d432ac19a320.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Battle"
+        },
+        "girlfriend": {
+          "name": "Girlfriend",
+          "display_name": "Girlfriend",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "c5ba0934-a70a-438c-97a1-fa1e1a0f92a0.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Girlfriend"
+        },
+        "motorcycle_boy": {
+          "name": "Motorcycle Boy",
+          "display_name": "Motorcycle Boy",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "2dd9a902-7386-42c9-9e00-8cc8d028cd51.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Motorcycle Boy"
+        },
+        "younger_self": {
+          "name": "Younger Self",
+          "display_name": "Younger Self",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/outfit_transformer/async",
+          "result_endpoint": "/v3/pipeline/outfit_transformer/async/results",
+          "algo_type": "outfit_transformer",
+          "version": "v1",
+          "template_id": "d174b522-9e81-4ee4-a3a7-cc05bbab14b8.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Younger Self"
+        },
+        "nine_grid_pet": {
+          "name": "Nine Grid Pet",
+          "display_name": "Nine Grid Pet",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "3dcf3974-560c-4f4f-90de-ef91347b9bc8.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Nine Grid Pet"
+        },
+        "with_deceased": {
+          "name": "With Deceased",
+          "display_name": "With Deceased",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/outfit_transformer/async",
+          "result_endpoint": "/v3/pipeline/outfit_transformer/async/results",
+          "algo_type": "outfit_transformer",
+          "version": "v1",
+          "template_id": "d1cf7866-402e-435f-a1a2-a83905fc2d85.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: With Deceased"
+        },
+        "dinner_party": {
+          "name": "Dinner Party",
+          "display_name": "Dinner Party",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "7f9238cf-7850-4d2a-b4ab-da89e39ddd85.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Dinner Party"
+        },
+        "cyberpunk_2026": {
+          "name": "Cyberpunk 2026",
+          "display_name": "Cyberpunk 2026",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "da7c178e-911f-4380-90fc-57886f1c4c21.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Cyberpunk 2026"
+        },
+        "hi_2026": {
+          "name": "Hi 2026",
+          "display_name": "Hi 2026",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "378ca9df-1f1a-4b24-a256-3aeb60dce263.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Hi 2026"
+        },
+        "midnight_neon": {
+          "name": "Midnight Neon",
+          "display_name": "Midnight Neon",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "8f9d900b-d5ce-416f-908a-4f62a4adbb22.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Midnight Neon"
+        },
+        "garden_lover": {
+          "name": "Garden Lover",
+          "display_name": "Garden Lover",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/outfit_transformer/async",
+          "result_endpoint": "/v3/pipeline/outfit_transformer/async/results",
+          "algo_type": "outfit_transformer",
+          "version": "v1",
+          "template_id": "a54cc0a3-fcfa-40e6-86ae-03099681bf01.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Garden Lover"
+        },
+        "goodnight_kiss": {
+          "name": "Goodnight Kiss",
+          "display_name": "Goodnight Kiss",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/outfit_transformer/async",
+          "result_endpoint": "/v3/pipeline/outfit_transformer/async/results",
+          "algo_type": "outfit_transformer",
+          "version": "v1",
+          "template_id": "83e7da92-ee22-4981-8922-f8b05c136163.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Goodnight Kiss"
+        },
+        "christmas_bear": {
+          "name": "Christmas Bear",
+          "display_name": "Christmas Bear",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "0290743c-cc30-447e-89ee-b5e3675bef26.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Christmas Bear"
+        },
+        "domineering_ceo": {
+          "name": "Domineering CEO",
+          "display_name": "Domineering CEO",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "e338c0f8-5469-4653-9681-f489ae0be89c.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Domineering CEO"
+        },
+        "christmas_card": {
+          "name": "Christmas Card",
+          "display_name": "Christmas Card",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "3f9f3543-23dd-4414-ae6b-7d97ed9abec4.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Christmas Card"
+        },
+        "fireworks": {
+          "name": "Fireworks",
+          "display_name": "Fireworks",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "2424df7d-7c75-4981-96cc-2f5360e7c2d9.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Fireworks"
+        },
+        "photo_restore": {
+          "name": "Photo Restore",
+          "display_name": "Photo Restore",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/figure_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "figure_transformer",
+          "version": "v1",
+          "template_id": "43535e4c-1569-4b7b-870d-6c236e7bcbb5.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "3:4",
+            "4:3",
+            "9:16"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Photo Restore"
+        },
+        "white_sweater": {
+          "name": "White Sweater",
+          "display_name": "White Sweater",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "586810a5-5954-4b0a-ab1f-ee74e8cd0706.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: White Sweater"
+        },
+        "elegant_gentle": {
+          "name": "Elegant Gentle",
+          "display_name": "Elegant Gentle",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "5818f6e2-3afe-40ee-8a14-ee01a123df2a.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Elegant Gentle"
+        },
+        "anime_kiss": {
+          "name": "Anime Kiss",
+          "display_name": "Anime Kiss",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/outfit_transformer/async",
+          "result_endpoint": "/v3/pipeline/outfit_transformer/async/results",
+          "algo_type": "outfit_transformer",
+          "version": "v1",
+          "template_id": "7c5526e4-ac34-4005-9886-ca5b4fcfa0ca.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Anime Kiss"
+        },
+        "costume_change": {
+          "name": "Costume Change",
+          "display_name": "Costume Change",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "7f8b2675-649d-4f7f-b408-ff16cdb8174b.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Costume Change"
+        },
+        "lens_heartbeat": {
+          "name": "Lens Heartbeat",
+          "display_name": "Lens Heartbeat",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "573a83fd-803b-4f17-8027-196ff1931f7b.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Lens Heartbeat"
+        },
+        "santa_claus": {
+          "name": "Santa Claus",
+          "display_name": "Santa Claus",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "c9b2f812-8bdb-44c4-a100-7c334f914a5e.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Santa Claus"
+        },
+        "snowfield": {
+          "name": "Snowfield",
+          "display_name": "Snowfield",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "be68c43b-bd73-4f94-8a31-a8bb16250042.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Snowfield"
+        },
+        "darkroom_flash": {
+          "name": "Darkroom Flash",
+          "display_name": "Darkroom Flash",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "e6a1bf0b-ba57-4241-b9d5-abaeffed802f.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Darkroom Flash"
+        },
+        "noble_person": {
+          "name": "Noble Person",
+          "display_name": "Noble Person",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "b35a1c15-844f-442f-ae61-cbb33bfa272e.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Noble Person"
+        },
+        "hold_deceased": {
+          "name": "Hold Deceased",
+          "display_name": "Hold Deceased",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/outfit_transformer/async",
+          "result_endpoint": "/v3/pipeline/outfit_transformer/async/results",
+          "algo_type": "outfit_transformer",
+          "version": "v1",
+          "template_id": "07644730-b4bd-4bef-bb08-07235434e218.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Hold Deceased"
+        },
+        "boyfriend": {
+          "name": "Boyfriend",
+          "display_name": "Boyfriend",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "8091e2bf-0eb7-4b75-a06a-1fd123d53c15.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Boyfriend"
+        },
+        "heavenly_hug": {
+          "name": "Heavenly Hug",
+          "display_name": "Heavenly Hug",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "82482327-dddd-4133-a105-b7aefc877c98.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "3:4",
+            "4:3",
+            "9:16"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Heavenly Hug"
+        },
+        "christmas_girl": {
+          "name": "Christmas Girl",
+          "display_name": "Christmas Girl",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "f9dc1c67-8bbf-4f36-be0a-2842c93201dd.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Christmas Girl"
+        },
+        "fighting_giant": {
+          "name": "Fighting Giant",
+          "display_name": "Fighting Giant",
+          "status": "untested",
+          "endpoint": "/v3/video/video_diffusion_img2vid/async",
+          "result_endpoint": "/v3/video/video_diffusion_img2vid/async/results",
+          "algo_type": "video_diffusion_img2vid",
+          "version": "v3L",
+          "template_id": "23524908-5565-461b-a489-fd3f959d8a0e.mp4",
+          "supported_ratios": [
+            "16:9",
+            "1:1",
+            "3:4",
+            "4:3",
+            "9:16"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Fighting Giant"
+        },
+        "night_chat": {
+          "name": "Night Chat",
+          "display_name": "Night Chat",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "f25e0b60-f03a-468f-9d26-8e5412f2d952.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Night Chat"
+        },
+        "beach_dance": {
+          "name": "Beach Dance",
+          "display_name": "Beach Dance",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/pet_dance/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "pet_dance",
+          "version": "v1",
+          "template_id": "89a76e78-a3ff-4497-a52c-7158254de350.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Beach Dance"
+        },
+        "polaroid": {
+          "name": "Polaroid",
+          "display_name": "Polaroid",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "46a6d384-5863-4480-8880-e337b3993a41.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Polaroid"
+        },
+        "christmas_pet": {
+          "name": "Christmas Pet",
+          "display_name": "Christmas Pet",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/pet_dance/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "pet_dance",
+          "version": "v1",
+          "template_id": "1381d9e1-34cf-4cae-8517-98e782c148c7.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Christmas Pet"
+        },
+        "pet_sled": {
+          "name": "Pet Sled",
+          "display_name": "Pet Sled",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/proto_transformer/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "proto_transformer",
+          "version": "v1",
+          "template_id": "efc34290-26aa-4b64-a579-72033e15ad2b.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Pet Sled"
+        },
+        "kiss_hand": {
+          "name": "Kiss Hand",
+          "display_name": "Kiss Hand",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/outfit_transformer/async",
+          "result_endpoint": "/v3/pipeline/outfit_transformer/async/results",
+          "algo_type": "outfit_transformer",
+          "version": "v1",
+          "template_id": "e2830f9d-01b7-4ed5-9451-ab26121002c4.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Kiss Hand"
+        },
+        "black_rose": {
+          "name": "Black Rose",
+          "display_name": "Black Rose",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "8636f6fa-b970-48e1-9746-917eb0b52029.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Black Rose"
+        },
+        "couple_kissing": {
+          "name": "Couple Kissing",
+          "display_name": "Couple Kissing",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/outfit_transformer/async",
+          "result_endpoint": "/v3/pipeline/outfit_transformer/async/results",
+          "algo_type": "outfit_transformer",
+          "version": "v1",
+          "template_id": "d00361dc-d729-4389-92e5-5a0ad24dcbb3.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Couple Kissing"
+        },
+        "advanced_image": {
+          "name": "Advanced Image",
+          "display_name": "Advanced Image",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "ae0d7579-3520-4d25-8fb1-75a5810bd45e.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Advanced Image"
+        },
+        "gentle_pet": {
+          "name": "Gentle Pet",
+          "display_name": "Gentle Pet",
+          "status": "untested",
+          "endpoint": "/v3/pipeline/pet_dance/async",
+          "result_endpoint": "/v3/video/video_diffusion/async/results",
+          "algo_type": "pet_dance",
+          "version": "v1",
+          "template_id": "a7d9ee6a-d198-480c-a3c9-b68ad002c390.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Gentle Pet"
+        },
+        "cool_boss": {
+          "name": "Cool Boss",
+          "display_name": "Cool Boss",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "dfd628a4-d1cb-4fba-b876-4d9c26e0fd63.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Cool Boss"
+        },
+        "three_frames": {
+          "name": "Three Frames",
+          "display_name": "Three Frames",
+          "status": "untested",
+          "endpoint": "/v3/image/image_edit_gen/async",
+          "result_endpoint": "/v3/image/image_edit_gen/async/results",
+          "algo_type": "image_edit_gen",
+          "version": "v1",
+          "template_id": "5b483264-29a5-44f4-9e81-0e19f45d01eb.mp4",
+          "supported_ratios": [
+            "3:4"
+          ],
+          "max_batch_size": 1,
+          "tested": false,
+          "notes": "Template: Three Frames"
         }
       }
     }
