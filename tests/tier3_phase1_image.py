@@ -37,7 +37,8 @@ try:
     )
     results['text_to_image'] = '✅ 成功'
     print(f'   ✅ 成功，生成 {len(result)} 张图片')
-    print(f'   📷 图片ID: {result[0].get(\"image\", \"N/A\") if result else \"N/A\"}')
+    image_id = result[0].get('image', 'N/A') if result else 'N/A'
+    print(f'   📷 图片ID: {image_id}')
 except Exception as e:
     results['text_to_image'] = f'❌ 失败: {str(e)[:50]}'
     print(f'   ❌ 失败: {e}')
