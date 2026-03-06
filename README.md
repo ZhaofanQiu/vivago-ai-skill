@@ -1,7 +1,7 @@
 # Vivago AI Skill
 
 <p align="center">
-  <img src="assets/logo.jpg" alt="Vivago AI Skill Logo" width="100%">
+  <img src="assets/logo.jpg" alt="Vivago AI Skill Logo" width="80%">
 </p>
 
 AI image and video generation using Vivago AI (智小象) platform.
