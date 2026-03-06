@@ -388,10 +388,8 @@ class VivagoClient:
             "request_id": str(uuid.uuid4())
         }
         
-        # 设置 version 参数
-        if is_nano_banana:
-            data["version"] = port_config.get("version", "nano-banana-2")
-        else:
+        # 设置 version 参数 (Kling 需要，Nano Banana 不需要)
+        if not is_nano_banana:
             data["version"] = port_config.get("version", "kling-image-o1")
         
         logger.info(f"Using port: {port_name} ({display_name})")
@@ -924,13 +922,16 @@ class VivagoClient:
                 "custom_params": custom_params
             },
             "role": kwargs.get("role", "general"),
-            "version": version,
             "images": [],  # 根据抓包，这里为空数组
             "magic_prompt": kwargs.get("magic_prompt", ""),
             "audios": [],
             "videos": [],
             "request_id": str(uuid.uuid4())
         }
+        
+        # Kling 需要 version 参数，Nano Banana 不需要
+        if "kling" in port_name:
+            data["version"] = version
         
         # Nano Banana 2 需要 mode 参数
         if "nano" in port_name:
