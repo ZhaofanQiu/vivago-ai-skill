@@ -47,18 +47,22 @@ class TemplateManager:
                 
                 template_id = self._generate_template_id(master.get('name', ''))
                 
+                # 解析嵌套的params结构
+                params = gen_params.get('params', {})
+                inner_params = params.get('params', {})  # 内层params包含custom_params
+                
                 self.templates[template_id] = {
                     'name': master.get('name'),
                     'uuid': master.get('uuid'),
                     'algo_type': gen_params.get('algo_type'),
                     'endpoint': gen_params.get('generate_path', '').replace('/api/gw', ''),
                     'result_endpoint': self._get_result_endpoint(gen_params),
-                    'module': gen_params.get('params', {}).get('module'),
-                    'version': gen_params.get('params', {}).get('version'),
-                    'prompt': gen_params.get('params', {}).get('prompt', ''),
-                    'template_id': gen_params.get('params', {}).get('template_id'),
-                    'custom_params': gen_params.get('params', {}).get('custom_params', {}),
-                    'params': gen_params.get('params', {}),
+                    'module': params.get('module'),
+                    'version': params.get('version'),
+                    'prompt': params.get('prompt', ''),
+                    'template_id': params.get('template_id'),
+                    'custom_params': inner_params.get('custom_params', {}),
+                    'params': params,
                     'inputs': gen_params.get('inputs', []),
                 }
             
@@ -159,11 +163,9 @@ class TemplateManager:
         base_params = template.get('params', {})
         custom_params = template.get('custom_params', {})
         
-        # 构建custom_params，保留原有的prompts和master_template_id
-        final_custom_params = {
-            'prompts': custom_params.get('prompts', []),
-            'master_template_id': custom_params.get('master_template_id', template['template_id'])
-        }
+        # 构建custom_params，保留原有的所有参数
+        final_custom_params = dict(custom_params)  # 复制所有原始custom_params
+        final_custom_params['master_template_id'] = custom_params.get('master_template_id', template['template_id'])
         
         # 添加用户传入的额外custom_params
         if 'custom_params' in kwargs:
