@@ -970,11 +970,31 @@ class VivagoClient:
         Returns:
             包含图片信息的字典
         """
+        # Remove 'p_' prefix if present for URL
+        clean_id = image_id[2:] if image_id.startswith('p_') else image_id
+        
         return {
             "image_id": image_id,
             "vivago_url": f"https://vivago.ai/history/image",
-            "direct_url": f"https://static.vivago.ai/image/{image_id}.png",
-            "note": "图片需在Vivago网站查看，API限制无法直接下载"
+            "direct_url": f"https://storage.vivago.ai/image/{clean_id}.jpg",
+            "note": "图片可直接通过 direct_url 下载"
+        }
+    
+    def get_video_result(self, video_id: str) -> dict:
+        """
+        获取视频结果信息
+        
+        Returns:
+            包含视频信息的字典
+        """
+        # Remove 'v_' prefix if present for URL
+        clean_id = video_id[2:] if video_id.startswith('v_') else video_id
+        
+        return {
+            "video_id": video_id,
+            "vivago_url": f"https://vivago.ai/history/video",
+            "direct_url": f"https://media.vivago.ai/{clean_id}.mp4",
+            "note": "视频可直接通过 direct_url 下载"
         }
 
 
