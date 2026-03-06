@@ -1,5 +1,9 @@
 # Vivago AI Skill
 
+<p align="center">
+  <img src="assets/logo.jpg" alt="Vivago AI Skill Logo" width="100%">
+</p>
+
 AI image and video generation using Vivago AI (智小象) platform.
 
 [![CI](https://github.com/ZhaofanQiu/vivago-ai-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/ZhaofanQiu/vivago-ai-skill/actions)
