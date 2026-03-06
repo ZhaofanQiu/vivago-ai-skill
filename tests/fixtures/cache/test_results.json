@@ -3,5 +3,33 @@
     "text_to_image": "✅ 成功",
     "image_to_image": "✅ 成功",
     "cached_at": "2026-03-07T01:14:41.574413"
+  },
+  "tier3_text_to_image": {
+    "status": "success",
+    "count": 1,
+    "image_id": "p_862cc2a5-442c-4e39-b05c-48934712b285",
+    "cached_at": "2026-03-07T01:39:05.882920"
+  },
+  "tier3_image_to_image": {
+    "status": "success",
+    "cached_at": "2026-03-07T01:39:56.667438"
+  },
+  "video_img2vid": {
+    "status": "success",
+    "count": 1,
+    "cached_at": "2026-03-07T01:43:46.471753"
+  },
+  "video_txt2vid": {
+    "status": "success",
+    "count": 1,
+    "cached_at": "2026-03-07T01:45:54.213364"
+  },
+  "video_keyframe": {
+    "status": "success",
+    "cached_at": "2026-03-07T01:47:11.745158"
+  },
+  "video_template": {
+    "status": "success",
+    "cached_at": "2026-03-07T01:51:22.010033"
   }
 }
