@@ -762,7 +762,7 @@
         "2000s_y2k": {
           "name": "2000s Y2K",
           "display_name": "2000s Y2K",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/pipeline/proto_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "proto_transformer",
@@ -776,8 +776,9 @@
             "4:3"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: 2000s Y2K"
+          "tested": true,
+          "notes": "⚠️ CONTENT_REJECTED: 使用成年男性/女性样本可能触发内容审核，建议更换样本重试",
+          "result_type": "video"
         },
         "1960s_elegant": {
           "name": "1960s Elegant",
@@ -1238,7 +1239,7 @@
         "turkey_chasing": {
           "name": "Turkey Chasing",
           "display_name": "Turkey Chasing",
-          "status": "untested",
+          "status": "needs_fix",
           "endpoint": "/v3/pipeline/proto_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "proto_transformer",
@@ -1253,7 +1254,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "Template: Turkey Chasing"
+          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
         },
         "1970s_punk_animation": {
           "name": "1970s punk animation",
@@ -1840,7 +1841,7 @@
         "turkey_away": {
           "name": "Turkey Away",
           "display_name": "Turkey Away",
-          "status": "untested",
+          "status": "needs_fix",
           "endpoint": "/v3/video/video_diffusion_img2vid/async",
           "result_endpoint": "/v3/video/video_diffusion_img2vid/async/results",
           "algo_type": "video_diffusion_img2vid",
@@ -1855,7 +1856,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "Template: Turkey Away"
+          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
         },
         "bald_me": {
           "name": "Bald Me",
@@ -1997,7 +1998,7 @@
         "glam_cat": {
           "name": "Glam Cat",
           "display_name": "Glam Cat",
-          "status": "untested",
+          "status": "needs_fix",
           "endpoint": "/v3/pipeline/figure_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "figure_transformer",
@@ -2012,7 +2013,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "Template: Glam Cat"
+          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
         },
         "satisfying_cut": {
           "name": "Satisfying Cut",
@@ -2351,7 +2352,7 @@
         "little_turkey": {
           "name": "Little Turkey",
           "display_name": "Little Turkey",
-          "status": "untested",
+          "status": "needs_fix",
           "endpoint": "/v3/pipeline/proto_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "proto_transformer",
@@ -2366,7 +2367,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "Template: Little Turkey"
+          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
         },
         "cat_woman": {
           "name": "Cat Woman",
@@ -3519,7 +3520,7 @@
         "heavenly_hug": {
           "name": "Heavenly Hug",
           "display_name": "Heavenly Hug",
-          "status": "untested",
+          "status": "needs_fix",
           "endpoint": "/v3/pipeline/proto_transformer/async",
           "result_endpoint": "/v3/video/video_diffusion/async/results",
           "algo_type": "proto_transformer",
@@ -3534,7 +3535,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "Template: Heavenly Hug"
+          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
         },
         "christmas_girl": {
           "name": "Christmas Girl",
@@ -3555,7 +3556,7 @@
         "fighting_giant": {
           "name": "Fighting Giant",
           "display_name": "Fighting Giant",
-          "status": "untested",
+          "status": "needs_fix",
           "endpoint": "/v3/video/video_diffusion_img2vid/async",
           "result_endpoint": "/v3/video/video_diffusion_img2vid/async/results",
           "algo_type": "video_diffusion_img2vid",
@@ -3570,7 +3571,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "Template: Fighting Giant"
+          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
         },
         "night_chat": {
           "name": "Night Chat",
@@ -3657,7 +3658,7 @@
         "kiss_hand": {
           "name": "Kiss Hand",
           "display_name": "Kiss Hand",
-          "status": "untested",
+          "status": "needs_fix",
           "endpoint": "/v3/pipeline/outfit_transformer/async",
           "result_endpoint": "/v3/pipeline/outfit_transformer/async/results",
           "algo_type": "outfit_transformer",
@@ -3668,7 +3669,7 @@
           ],
           "max_batch_size": 1,
           "tested": false,
-          "notes": "Template: Kiss Hand"
+          "notes": "🔴 PROMPT_GARBAGE: 中文prompt存在乱码，需要重新提供配置文件"
         },
         "black_rose": {
           "name": "Black Rose",
