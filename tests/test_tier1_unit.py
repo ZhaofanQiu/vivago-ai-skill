@@ -21,7 +21,7 @@ from exceptions import (
     TaskFailedError, TaskRejectedError,
     InvalidPortError, MissingCredentialError
 )
-from types import TaskStatus
+from type_defs import TaskStatus
 
 
 # ============== Fixtures ==============

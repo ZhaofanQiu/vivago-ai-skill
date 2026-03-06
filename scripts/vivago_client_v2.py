@@ -14,7 +14,7 @@ from config import Config as AppConfig
 from config_manager import ConfigManager, get_config_manager
 from task_poller import TaskPoller
 from image_uploader import ImageUploader
-from types import TaskStatus, JSONDict
+from type_defs import TaskStatus, JSONDict
 from exceptions import (
     MissingCredentialError,
     InvalidPortError,
