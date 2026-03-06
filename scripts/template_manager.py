@@ -73,7 +73,14 @@ class TemplateManager:
     
     def _generate_template_id(self, name: str) -> str:
         """从模板名称生成ID"""
-        return name.lower().replace(' ', '_').replace("'", "").replace('-', '_')
+        return (name.lower()
+                .replace(' ', '_')
+                .replace("'", "")
+                .replace('-', '_')
+                .replace('（', '')
+                .replace('）', '')
+                .replace('(', '')
+                .replace(')', ''))
     
     def _get_result_endpoint(self, gen_params: Dict) -> str:
         """确定回调路径"""

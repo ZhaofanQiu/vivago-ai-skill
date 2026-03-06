@@ -3081,7 +3081,7 @@
         "motorcycle_boy": {
           "name": "Motorcycle Boy",
           "display_name": "Motorcycle Boy",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3091,8 +3091,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Motorcycle Boy"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "younger_self": {
           "name": "Younger Self",
@@ -3113,7 +3114,7 @@
         "nine_grid_pet": {
           "name": "Nine Grid Pet",
           "display_name": "Nine Grid Pet",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3123,8 +3124,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Nine Grid Pet"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "with_deceased": {
           "name": "With Deceased",
@@ -3145,7 +3147,7 @@
         "dinner_party": {
           "name": "Dinner Party",
           "display_name": "Dinner Party",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3155,8 +3157,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Dinner Party"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "cyberpunk_2026": {
           "name": "Cyberpunk 2026",
@@ -3193,7 +3196,7 @@
         "midnight_neon": {
           "name": "Midnight Neon",
           "display_name": "Midnight Neon",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3203,8 +3206,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Midnight Neon"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "garden_lover": {
           "name": "Garden Lover",
@@ -3257,7 +3261,7 @@
         "domineering_ceo": {
           "name": "Domineering CEO",
           "display_name": "Domineering CEO",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3267,8 +3271,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Domineering CEO"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "christmas_card": {
           "name": "Christmas Card",
@@ -3325,7 +3330,7 @@
         "white_sweater": {
           "name": "White Sweater",
           "display_name": "White Sweater",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3335,13 +3340,14 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: White Sweater"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "elegant_gentle": {
           "name": "Elegant Gentle",
           "display_name": "Elegant Gentle",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3351,8 +3357,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Elegant Gentle"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "anime_kiss": {
           "name": "Anime Kiss",
@@ -3373,7 +3380,7 @@
         "costume_change": {
           "name": "Costume Change",
           "display_name": "Costume Change",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3383,13 +3390,14 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Costume Change"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "lens_heartbeat": {
           "name": "Lens Heartbeat",
           "display_name": "Lens Heartbeat",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3399,8 +3407,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Lens Heartbeat"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "santa_claus": {
           "name": "Santa Claus",
@@ -3437,7 +3446,7 @@
         "darkroom_flash": {
           "name": "Darkroom Flash",
           "display_name": "Darkroom Flash",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3447,13 +3456,14 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Darkroom Flash"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "noble_person": {
           "name": "Noble Person",
           "display_name": "Noble Person",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3463,8 +3473,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Noble Person"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "hold_deceased": {
           "name": "Hold Deceased",
@@ -3557,7 +3568,7 @@
         "night_chat": {
           "name": "Night Chat",
           "display_name": "Night Chat",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3567,8 +3578,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Night Chat"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "beach_dance": {
           "name": "Beach Dance",
@@ -3589,7 +3601,7 @@
         "polaroid": {
           "name": "Polaroid",
           "display_name": "Polaroid",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3599,8 +3611,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Polaroid"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "christmas_pet": {
           "name": "Christmas Pet",
@@ -3653,7 +3666,7 @@
         "black_rose": {
           "name": "Black Rose",
           "display_name": "Black Rose",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3663,8 +3676,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Black Rose"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "couple_kissing": {
           "name": "Couple Kissing",
@@ -3685,7 +3699,7 @@
         "advanced_image": {
           "name": "Advanced Image",
           "display_name": "Advanced Image",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3695,8 +3709,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Advanced Image"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "gentle_pet": {
           "name": "Gentle Pet",
@@ -3717,7 +3732,7 @@
         "cool_boss": {
           "name": "Cool Boss",
           "display_name": "Cool Boss",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3727,13 +3742,14 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Cool Boss"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         },
         "three_frames": {
           "name": "Three Frames",
           "display_name": "Three Frames",
-          "status": "untested",
+          "status": "tested",
           "endpoint": "/v3/image/image_edit_gen/async",
           "result_endpoint": "/v3/image/image_edit_gen/async/results",
           "algo_type": "image_edit_gen",
@@ -3743,8 +3759,9 @@
             "3:4"
           ],
           "max_batch_size": 1,
-          "tested": false,
-          "notes": "Template: Three Frames"
+          "tested": true,
+          "notes": "Tested: Returns image (static effect)",
+          "result_type": "image"
         }
       }
     }
