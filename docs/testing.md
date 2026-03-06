@@ -1,215 +1,280 @@
 # 测试指南
 
-## 运行测试
+Vivago AI Skill 多层级测试框架使用指南
 
-### 安装测试依赖
+---
+
+## 测试架构
+
+本项目采用 **5层测试架构**，平衡测试覆盖率与API调用成本：
+
+```
+Tier 1: 单元测试 (Mock, 0积分)     → 每次提交运行
+Tier 2: 组件集成 (16积分)           → 每日运行
+Tier 3: 核心功能 (106积分)          → 版本发布前
+Tier 4: 端口采样 (168积分)          → 每周运行
+Tier 5: 模板采样 (30积分/模板)      → 按需运行
+```
+
+---
+
+## 快速开始
+
+### 1. 环境准备
 
 ```bash
+# 安装依赖
 pip install -r requirements.txt
+
+# 配置环境变量
+cp .env.example .env
+# 编辑 .env 填入你的 API Token
 ```
 
-### 运行所有测试
+### 2. 运行 Tier 1 单元测试
 
 ```bash
-pytest tests/ -v
+# 零成本，使用 Mock
+pytest tests/test_tier1_unit.py -v
 ```
 
-### 运行特定测试
+### 3. 运行 Tier 2-3 图片测试
 
 ```bash
-# 只运行基础测试
-pytest tests/test_basic.py -v
-
-# 运行特定测试函数
-pytest tests/test_basic.py::TestVivagoClient::test_client_initialization -v
+# 流水线测试，可顺序执行
+pytest tests/test_tier3_image.py -v
 ```
 
-### 生成覆盖率报告
+### 4. 运行视频功能测试
 
 ```bash
-pytest tests/ --cov=scripts --cov-report=html
-# 报告生成在 htmlcov/ 目录
+# 视频测试必须单独运行（避免超时扣积分）
+python tests/video_img2vid.py
+python tests/video_txt2vid.py
+python tests/video_keyframe.py
 ```
 
-## 测试结构
+---
 
+## 交互式测试工具
+
+### 智能测试运行器
+
+```bash
+python tests/run_optimized_tests.py
 ```
-tests/
-├── test_basic.py       # 基础单元测试（使用Mock）
-├── framework.py        # 测试框架
-└── fixtures/           # 测试数据（待创建）
+
+功能菜单：
+- 显示所有测试及积分消耗
+- 根据风险推荐测试
+- 自动计算性价比
+- 管理测试历史
+
+### 查看测试历史
+
+```bash
+python tests/view_test_history.py
 ```
 
-## 测试类型
+功能：
+- 查看覆盖率报告
+- 查看风险功能列表
+- 查看推荐测试列表
+- 记录新的测试结果
 
-### 1. 单元测试 (test_basic.py)
+### 智能测试优化
 
-使用Mock，不调用真实API：
+```bash
+python tests/smart_test_optimizer.py
+```
+
+根据风险等级、覆盖率和积分成本，自动推荐最优测试组合。
+
+---
+
+## 测试文件说明
+
+### Tier 1 - 单元测试
+
+| 文件 | 说明 | 积分 |
+|------|------|------|
+| `test_tier1_unit.py` | Mock-based单元测试 | 0 |
+
+测试内容：
+- VivagoClient 初始化
+- 配置管理器
+- 模板管理器
+- 异常体系
+- 类型系统
+
+### Tier 2 - 组件集成
+
+| 文件 | 说明 | 积分 |
+|------|------|------|
+| `test_tier2_integration.py` | 组件集成测试 | 16 |
+
+测试内容：
+- 配置加载
+- 模板加载
+- 缓存操作
+- 图片上传
+
+### Tier 3 - 核心功能
+
+| 文件 | 说明 | 积分 |
+|------|------|------|
+| `test_tier3_image.py` | 图片功能流水线 | 16 |
+| `video_img2vid.py` | 图生视频（单独） | 20 |
+| `video_txt2vid.py` | 文生视频（单独） | 20 |
+| `video_keyframe.py` | 视频首尾帧（单独） | 20 |
+| `video_template.py` | 视频模板（单独） | 30 |
+
+### Tier 4 - 端口采样
+
+| 文件 | 说明 | 积分 |
+|------|------|------|
+| `test_tier4_image_ports.py` | 图片端口流水线 | 28 |
+| `tier4_video_v3l.py` | v3L视频端口 | 60 |
+| `tier4_video_kling.py` | Kling视频端口 | 80 |
+
+### Tier 5 - 模板采样
+
+| 目录 | 说明 | 积分 |
+|------|------|------|
+| `tier5_templates/` | 单个模板测试文件 | 30/个 |
+
+---
+
+## 测试原则
+
+### 1. 图片功能 → 流水线测试
+
+图片功能测试速度快，可以顺序执行：
+
+```bash
+pytest tests/test_tier3_image.py -v        # 16积分
+pytest tests/test_tier4_image_ports.py -v   # 28积分
+```
+
+### 2. 视频功能 → 单独测试
+
+视频功能耗时长且易超时，必须单独运行：
+
+```bash
+# ❌ 不要这样
+pytest tests/video_*.py
+
+# ✅ 应该这样
+python tests/video_img2vid.py
+# 等待完成
+python tests/video_txt2vid.py
+```
+
+### 3. 积分管理
+
+- 每次测试前显示预估积分
+- 高积分测试（>50）需要确认
+- 使用历史记录避免重复测试
+
+---
+
+## 添加新测试
+
+### 添加图片端口测试
+
+编辑 `tests/test_tier4_image_ports.py`：
 
 ```python
-def test_client_initialization():
-    """测试客户端初始化"""
-    client = VivagoClient(token='test_token')
-    assert client.token == 'test_token'
-```
-
-**特点**:
-- ✅ 快速（秒级）
-- ✅ 不消耗Credits
-- ✅ 不依赖网络
-- ✅ 可离线运行
-
-### 2. 集成测试 (framework.py)
-
-调用真实API：
-
-```python
-from tests.framework import quick_test
-
-# 测试单个模板
-result = quick_test('ghibli', image_uuid='j_xxx')
-```
-
-**特点**:
-- ⚠️ 慢（分钟级）
-- ⚠️ 消耗Credits
-- ⚠️ 需要网络
-- ⚠️ 可能不稳定
-
-**运行前确保**:
-```bash
-export HIDREAM_TOKEN="your_token"
-export STORAGE_AK="your_ak"
-export STORAGE_SK="your_sk"
-export TEST_IMAGE_UUID="j_xxx"  # 测试用的图片UUID
-```
-
-## 编写测试
-
-### 基础测试模板
-
-```python
-import pytest
-from scripts.vivago_client import create_client
-
-class TestMyFeature:
-    def test_success_case(self):
-        """测试正常情况"""
-        client = create_client()
-        result = client.some_method()
-        assert result is not None
+def test_port_new_port(self):
+    """测试新端口 - X积分"""
+    print(f'\n🔌 测试新端口 - X积分...')
     
-    def test_error_case(self):
-        """测试错误情况"""
-        with pytest.raises(ValueError):
-            client.some_method(invalid_param=True)
-```
-
-### 使用Mock
-
-```python
-from unittest.mock import patch, MagicMock
-
-@patch('scripts.vivago_client.requests.post')
-def test_api_call(mock_post):
-    """Mock API调用"""
-    mock_post.return_value = MagicMock(
-        json=lambda: {'code': 0, 'result': {'task_id': 'test'}},
-        raise_for_status=lambda: None
+    result = self.client.text_to_image(
+        prompt='test prompt',
+        port='new-port',
+        batch_size=1
     )
     
-    result = client.text_to_image(prompt="test")
-    assert result['code'] == 0
+    assert result is not None
+    self.cache.save_test_result('port_new', {'status': 'success'})
+    print('   ✅ 通过')
 ```
 
-### 使用测试框架
+### 添加视频功能测试
+
+创建新文件 `tests/video_new_feature.py`：
 
 ```python
-from tests.framework import TemplateTestRunner
+#!/usr/bin/env python3
+"""
+新视频功能测试
+积分: XX
+"""
+import sys
+import os
 
-# 批量测试
-runner = TemplateTestRunner(image_uuid='j_xxx')
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'scripts'))
 
-results = runner.test_batch([
-    'ghibli',
-    'iron_man',
-    'angel_wings'
-])
+from dotenv import load_dotenv
+load_dotenv()
 
-# 生成报告
-report_path = runner.save_report()
-print(f"报告已保存: {report_path}")
+from vivago_client import create_client
+
+print('='*60)
+print('视频测试: 新功能')
+print('积分: XX')
+print('='*60)
+
+client = create_client()
+
+print('\n⏳ 开始生成...')
+result = client.new_feature(...)
+
+print('\n✅ 成功!')
 ```
 
-## 持续集成
+---
 
-GitHub Actions 配置（见 `.github/workflows/ci.yml`）:
+## 测试报告
 
-```yaml
-name: CI
-on: [push, pull_request]
+最新完整测试报告：`TEST_REPORT.md`
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-      - run: pip install -r requirements.txt
-      - run: pytest tests/ -v --cov=scripts
-```
+包含：
+- 测试执行摘要
+- 详细测试结果
+- Bug修复记录
+- 覆盖率分析
+- 积分消耗明细
 
-## 测试数据
+历史测试报告：`docs/archive/`
 
-### 测试图片
+---
 
-放在 `tests/fixtures/`:
+## 注意事项
 
-```
-tests/fixtures/
-├── test_photo.jpg      # 人像照片
-├── test_landscape.jpg  # 风景
-└── test_product.jpg    # 产品
-```
+⚠️ **视频测试会消耗大量积分**：
+- v3L: 20积分/次
+- v3Pro: 30积分/次
+- Kling video: 80积分/次
 
-### Mock响应
+⚠️ **视频生成需要时间**：
+- 预计 2-5 分钟/视频
+- API队列可能延长等待时间
 
-```python
-# tests/fixtures/mock_responses.py
-TEXT_TO_IMAGE_RESPONSE = {
-    "code": 0,
-    "result": {
-        "task_id": "mock_task_123"
-    }
-}
-```
+⚠️ **避免超时导致积分浪费**：
+- 视频测试必须单独运行
+- 不要批量运行视频测试
+- 耐心等待，不要中断
 
-## 调试测试
+---
 
-```bash
-# 详细输出
-pytest tests/ -v -s
+## 参考文档
 
-# 遇到第一个失败就停止
-pytest tests/ -x
+- [测试策略](TESTING_STRATEGY.md) - 原始测试策略
+- [优化后策略](TEST_STRATEGY_OPTIMIZED.md) - 智能优化策略
+- [积分定价](CREDITS_PRICING.md) - 各功能积分消耗
+- [测试报告](../../TEST_REPORT.md) - 最新测试结果
 
-# 只运行上次失败的测试
-pytest tests/ --lf
+---
 
-# 使用pdb调试
-pytest tests/ --pdb
-```
-
-## 性能测试
-
-```python
-import time
-
-def test_performance():
-    """测试性能"""
-    start = time.time()
-    client.text_to_image(prompt="test")
-    elapsed = time.time() - start
-    
-    assert elapsed < 5.0  # 应该在5秒内完成
-```
+*最后更新: 2026-03-07*
