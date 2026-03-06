@@ -10,6 +10,8 @@ AI image and video generation using Vivago AI (智小象) platform.
 - [API参考](docs/api_reference.md) - 完整API文档
 - [架构设计](docs/architecture.md) - 系统设计
 - [测试指南](docs/testing.md) - 如何测试
+- [测试报告](TEST_REPORT.md) - Tier 1-4 完整测试报告
+- [测试策略](docs/TEST_STRATEGY_OPTIMIZED.md) - 智能测试优化策略
 - [故障排查](docs/troubleshooting.md) - 常见问题
 - [更新日志](docs/CHANGELOG.md) - 版本历史
 
@@ -19,23 +21,35 @@ AI image and video generation using Vivago AI (智小象) platform.
 
 | 一级功能 | 状态 | 说明 |
 |---------|------|------|
-| 🎨 **文生图 (Text-to-Image)** | ✅ 已实现 | 支持 Kling O1 / Vivago 2.0 / Nano Banana 2 |
-| 📝 **文生视频 (Text-to-Video)** | ✅ 已实现 | 支持 v3L(快) / v3Pro(质) / Kling video O1 |
-| 🎬 **图生视频 (Image-to-Video)** | ✅ 已实现 | 支持 v3L / v3Pro / Kling video O1 |
-| 🔄 **图生图 (Image-to-Image)** | ✅ 已实现 | 支持 Kling O1(快) / Nano Banana 2(质)，多图融合 |
-| 🎞️ **视频首尾帧 (Keyframe-to-Video)** | ✅ 已实现 | 支持 v3L / v3Pro |
-| 🎭 **视频模板 (Template-to-Video)** | ✅ 已实现 | 支持 Renovation of Old Photos 等特效 |
+| 🎨 **文生图 (Text-to-Image)** | ✅ 已测试 | 支持 Kling O1 / Vivago 2.0 / Nano Banana 2 |
+| 📝 **文生视频 (Text-to-Video)** | ✅ 已测试 | 支持 v3L(快) / v3Pro(质) / Kling video O1 |
+| 🎬 **图生视频 (Image-to-Video)** | ✅ 已测试 | 支持 v3L / v3Pro / Kling video O1 |
+| 🔄 **图生图 (Image-to-Image)** | ✅ 已测试 | 支持 Kling O1(快) / Nano Banana 2(质)，多图融合 |
+| 🎞️ **视频首尾帧 (Keyframe-to-Video)** | ✅ 已测试 | 支持 v3L / v3Pro |
+| 🎭 **视频模板 (Template-to-Video)** | ✅ 已测试 | 支持 134+ 模板效果 |
 | ⬆️ **图像上传 (Image Upload)** | ✅ 已实现 | 支持自动压缩 |
+
+### 测试覆盖率
+
+| 层级 | 测试项 | 通过 | 积分消耗 | 状态 |
+|------|--------|------|----------|------|
+| Tier 1 | 单元测试 | 10 | 0 | ✅ 完成 |
+| Tier 2 | 组件集成 | 3 | 16 | ✅ 完成 |
+| Tier 3 | 核心功能 | 6 | 106 | ✅ 完成 |
+| Tier 4 | 端口采样 | 8 | 168 | ✅ 完成 |
+| **总计** | | **27** | **290 (~¥12.2)** | **100%** |
+
+> 详见 [TEST_REPORT.md](TEST_REPORT.md) 完整报告
 
 ### 二级端口（具体API端点）
 
 #### 文生图 (Text-to-Image)
 
-| 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
-|---------|-------------|------|------|------|------|------|
-| `kling-image` | **Kling O1** | `/v3/image/image_gen_kling/async` | ✅ 已测试 | ✅ | 快 | 优秀 |
-| `hidream-txt2img` | **Vivago.ai 2.0** | `/v3/image/txt2img/async` | ✅ 已测试 | - | 中等 | 良好 |
-| `nano-banana` | **Nano Banana 2** | `/v3/image/image_gen_std/async` | ✅ 已测试 | - | 慢 | 极优 |
+| 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 | 积分 |
+|---------|-------------|------|------|------|------|------|------|
+| `kling-image` | **Kling O1** | `/v3/image/image_gen_kling/async` | ✅ 已测试 | ✅ | 快 | 优秀 | 8 |
+| `hidream-txt2img` | **Vivago.ai 2.0** | `/v3/image/txt2img/async` | ✅ 已测试 | - | 中等 | 良好 | **2** |
+| `nano-banana` | **Nano Banana 2** | `/v3/image/image_gen_std/async` | ✅ 已测试 | - | 慢 | 极优 | 10 |
 
 #### 图生图 (Image-to-Image)
 
@@ -52,13 +66,9 @@ AI image and video generation using Vivago AI (智小象) platform.
 
 | 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
 |---------|-------------|------|------|------|------|------|
-| `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion/async` | ✅ 已测试 | ✅ | 慢 | 极优 |
-| `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion/async` | ✅ 已测试 | - | 快 | 良好 |
-| `kling-video` | **Kling video O1** | `/v3/video/video_diffusion/async` | ✅ 已测试 | - | 中等 | 极优 |
-
-> **关键架构**：文生视频和图生视频使用**相同端点** `/v3/video/video_diffusion/async`
-> - 图生视频：`images` 数组包含图片 UUID
-> - 文生视频：`images` 数组为空 `[]`
+| `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | ✅ | 慢 | 极优 |
+| `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | - | 快 | 良好 |
+| `kling-video` | **Kling video O1** | `/v3/video/video_diffusion_img2vid/async` | ✅ 已测试 | - | 中等 | 极优 |
 
 #### 文生视频 (Text-to-Video)
 
@@ -75,30 +85,25 @@ AI image and video generation using Vivago AI (智小象) platform.
 | `v3L` | **Vivago.ai 2.0 360p** | `/v3/video/video_diffusion_keyframes/async` | ✅ 已测试 | ✅ | 快 | 良好 |
 | `v3Pro` | **Vivago.ai 2.0** | `/v3/video/video_diffusion_keyframes/async` | ✅ 已测试 | - | 慢 | 极优 |
 
-> **功能**：根据首尾帧图片生成过渡视频
-> **输入**：`start_image_uuid` + `end_image_uuid`
-> **示例**：皮卡丘 → 柯基的变身动画
-
 #### 视频模板 (Template-to-Video)
 
-| 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
-|---------|-------------|------|------|------|------|------|
-| `renovation_old_photos` | **老照片修复上色** | `/v3/pipeline/proto_transformer/async` | ✅ 已测试 | ✅ | 快 | 良好 |
-| `static_shot` | **Static Shot** | `/v3/video/video_diffusion_img2vid/async` | ⏳ 待测试 | - | - | - |
-| `ash_out` | **Ash out** | `/v3/video/video_diffusion_img2vid/async` | ⏳ 待测试 | - | - | - |
-| `mystic_traveler` | **Mystic Traveler** | `/v3/pipeline/proto_transformer/async` | ⏳ 待测试 | - | - | - |
-| `shake_it_down` | **Shake It Down** | `/v3/video/video_diffusion_template/async` | ⏳ 待测试 | - | - | - |
-| `1930s_vintage_style` | **1930s vintage style** | `/v3/pipeline/proto_transformer/async` | ⏳ 待测试 | - | - | - |
-| `barbie` | **Barbie** | `/v3/pipeline/avatar_transformer/async` | ⏳ 待测试 | - | - | - |
-| `autumn_feast` | **Autumn Feast** | `/v3/pipeline/proto_transformer/async` | ⏳ 待测试 | - | - | - |
-| `paparazzi_rush` | **Paparazzi Rush** | `/v3/video/video_diffusion_img2vid/async` | ⏳ 待测试 | - | - | - |
-| `kiss_kiss` | **Kiss Kiss** | `/v3/video/video_diffusion_template/async` | ⏳ 待测试 | - | - | - |
-| `hip_twist` | **Hip Twist** | `/v3/video/video_diffusion_template/async` | ⏳ 待测试 | - | - | - |
+**134+ 可用模板**，按类别分类：
 
-> **功能**：使用预定义模板生成特效视频
-> **输入**：单张图片 + template_id
-> **特点**：不同模板对应不同端点和参数
-> **示例**：Renovation of Old Photos（老照片上色）
+| 类别 | 数量 | 示例模板 |
+|------|------|----------|
+| **风格转换** | 20+ | ghibli, 1930s-2000s vintage styles |
+| **哈利波特** | 4 | magic_reveal_ravenclaw, gryffindor, hufflepuff, slytherin |
+| **翅膀/奇幻** | 10+ | angel_wings, phoenix_wings, crystal_wings |
+| **超级英雄** | 5+ | iron_man, cat_woman, ghost_rider |
+| **舞蹈** | 10+ | apt, dadada, dance, limbo_dance |
+| **特效** | 15+ | ash_out, metallic_liquid, flash_flood |
+| **感恩节** | 10+ | turkey_chasing, autumn_feast, gratitude_photo |
+| **漫画/卡通** | 8+ | gta_star, anime_figure, bring_comics_to_live |
+| **产品展示** | 8+ | glasses_display, music_box, food_product_display |
+| **场景** | 20+ | romantic_kiss, graduation, starship_chef |
+
+> 查看完整模板列表：`scripts/api_ports.json` 或运行 `python -c "from scripts.template_manager import get_template_manager; tm = get_template_manager(); print(f'Total: {len(tm.templates)}')
+`
 
 ---
 
@@ -113,7 +118,7 @@ Vivago AI Skill
 │   ├── image_to_video           # 图生视频
 │   ├── image_to_image           # 图生图
 │   ├── keyframe_to_video        # 视频首尾帧
-│   └── ...
+│   └── template_to_video        # 视频模板
 │
 └── 二级端口 (Port)              # 具体API配置
     ├── 端点路径 (endpoint)       # API提交地址
@@ -128,25 +133,6 @@ Vivago AI Skill
 2. **二级端口** = 具体API配置（端点、版本、回调路径）
 3. **display_name** = 与 Vivago 网站模型名称对齐
 4. **相同端点 + 不同 version = 不同模型**（关键架构点）
-
-### 示例：图生视频端口配置
-
-```json
-{
-  "v3Pro": {
-    "display_name": "Vivago.ai 2.0",
-    "endpoint": "/v3/video/video_diffusion_img2vid/async",
-    "result_endpoint": "/v3/video/video_diffusion/async/results",
-    "version": "v3Pro"
-  },
-  "v3L": {
-    "display_name": "Vivago.ai 2.0 360p",
-    "endpoint": "/v3/video/video_diffusion_img2vid/async",  // 相同端点
-    "result_endpoint": "/v3/video/video_diffusion/async/results",
-    "version": "v3L"  // 不同版本 = 不同模型
-  }
-}
-```
 
 ---
 
@@ -204,7 +190,7 @@ results = client.image_to_video(
 )
 ```
 
-**图生图（Kling O1 - 多图融合）：**
+**图生图（多图融合）：**
 ```python
 # 单图风格迁移
 results = client.image_to_image(
@@ -218,42 +204,49 @@ results = client.image_to_image(
 results = client.image_to_image(
     prompt="一只皮卡丘骑在绿头鸭背上",
     image_uuids=["p_pikachu", "p_duck"],
-    port="kling-image",  # 或 "nano-banana" (质量更好但慢)
+    port="kling-image",
     strength=0.8,
     relevance=[0.9, 0.9]  # 两张图的参考权重
 )
 ```
 
-**文生视频（v3L 快速版）：**
-```python
-results = client.text_to_video(
-    prompt="一只金毛犬在草地上奔跑",
-    port="v3L",  # 快速版本
-    duration=5,
-    mode="Fast"
-)
-```
-
-**视频首尾帧（Keyframe-to-Video）：**
-```python
-results = client.keyframe_to_video(
-    prompt="皮卡丘变成了一只柯基",
-    start_image_uuid="p_pikachu",  # 起始帧
-    end_image_uuid="p_corgi",      # 结束帧
-    port="v3L",
-    duration=5,
-    mode="Fast"
-)
-```
-
-**视频模板（Template-to-Video）：**
+**视频模板（Ghibli 风格）：**
 ```python
 results = client.template_to_video(
-    image_uuid="p_old_photo",           # 输入图片
-    template="renovation_old_photos",   # 模板名称
-    wh_ratio="4:3"
+    image_uuid="p_photo",           # 输入图片
+    template="ghibli",              # 模板名称
+    wh_ratio="9:16"
 )
 ```
+
+---
+
+## 🧪 智能测试系统
+
+项目包含完整的智能测试优化系统：
+
+```bash
+# 查看推荐测试列表
+python tests/smart_test_optimizer.py
+
+# 执行单元测试 (0积分)
+python tests/test_tier1_unit.py
+
+# 执行图片测试
+python tests/test_tier3_image.py
+
+# 执行视频测试
+python tests/tier4_video_v3l.py
+```
+
+### 测试策略特点
+
+- **风险优先**: 优先测试从未测试或长期未测试的功能
+- **成本优化**: 智能选择低成本高回报的测试项
+- **历史追踪**: 完整记录每次测试的历史记录
+- **动态调整**: 根据测试结果动态调整推荐策略
+
+详见 [docs/TEST_STRATEGY_OPTIMIZED.md](docs/TEST_STRATEGY_OPTIMIZED.md)
 
 ---
 
@@ -264,36 +257,24 @@ results = client.template_to_video(
 **图片**: ✅ 可直接发送，显示为图片格式  
 **视频**: ❌ 无法直接发送可播放格式，只能发送链接
 
-因此：
-- 图片结果 → 直接发送图片文件
-- 视频结果 → 发送视频链接（点击观看）
-
 ### 模型选择建议
 
 | 场景 | 推荐模型 | 说明 |
 |------|---------|------|
 | 快速生成图片 | Kling O1 | 速度快，质量优秀 |
+| 低成本测试 | Vivago 2.0 | 仅需2积分 |
 | 高质量图片 | Nano Banana 2 | 慢但效果最佳 |
 | 图生图/风格迁移 | Kling O1 | 速度快，支持多图融合 |
-| 图生图高质量 | Nano Banana 2 | 质量最优，适合精细编辑 |
-| 高清视频 | Vivago.ai 2.0 (v3Pro) | 高质量，4分钟 |
+| 高清视频 | Vivago.ai 2.0 (v3Pro) | 高质量 |
 | 快速视频 | Vivago.ai 2.0 360p (v3L) | 360p，速度快 |
 | 最佳视频 | Kling video O1 | 质量最优 |
-| 首尾帧视频 | Vivago.ai 2.0 360p (v3L) | 支持关键帧过渡 |
 
 ### 视频生成注意事项
 
-- ⏱️ **生成时间较长**: 通常需要 2-3 分钟
+- ⏱️ **生成时间较长**: 通常需要 2-5 分钟
 - 🔄 **避免频繁调用**: 请合理安排测试频率
-- 📶 **网络稳定性**: 长时间等待可能导致回调失败
 - 💰 **Credits消耗**: 视频生成消耗更多 credits
-
-### 回调路径差异
-
-不同端口可能使用不同的回调路径：
-- 普通图片：`/v3/image/txt2img/async/results`
-- Nano Banana：`/v3/image/image/async/results/batch`
-- 视频：`/v3/video/video_diffusion/async/results`
+- 📊 **积分参考**: 图片 2-10 积分，视频 20-80 积分
 
 ---
 
@@ -303,77 +284,55 @@ results = client.template_to_video(
 vivago-ai-skill/
 ├── scripts/
 │   ├── vivago_client.py      # 核心客户端（支持层级调用）
-│   ├── api_ports.json        # 端口配置（含 display_name）
-│   ├── txt2img.py            # 文生图 CLI
-│   ├── img2video.py          # 图生视频 CLI
+│   ├── api_ports.json        # 187个端口配置
+│   ├── template_manager.py   # 模板管理器（134+模板）
 │   └── ...
-├── tests/                     # 测试套件
-├── test_reports/              # 测试报告
-├── README.md                  # 本文件
-└── requirements.txt
+├── tests/
+│   ├── test_tier1_unit.py    # 单元测试
+│   ├── test_tier3_*.py       # 核心功能测试
+│   ├── tier4_*.py            # 端口采样测试
+│   ├── tier5_templates/      # 模板测试套件
+│   └── smart_test_optimizer.py  # 智能优化器
+├── docs/                      # 文档目录
+│   ├── api_reference.md
+│   ├── architecture.md
+│   ├── TEST_STRATEGY_OPTIMIZED.md
+│   └── ...
+├── TEST_REPORT.md            # 测试报告
+├── requirements.txt
+└── README.md                 # 本文件
 ```
 
 ---
 
 ## 📝 更新日志
 
+### v0.8.0 (2026-03-07)
+- ✅ 完成 Tier 1-4 完整测试（27项测试100%通过）
+- ✅ 建立智能测试优化系统
+- ✅ 修复 Nano Banana 版本参数 Bug
+- ✅ 测试覆盖率达到 80%（端口）/ 61%（功能）
+- ✅ 总积分消耗 290（约¥12.2）
+- ✅ 新增测试历史追踪系统
+
 ### v0.7.0 (2026-03-06)
 - ✅ 新增 **视频首尾帧 (Keyframe-to-Video)** 功能
 - ✅ 支持根据首尾帧生成过渡视频
 - ✅ 添加 v3L 端口支持
 - ✅ 测试成功：皮卡丘 → 柯基变身视频
-- ✅ 更新文档和端口配置
 
 ### v0.6.0 (2026-03-06)
 - ✅ 重构功能架构，简化一级功能
-- ✅ 图像编辑、AI肖像、虚拟试衣并入图生图
 - ✅ 图生图支持 Kling O1 (快) 和 Nano Banana 2 (质)
 - ✅ 支持多图输入融合 (`image_uuids` + `relevance`)
-- ✅ 规划未来功能：视频首尾帧、视频模板
-- ✅ 更新完整文档和端口配置
-
-### v0.5.3 (2026-03-06)
-- ✅ 添加 Kling O1 图生图支持
-- ✅ 测试成功：多图融合生成
-- ✅ Kling O1 速度优于 Nano Banana 2
 
 ### v0.5.0 (2026-03-06)
 - ✅ 添加 Nano Banana 2 图生图（多图输入）
-- ✅ 支持 `strength`, `relevance`, `image_guidance_scale` 参数
-- ✅ 实现图像风格迁移、编辑、融合功能
-
-### v0.4.1 (2026-03-05)
-- ✅ 测试 v3Pro 文生视频 - 成功
-- ✅ 测试 Kling video O1 文生视频 - 成功
-  - 关键发现：使用 `/v3/video/video_diffusion_gen2vid/async` 端点
-  - module: `video_diffusion_gen2vid`
-- ✅ 修复 `text_to_video()` 方法，根据 endpoint 动态设置 module
-- ✅ 所有文生视频端口测试完成
+- ✅ 支持图像风格迁移、编辑、融合功能
 
 ### v0.4.0 (2026-03-05)
 - ✅ 新增 **文生视频** 一级功能
-- ✅ 测试 Vivago.ai 2.0 360p 文生视频 (v3L)
-- ✅ 关键发现：文生视频和图生视频共用 `/v3/video/video_diffusion/async` 端点
-- ✅ 修复 `text_to_video()` 方法，支持 `magic_prompt` 参数
-
-### v0.3.1 (2026-03-05)
-- ✅ 修复 Nano Banana 2 支持
-- ✅ 修正 `result_endpoint` 路径
-- ✅ 添加 `mode=2K` 参数
-
-### v0.3.0 (2026-03-05)
-- ✅ 添加 Nano Banana 2 模型支持
-- ✅ 添加 `display_name` 字段，与 Vivago 网站对齐
-- ✅ 整理模型名称对应表
-- ✅ 更新架构说明文档
-
-### v0.2.2 (2026-03-05)
-- ✅ 测试 kling-video 端口
-- ✅ 所有图生视频端口测试完成
-
-### v0.2.0 (2026-03-05)
-- ✅ 重构层级架构，支持一级/二级端口
-- ✅ 添加 API 端口配置系统
+- ✅ 支持 v3L / v3Pro / Kling video O1
 
 ### v0.1.0 (2026-03-05)
 - ✅ 初始版本
@@ -383,8 +342,12 @@ vivago-ai-skill/
 
 ## 📞 问题反馈
 
-如有问题，请查看 `test_reports/` 目录下的测试报告。
+如有问题，请查看：
+- [TEST_REPORT.md](TEST_REPORT.md) - 完整测试报告
+- [docs/troubleshooting.md](docs/troubleshooting.md) - 故障排查
+- [docs/testing.md](docs/testing.md) - 测试指南
 
-### 模型名称确认
+---
 
-如果不确定某个二级端口的 Vivago 网站显示名称，可以询问我确认后再添加。
+*最后更新: 2026-03-07*  
+*版本: v0.8.0*
