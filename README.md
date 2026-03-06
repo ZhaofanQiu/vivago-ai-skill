@@ -73,6 +73,16 @@ AI image and video generation using Vivago AI (智小象) platform.
 | 代码端口 | 网站显示名称 | 端点 | 状态 | 默认 | 速度 | 质量 |
 |---------|-------------|------|------|------|------|------|
 | `renovation_old_photos` | **老照片修复上色** | `/v3/pipeline/proto_transformer/async` | ✅ 已测试 | ✅ | 快 | 良好 |
+| `static_shot` | **Static Shot** | `/v3/video/video_diffusion_img2vid/async` | ⏳ 待测试 | - | - | - |
+| `ash_out` | **Ash out** | `/v3/video/video_diffusion_img2vid/async` | ⏳ 待测试 | - | - | - |
+| `mystic_traveler` | **Mystic Traveler** | `/v3/pipeline/proto_transformer/async` | ⏳ 待测试 | - | - | - |
+| `shake_it_down` | **Shake It Down** | `/v3/video/video_diffusion_template/async` | ⏳ 待测试 | - | - | - |
+| `1930s_vintage_style` | **1930s vintage style** | `/v3/pipeline/proto_transformer/async` | ⏳ 待测试 | - | - | - |
+| `barbie` | **Barbie** | `/v3/pipeline/avatar_transformer/async` | ⏳ 待测试 | - | - | - |
+| `autumn_feast` | **Autumn Feast** | `/v3/pipeline/proto_transformer/async` | ⏳ 待测试 | - | - | - |
+| `paparazzi_rush` | **Paparazzi Rush** | `/v3/video/video_diffusion_img2vid/async` | ⏳ 待测试 | - | - | - |
+| `kiss_kiss` | **Kiss Kiss** | `/v3/video/video_diffusion_template/async` | ⏳ 待测试 | - | - | - |
+| `hip_twist` | **Hip Twist** | `/v3/video/video_diffusion_template/async` | ⏳ 待测试 | - | - | - |
 
 > **功能**：使用预定义模板生成特效视频
 > **输入**：单张图片 + template_id
