@@ -394,12 +394,20 @@ class VivagoClient:
         
         logger.info(f"Using port: {port_name} ({display_name})")
         
+        # Nano Banana 需要更长的超时时间 (2-4分钟)
+        if is_nano_banana:
+            max_retries = kwargs.get("max_retries", 120)  # 120 * 3s = 6分钟
+            retry_delay = kwargs.get("retry_delay", 3)
+        else:
+            max_retries = kwargs.get("max_retries", 30)   # 30 * 2s = 1分钟
+            retry_delay = kwargs.get("retry_delay", 2)
+        
         return self.call_api(
             endpoint=port_config["endpoint"],
             data=data,
             result_endpoint=port_config["result_endpoint"],
-            max_retries=kwargs.get("max_retries", 30),
-            retry_delay=kwargs.get("retry_delay", 2)
+            max_retries=max_retries,
+            retry_delay=retry_delay
         )
     
     # ==================== Image to Video ====================
@@ -939,12 +947,20 @@ class VivagoClient:
         
         logger.info(f"Using port: {port_name} ({display_name}) with {len(image_uuids)} images")
         
+        # Nano Banana 需要更长的超时时间 (2-4分钟)
+        if "nano" in port_name:
+            max_retries = kwargs.get("max_retries", 150)  # 150 * 3s = 7.5分钟
+            retry_delay = kwargs.get("retry_delay", 3)
+        else:
+            max_retries = kwargs.get("max_retries", 60)   # 60 * 3s = 3分钟
+            retry_delay = kwargs.get("retry_delay", 3)
+        
         return self.call_api(
             endpoint=port_config["endpoint"],
             data=data,
             result_endpoint=port_config["result_endpoint"],
-            max_retries=kwargs.get("max_retries", 60),
-            retry_delay=kwargs.get("retry_delay", 3)
+            max_retries=max_retries,
+            retry_delay=retry_delay
         )
     
     def get_image_result(self, image_id: str) -> dict:
