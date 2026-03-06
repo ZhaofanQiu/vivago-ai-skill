@@ -215,14 +215,23 @@ class VivagoClient:
     
     # ==================== Core API Call ====================
     
+    # 默认超时配置：30分钟（1800秒），防止重复计费
+    DEFAULT_MAX_RETRIES = 360  # 30分钟 / 5秒 = 360次
+    DEFAULT_RETRY_DELAY = 5    # 5秒轮询间隔
+    
     def call_api(
         self,
         endpoint: str,
         data: Dict[str, Any],
         result_endpoint: str,
-        max_retries: int = 60,
-        retry_delay: int = 3
+        max_retries: int = None,
+        retry_delay: int = None
     ) -> Optional[List[Dict]]:
+        # 使用默认超时配置
+        if max_retries is None:
+            max_retries = self.DEFAULT_MAX_RETRIES
+        if retry_delay is None:
+            retry_delay = self.DEFAULT_RETRY_DELAY
         """
         Generic API call with async task submission and polling.
         
@@ -266,10 +275,16 @@ class VivagoClient:
         self,
         task_id: str,
         result_endpoint: str,
-        max_retries: int = 60,
-        retry_delay: int = 3
+        max_retries: int = None,
+        retry_delay: int = None
     ) -> Optional[List[Dict]]:
         """Poll for task completion"""
+        # 使用默认超时配置
+        if max_retries is None:
+            max_retries = self.DEFAULT_MAX_RETRIES
+        if retry_delay is None:
+            retry_delay = self.DEFAULT_RETRY_DELAY
+        
         url = f"{self.base_url}{result_endpoint}?task_id={task_id}"
         headers_get = {"Authorization": self.headers["Authorization"]}
         
@@ -302,14 +317,14 @@ class VivagoClient:
                         logger.warning(f"Task rejected: {task_id}")
                     return sub_results
                 
-                logger.debug(f"Task {task_id} processing (attempt {attempt + 1})")
+                logger.debug(f"Task {task_id} processing (attempt {attempt + 1}/{max_retries})")
                 time.sleep(retry_delay)
                 
             except Exception as e:
                 logger.warning(f"Poll error: {e}")
                 time.sleep(retry_delay)
         
-        logger.error(f"Task timeout: {task_id}")
+        logger.error(f"Task timeout after {max_retries * retry_delay}s: {task_id}")
         return None
     
     # ==================== Text to Image ====================
@@ -394,20 +409,11 @@ class VivagoClient:
         
         logger.info(f"Using port: {port_name} ({display_name})")
         
-        # Nano Banana 需要更长的超时时间 (2-4分钟)
-        if is_nano_banana:
-            max_retries = kwargs.get("max_retries", 120)  # 120 * 3s = 6分钟
-            retry_delay = kwargs.get("retry_delay", 3)
-        else:
-            max_retries = kwargs.get("max_retries", 30)   # 30 * 2s = 1分钟
-            retry_delay = kwargs.get("retry_delay", 2)
-        
+        # 使用默认30分钟超时配置（防止重复计费）
         return self.call_api(
             endpoint=port_config["endpoint"],
             data=data,
-            result_endpoint=port_config["result_endpoint"],
-            max_retries=max_retries,
-            retry_delay=retry_delay
+            result_endpoint=port_config["result_endpoint"]
         )
     
     # ==================== Image to Video ====================
@@ -485,12 +491,11 @@ class VivagoClient:
         
         logger.info(f"Using port: {port_name} ({display_name}) ⚠️ 2-3 minutes")
         
+        # 使用默认30分钟超时配置（防止重复计费）
         return self.call_api(
             endpoint=port_config["endpoint"],
             data=data,
-            result_endpoint=port_config["result_endpoint"],
-            max_retries=kwargs.get("max_retries", 60),  # 视频需要更多重试
-            retry_delay=kwargs.get("retry_delay", 3)     # 视频间隔更长
+            result_endpoint=port_config["result_endpoint"]
         )
     
     # ==================== Text to Video ====================
@@ -574,12 +579,11 @@ class VivagoClient:
         
         logger.info(f"Using port: {port_name} ({display_name}) ⚠️ 2-3 minutes")
         
+        # 使用默认30分钟超时配置（防止重复计费）
         return self.call_api(
             endpoint=port_config["endpoint"],
             data=data,
-            result_endpoint=port_config["result_endpoint"],
-            max_retries=kwargs.get("max_retries", 60),
-            retry_delay=kwargs.get("retry_delay", 3)
+            result_endpoint=port_config["result_endpoint"]
         )
     
     # ==================== Keyframe to Video ====================
@@ -671,12 +675,11 @@ class VivagoClient:
         
         logger.info(f"Using port: {port_name} ({display_name}) with 2 keyframes ⚠️ 2-3 minutes")
         
+        # 使用默认30分钟超时配置（防止重复计费）
         return self.call_api(
             endpoint=port_config["endpoint"],
             data=data,
-            result_endpoint=port_config["result_endpoint"],
-            max_retries=kwargs.get("max_retries", 60),
-            retry_delay=kwargs.get("retry_delay", 3)
+            result_endpoint=port_config["result_endpoint"]
         )
     
     # ==================== Template to Video ====================
@@ -738,12 +741,11 @@ class VivagoClient:
         
         logger.info(f"Using template: {port_name} ({display_name}) ⚠️ 2-3 minutes")
         
+        # 使用默认30分钟超时配置（防止重复计费）
         return self.call_api(
             endpoint=endpoint,
             data=data,
-            result_endpoint=result_endpoint,
-            max_retries=kwargs.get("max_retries", 60),
-            retry_delay=kwargs.get("retry_delay", 3)
+            result_endpoint=result_endpoint
         )
     
     def _build_default_template_data(
@@ -947,20 +949,11 @@ class VivagoClient:
         
         logger.info(f"Using port: {port_name} ({display_name}) with {len(image_uuids)} images")
         
-        # Nano Banana 需要更长的超时时间 (2-4分钟)
-        if "nano" in port_name:
-            max_retries = kwargs.get("max_retries", 150)  # 150 * 3s = 7.5分钟
-            retry_delay = kwargs.get("retry_delay", 3)
-        else:
-            max_retries = kwargs.get("max_retries", 60)   # 60 * 3s = 3分钟
-            retry_delay = kwargs.get("retry_delay", 3)
-        
+        # 使用默认30分钟超时配置（防止重复计费）
         return self.call_api(
             endpoint=port_config["endpoint"],
             data=data,
-            result_endpoint=port_config["result_endpoint"],
-            max_retries=max_retries,
-            retry_delay=retry_delay
+            result_endpoint=port_config["result_endpoint"]
         )
     
     def get_image_result(self, image_id: str) -> dict:
