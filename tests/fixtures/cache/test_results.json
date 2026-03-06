@@ -31,5 +31,43 @@
   "video_template": {
     "status": "success",
     "cached_at": "2026-03-07T01:51:22.010033"
+  },
+  "port_kling_image": {
+    "status": "success",
+    "cached_at": "2026-03-07T02:09:23.675311"
+  },
+  "port_hidream": {
+    "status": "success",
+    "cached_at": "2026-03-07T02:09:47.518968"
+  },
+  "nano_banana_debug": {
+    "status": "failed",
+    "error": "API error: None",
+    "error_type": "Exception",
+    "cached_at": "2026-03-07T02:17:11.824306"
+  },
+  "port_nano_banana": {
+    "status": "success",
+    "cached_at": "2026-03-07T02:19:27.462032"
+  },
+  "port_kling_img2img": {
+    "status": "success",
+    "cached_at": "2026-03-07T02:20:24.688737"
+  },
+  "port_v3l_img2vid": {
+    "status": "success",
+    "cached_at": "2026-03-07T02:24:04.073249"
+  },
+  "port_v3l_txt2vid": {
+    "status": "success",
+    "cached_at": "2026-03-07T02:26:03.180061"
+  },
+  "port_v3l_keyframe": {
+    "status": "success",
+    "cached_at": "2026-03-07T02:27:24.913800"
+  },
+  "port_kling_video": {
+    "status": "success",
+    "cached_at": "2026-03-07T02:32:25.741844"
   }
 }
