@@ -388,8 +388,10 @@ class VivagoClient:
             "request_id": str(uuid.uuid4())
         }
         
-        # 非 Nano Banana 2 才传 version
-        if not is_nano_banana:
+        # 设置 version 参数
+        if is_nano_banana:
+            data["version"] = port_config.get("version", "nano-banana-2")
+        else:
             data["version"] = port_config.get("version", "kling-image-o1")
         
         logger.info(f"Using port: {port_name} ({display_name})")
