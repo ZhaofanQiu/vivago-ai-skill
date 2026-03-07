@@ -127,6 +127,71 @@ image_uuid = client.upload_image(
 - JPEG格式
 - 最大5MB
 
+### 图生图 (image_to_image)
+
+```python
+results = client.image_to_image(
+    prompt="融合风格描述",         # 必需
+    image_uuids=["p_xxxx"],        # 必需，图片UUID列表
+    port="kling-image",            # 可选，默认kling-image
+    strength=0.8,                  # 可选，变化强度0-1
+    relevance=[0.9],               # 可选，每张图的参考权重
+    wh_ratio="1:1"                 # 可选
+)
+```
+
+**参数说明**:
+
+| 参数 | 类型 | 必需 | 说明 |
+|------|------|------|------|
+| prompt | str | ✅ | 图像描述 |
+| image_uuids | list | ✅ | 图片UUID列表 |
+| port | str | ❌ | 模型端口 |
+| strength | float | ❌ | 变化强度(0-1) |
+| relevance | list | ❌ | 参考权重列表 |
+| wh_ratio | str | ❌ | 宽高比 |
+
+**⚠️ 重要：UUID 格式规范**
+
+Vivago 平台使用以下格式的 UUID：
+
+| 类型 | 格式示例 | 说明 |
+|------|----------|------|
+| **上传图片** | `j_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` | 上传后的图片 |
+| **生成图片** | `p_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` | 文生图结果 |
+| **生成视频** | `v_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` | 视频结果 |
+
+**正确格式**:
+```python
+# ✅ 正确：完整的 UUID
+image_uuids = [
+    "p_26d2197b-9da8-4cd6-a965-d7eb8e63f846",  # 杰尼龟
+    "p_929c4dd4-a08b-4d04-b4c5-6f376ced439e",  # 妙蛙种子
+]
+
+# ❌ 错误：简写或自定义ID
+image_uuids = ["p_pikachu", "p_squirtle"]  # 会导致失败
+```
+
+**多图融合示例**:
+```python
+# 四只宝可梦融合
+results = client.image_to_image(
+    prompt="A fusion creature combining four Pokemon",
+    image_uuids=[
+        "p_26d2197b-9da8-4cd6-a965-d7eb8e63f846",  # 杰尼龟
+        "p_929c4dd4-a08b-4d04-b4c5-6f376ced439e",  # 妙蛙种子
+        "p_54fca3b0-b203-4ad7-a014-1db7ac36fd51",  # 小火龙
+        "p_xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",      # 皮卡丘(需先生成)
+    ],
+    port="kling-image",
+    strength=0.7,
+    relevance=[0.9, 0.9, 0.9, 0.9]
+)
+```
+
+**port选项**: "kling-image"(快), "nano-banana"(质)
+
 ## 任务状态码
 
 | 状态码 | 含义 | 说明 |

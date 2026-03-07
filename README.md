@@ -203,7 +203,7 @@ results = client.image_to_video(
 # 单图风格迁移
 results = client.image_to_image(
     prompt="将图片转换为水彩画风格",
-    image_uuids=["p_xxxxx"],
+    image_uuids=["p_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"],  # 使用完整UUID
     port="kling-image",
     strength=0.8
 )
@@ -211,7 +211,10 @@ results = client.image_to_image(
 # 多图融合（皮卡丘 + 绿头鸭）
 results = client.image_to_image(
     prompt="一只皮卡丘骑在绿头鸭背上",
-    image_uuids=["p_pikachu", "p_duck"],
+    image_uuids=[
+        "p_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",  # 皮卡丘UUID
+        "p_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"   # 鸭子UUID
+    ],
     port="kling-image",
     strength=0.8,
     relevance=[0.9, 0.9]  # 两张图的参考权重
