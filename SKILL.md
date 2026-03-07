@@ -135,6 +135,23 @@ vivago-ai-skill/
 
 ## Important Notes
 
+### Feishu Channel Messaging Guidelines
+
+When sending generated content through Feishu (飞书) channel:
+
+| Content Type | Send Method | Example |
+|-------------|-------------|---------|
+| **Images** | ✅ Direct file upload | Attach image file directly |
+| **Videos** | ❌ **Must send as link** | `https://media.vivago.ai/{video_uuid}` |
+
+**⚠️ Critical**: Videos **CANNOT** be sent as file attachments in Feishu. Always construct and send the direct media URL:
+
+```
+https://media.vivago.ai/b1268f08-ac32-4b83-863f-a419797d768e.mp4
+```
+
+**Why**: Feishu does not support playable video attachments. Sending video files directly will result in delivery failure or unplayable content.
+
 ### Image Download Limitation
 
 ⚠️ **Vivago AI images have access restrictions**: Due to hotlink protection, generated images cannot be directly downloaded via API.
