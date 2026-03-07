@@ -13490,6 +13490,8 @@
     },
     "gen_params": {
       "algo_type": "image_easy_edit",
+      "deprecated": true,
+      "deprecated_reason": "v2 API endpoint no longer supported",
       "generate_path": "/api/gw/v2/image/image_easy_edit/async",
       "result_path": "/api/gw/v2/image/image_easy_edit/async/results",
       "component_type": "video",

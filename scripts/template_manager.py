@@ -64,6 +64,9 @@ class TemplateManager:
                     'custom_params': inner_params.get('custom_params', {}),
                     'params': params,
                     'inputs': gen_params.get('inputs', []),
+                    # 保存失效标记
+                    'deprecated': gen_params.get('deprecated', False),
+                    'deprecated_reason': gen_params.get('deprecated_reason', ''),
                 }
             
             print(f"已加载 {len(self.templates)} 个模板")
@@ -103,9 +106,16 @@ class TemplateManager:
             template_id: 模板ID
             
         Returns:
-            模板配置字典
+            模板配置字典，如果模板已失效会添加警告信息
         """
-        return self.templates.get(template_id)
+        template = self.templates.get(template_id)
+        if template:
+            # 检查模板是否已失效
+            if template.get('deprecated'):
+                print(f"⚠️  警告: 模板 '{template_id}' 已失效")
+                print(f"   原因: {template.get('deprecated_reason', 'API端点不再支持')}")
+                print(f"   请使用其他替代模板")
+        return template
     
     def list_templates(self) -> Dict[str, str]:
         """
