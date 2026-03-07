@@ -6306,7 +6306,7 @@
   {
     "master_template": {
       "uuid": "e13ef1f6-a193-476c-86b9-4fdabc381f1a.mp4",
-      "name": "Metallic Liquid "
+      "name": "Metallic Liquid"
     },
     "gen_params": {
       "algo_type": "video_diffusion_img2vid",
