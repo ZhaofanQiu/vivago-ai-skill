@@ -18,6 +18,21 @@ Tier 5: 模板采样 (30积分/模板)      → 按需运行
 
 ---
 
+## 最新测试状态 (2026-03-07)
+
+✅ **全部测试通过** - 详见 [TEST_REPORT_2026_03_07.md](TEST_REPORT_2026_03_07.md)
+
+| 层级 | 测试项 | 通过 | 积分 | 状态 |
+|------|--------|------|------|------|
+| Tier 1 | 单元测试 | 6 | 0 | ✅ |
+| Tier 2 | 组件集成 | 4 | 16 | ✅ |
+| Tier 3 | 核心功能 | 6 | 106 | ✅ |
+| Tier 4 | 端口采样 | 8 | 168 | ✅ |
+| Tier 5 | 模板采样 | 14 | 420 | ✅ |
+| **总计** | | **38** | **710+** | **100%** |
+
+---
+
 ## 快速开始
 
 ### 1. 环境准备
@@ -35,14 +50,15 @@ cp .env.example .env
 
 ```bash
 # 零成本，使用 Mock
-pytest tests/test_tier1_unit.py -v
+python tests/tier1_report.py
 ```
 
 ### 3. 运行 Tier 2-3 图片测试
 
 ```bash
 # 流水线测试，可顺序执行
-pytest tests/test_tier3_image.py -v
+python tests/tier2_integration.py
+python tests/tier3_image.py
 ```
 
 ### 4. 运行视频功能测试

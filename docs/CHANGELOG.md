@@ -1,5 +1,39 @@
 # 更新日志
 
+## [0.8.1] - 2026-03-07
+
+### 系统测试完成 ✅
+
+#### 完整测试覆盖
+- ✅ Tier 1-5 全部测试通过 (42/42, 100%)
+- ✅ 总积分消耗: 720+
+- ✅ 14个视频模板验证通过
+- ✅ 39项功能测试全部通过
+
+#### Bug修复
+- **Nano Banana 请求格式**: 移除 `version` 字段，修复 "Unknown Error"
+- **模板回调路径**: `style_transformer` 类型使用正确回调路径，修复 404 错误
+
+#### 安全改进
+- **30分钟超时机制**: 所有 API 调用默认 30 分钟超时
+- **防止重复计费**: 360次轮询 × 5秒间隔，确保任务完成前不超时
+
+#### 新增测试
+- `tests/tier1_report.py` - Tier 1 测试报告
+- `tests/tier2_integration.py` - 组件集成测试
+- `tests/tier3_image.py` - 核心图片功能测试
+- `tests/tier4_image_ports.py` - 图片端口采样测试
+- `tests/test_3_templates.py` - 3模板测试
+- `tests/test_5_templates.py` - 5模板测试
+- `tests/test_5_more_templates.py` - 再5模板测试
+- `tests/test_renovation.py` - 老照片修复测试
+- `docs/TEST_REPORT_2026_03_07.md` - 完整测试报告
+
+### 系统状态
+🟢 **健康运行** - 所有核心功能验证通过，可投入生产使用
+
+---
+
 ## [0.8.0] - 2026-03-06
 
 ### P0 优化完成

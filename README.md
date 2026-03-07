@@ -15,6 +15,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 - [架构设计](docs/architecture.md) - 系统设计
 - [测试指南](docs/testing.md) - 如何测试
 - [测试报告](TEST_REPORT.md) - Tier 1-4 完整测试报告
+- [测试报告 2026-03-07](docs/TEST_REPORT_2026_03_07.md) - 最新系统测试报告
 - [测试策略](docs/TEST_STRATEGY_OPTIMIZED.md) - 智能测试优化策略
 - [故障排查](docs/troubleshooting.md) - 常见问题
 - [更新日志](docs/CHANGELOG.md) - 版本历史
@@ -38,12 +39,13 @@ AI image and video generation using Vivago AI (智小象) platform.
 | 层级 | 测试项 | 通过 | 积分消耗 | 状态 |
 |------|--------|------|----------|------|
 | Tier 1 | 单元测试 | 10 | 0 | ✅ 完成 |
-| Tier 2 | 组件集成 | 3 | 16 | ✅ 完成 |
+| Tier 2 | 组件集成 | 4 | 16 | ✅ 完成 |
 | Tier 3 | 核心功能 | 6 | 106 | ✅ 完成 |
 | Tier 4 | 端口采样 | 8 | 168 | ✅ 完成 |
-| **总计** | | **27** | **290 (~¥12.2)** | **100%** |
+| Tier 5 | 模板采样 | 14 | 420 | ✅ 完成 |
+| **总计** | | **42** | **710+** | **100%** |
 
-> 详见 [TEST_REPORT.md](TEST_REPORT.md) 完整报告
+> ✅ **系统状态**: 健康运行 - 详见 [TEST_REPORT_2026_03_07.md](docs/TEST_REPORT_2026_03_07.md)
 
 ### 二级端口（具体API端点）
 
