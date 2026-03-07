@@ -15,7 +15,8 @@ AI image and video generation using Vivago AI (智小象) platform.
 - [架构设计](docs/architecture.md) - 系统设计
 - [测试指南](docs/testing.md) - 如何测试
 - [测试报告](TEST_REPORT.md) - Tier 1-4 完整测试报告
-- [测试报告 2026-03-07](docs/TEST_REPORT_2026_03_07.md) - 最新系统测试报告
+- [测试报告 2026-03-07](docs/TEST_REPORT_2026_03_07.md) - 系统测试报告
+- [测试报告 2026-03-08](TEST_REPORT_2026_03_08.md) - 最新模板测试报告
 - [测试策略](docs/TEST_STRATEGY_OPTIMIZED.md) - 智能测试优化策略
 - [故障排查](docs/troubleshooting.md) - 常见问题
 - [更新日志](docs/CHANGELOG.md) - 版本历史
@@ -31,7 +32,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 | 🎬 **图生视频 (Image-to-Video)** | ✅ 已测试 | 支持 v3L / v3Pro / Kling video O1 |
 | 🔄 **图生图 (Image-to-Image)** | ✅ 已测试 | 支持 Kling O1(快) / Nano Banana 2(质)，多图融合 |
 | 🎞️ **视频首尾帧 (Keyframe-to-Video)** | ✅ 已测试 | 支持 v3L / v3Pro |
-| 🎭 **视频模板 (Template-to-Video)** | ✅ 已测试 | 支持 134+ 模板效果 |
+| 🎭 **视频模板 (Template-to-Video)** | ✅ 已测试 | 支持 **181** 个模板效果，40个验证通过 |
 | ⬆️ **图像上传 (Image Upload)** | ✅ 已实现 | 支持自动压缩 |
 
 ### 测试覆盖率
@@ -43,9 +44,9 @@ AI image and video generation using Vivago AI (智小象) platform.
 | Tier 3 | 核心功能 | 6 | 106 | ✅ 完成 |
 | Tier 4 | 端口采样 | 8 | 168 | ✅ 完成 |
 | Tier 5 | 模板采样 | 14 | 420 | ✅ 完成 |
-| **总计** | | **42** | **710+** | **100%** |
+| **总计** | | **44** | **~1260** | **90.9%** |
 
-> ✅ **系统状态**: 健康运行 - 详见 [TEST_REPORT_2026_03_07.md](docs/TEST_REPORT_2026_03_07.md)
+> ✅ **系统状态**: 模板测试 44/181 (24.3% 覆盖率)，40个通过 - 详见 [TEST_REPORT_2026_03_08.md](TEST_REPORT_2026_03_08.md)
 
 ### 二级端口（具体API端点）
 
@@ -93,7 +94,7 @@ AI image and video generation using Vivago AI (智小象) platform.
 
 #### 视频模板 (Template-to-Video)
 
-**134+ 可用模板**，按类别分类：
+**181 个可用模板**，按类别分类：
 
 | 类别 | 数量 | 示例模板 |
 |------|------|----------|
@@ -108,8 +109,9 @@ AI image and video generation using Vivago AI (智小象) platform.
 | **产品展示** | 8+ | glasses_display, music_box, food_product_display |
 | **场景** | 20+ | romantic_kiss, graduation, starship_chef |
 
-> 查看完整模板列表：`scripts/api_ports.json` 或运行 `python -c "from scripts.template_manager import get_template_manager; tm = get_template_manager(); print(f'Total: {len(tm.templates)}')
-`
+> 查看完整模板列表：`scripts/templates_data.json` 或运行 `python -c "from scripts.template_manager import get_template_manager; tm = get_template_manager(); print(f'Total: {len(tm.list_templates())} templates')"`
+
+> **测试状态**: 44/181 已测试 (24.3%)，40个通过 (90.9%)
 
 ---
 
@@ -313,6 +315,14 @@ vivago-ai-skill/
 
 ## 📝 更新日志
 
+### v0.8.2 (2026-03-08)
+- ✅ 大规模模板测试：44 个模板，40 个通过 (90.9%)
+- ✅ 修复 metallic_liquid 命名问题（尾部空格）
+- ✅ 标记 long_hair 为失效模板（v2 API 已弃用）
+- ✅ 模板管理器增加失效警告功能
+- ✅ 创建详细测试报告 TEST_REPORT_2026_03_08.md
+- ⚠️ 发现服务器拥堵问题，暂停测试待恢复
+
 ### v0.8.0 (2026-03-07)
 - ✅ 完成 Tier 1-4 完整测试（27项测试100%通过）
 - ✅ 建立智能测试优化系统
@@ -355,5 +365,5 @@ vivago-ai-skill/
 
 ---
 
-*最后更新: 2026-03-07*  
-*版本: v0.8.0*
+*最后更新: 2026-03-08*  
+*版本: v0.8.2*
