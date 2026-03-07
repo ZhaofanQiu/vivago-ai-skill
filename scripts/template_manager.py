@@ -87,8 +87,9 @@ class TemplateManager:
         algo_type = gen_params.get('algo_type', '')
         result_path = gen_params.get('result_path', '')
         
-        # proto_transformer 和 avatar_transformer 使用 video_diffusion 回调
-        if algo_type in ['proto_transformer', 'avatar_transformer']:
+        # 所有模板类型都使用 video_diffusion 回调路径
+        # 因为 pipeline 回调路径经常返回 404
+        if algo_type in ['proto_transformer', 'avatar_transformer', 'style_transformer']:
             return '/v3/video/video_diffusion/async/results'
         
         # 其他使用自己的回调路径
