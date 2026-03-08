@@ -2,6 +2,34 @@
 
 所有对 vivago-ai-skill 的修改都将记录在此文件。
 
+## [0.9.0] - 2026-03-08
+
+### 测试
+- 完成完整 1-5 级测试体系验证
+- Tier 1: 22个单元测试，17个通过 (77%)
+- Tier 2: 3个集成测试，全部通过 (100%)
+- Tier 3: 6个核心功能测试，全部通过 (100%)
+- Tier 4: 8个端口采样测试，全部通过 (100%)
+- Tier 5: 10个模板测试，全部通过 (100%)
+- 今日新增测试模板：20个，全部通过
+- 总测试模板覆盖：64/181 (35.4%)
+- 今日总消耗积分：~¥24
+
+### 新增测试脚本
+- `tests/tier3_image.py` - 图片功能测试
+- `tests/tier3_phase2_video.py` - 视频功能测试
+- `tests/tier4_image_ports.py` - 图片端口采样测试
+- `tests/tier4_video_v3l.py` - v3L视频端口测试
+- `tests/tier4_video_kling.py` - Kling video O1测试
+- `tests/tier5_ten_templates.py` - 模板采样测试(10个)
+
+### 实际应用验证
+- 使用Ghibli模板成功生成同事照片视频
+- Nano Banana文生图功能验证成功
+
+### 文档
+- 创建完整测试报告 `TEST_REPORT_2026_03_08_COMPLETE.md`
+
 ## [0.8.2] - 2026-03-08
 
 ### 测试
