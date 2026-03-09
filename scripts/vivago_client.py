@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Vivago AI API Client - v0.2.0
+Vivago AI API Client - v0.3.0
 支持层级架构：一级功能 -> 二级端口
 """
 
@@ -14,6 +14,12 @@ from typing import Optional, Dict, Any, List, Tuple
 import requests
 import boto3
 from botocore.config import Config
+
+from enums import TaskStatus, AspectRatio, PortCategory, PortName, ModuleName
+from exceptions import (
+    VivagoAPIError, InvalidPortError, MissingCredentialError,
+    TaskFailedError, TaskRejectedError, TaskTimeoutError, ImageUploadError
+)
 
 logger = logging.getLogger(__name__)
 
@@ -125,22 +131,22 @@ class VivagoClient:
         """
         cat_config = self.ports_config.get("categories", {}).get(category)
         if not cat_config:
-            raise ValueError(f"Unknown category: {category}")
+            raise InvalidPortError(f"Unknown category: {category}")
         
         ports = cat_config.get("ports", {})
         
         if port is None:
             port = cat_config.get("default_port")
             if not port:
-                raise ValueError(f"No default port for category: {category}")
+                raise InvalidPortError(f"No default port for category: {category}")
         
         if port not in ports:
-            available = ", ".join(ports.keys())
-            raise ValueError(f"Unknown port '{port}' for {category}. Available: {available}")
+            available = list(ports.keys())
+            raise InvalidPortError(port, category, available)
         
         return ports[port], port
     
-    def list_categories(self) -> Dict[str, str]:
+    def list_categories(self) -> Dict[str, Dict[str, Any]]:
         """List all available categories (一级功能)"""
         categories = {}
         for cat_id, config in self.ports_config.get("categories", {}).items():
@@ -157,7 +163,7 @@ class VivagoClient:
         """List all available ports for a category (二级端口)"""
         cat_config = self.ports_config.get("categories", {}).get(category)
         if not cat_config:
-            raise ValueError(f"Unknown category: {category}")
+            raise InvalidPortError(f"Unknown category: {category}")
         
         ports = {}
         for port_id, config in cat_config.get("ports", {}).items():
@@ -177,7 +183,7 @@ class VivagoClient:
     def upload_image(self, image_path: str) -> str:
         """Upload image to Vivago storage"""
         if not self.s3_client:
-            raise ValueError("Storage credentials not provided. Cannot upload images.")
+            raise MissingCredentialError("Storage credentials not provided. Cannot upload images.")
         
         import cv2
         
@@ -186,7 +192,7 @@ class VivagoClient:
         
         image = cv2.imread(image_path)
         if image is None:
-            raise ValueError(f"Failed to read image: {image_path}")
+            raise ImageUploadError(image_path, "Failed to read image file")
         
         height, width = image.shape[:2]
         max_side = 1024
@@ -305,16 +311,23 @@ class VivagoClient:
                 
                 sub_results = result.get("result", {}).get("sub_task_results", [])
                 
+                # 使用TaskStatus枚举代替魔法数字
                 if sub_results and all(
-                    r.get("task_status") in {1, 3, 4} for r in sub_results
+                    r.get("task_status") in {
+                        TaskStatus.COMPLETED.value,
+                        TaskStatus.FAILED.value,
+                        TaskStatus.REJECTED.value
+                    } for r in sub_results
                 ):
                     status = sub_results[0].get("task_status")
-                    if status == 1:
+                    if status == TaskStatus.COMPLETED.value:
                         logger.info(f"Task completed: {task_id}")
-                    elif status == 3:
+                    elif status == TaskStatus.FAILED.value:
                         logger.warning(f"Task failed: {task_id}")
-                    elif status == 4:
+                        raise TaskFailedError(task_id)
+                    elif status == TaskStatus.REJECTED.value:
                         logger.warning(f"Task rejected: {task_id}")
+                        raise TaskRejectedError(task_id)
                     return sub_results
                 
                 logger.debug(f"Task {task_id} processing (attempt {attempt + 1}/{max_retries})")
@@ -325,7 +338,7 @@ class VivagoClient:
                 time.sleep(retry_delay)
         
         logger.error(f"Task timeout after {max_retries * retry_delay}s: {task_id}")
-        return None
+        raise TaskTimeoutError(task_id, max_retries * retry_delay)
     
     # ==================== Text to Image ====================
     
@@ -1010,7 +1023,9 @@ def create_client(
     storage_sk = storage_sk or os.environ.get("STORAGE_SK")
     
     if not token:
-        raise ValueError("Token required. Set HIDREAM_TOKEN env var or pass token parameter.")
+        raise MissingCredentialError(
+            "API token required. Set HIDREAM_TOKEN env var or pass token parameter."
+        )
     
     return VivagoClient(token, storage_ak, storage_sk, ports_config_path)
 
