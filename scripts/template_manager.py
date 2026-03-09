@@ -189,6 +189,10 @@ class TemplateManager:
         final_custom_params = dict(custom_params)  # 复制所有原始custom_params
         final_custom_params['master_template_id'] = custom_params.get('master_template_id', template['template_id'])
         
+        # 关键: custom_params 中也需要 wh_ratio (抓包发现的差异)
+        wh_ratio = kwargs.get('wh_ratio', '1:1')
+        final_custom_params['wh_ratio'] = wh_ratio
+        
         # 添加用户传入的额外custom_params
         if 'custom_params' in kwargs:
             final_custom_params.update(kwargs['custom_params'])
