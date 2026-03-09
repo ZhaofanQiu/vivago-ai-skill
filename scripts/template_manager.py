@@ -51,10 +51,14 @@ class TemplateManager:
                 params = gen_params.get('params', {})
                 inner_params = params.get('params', {})  # 内层params包含custom_params
                 
+                # 判断是否为受限类型（只支持1:1）
+                algo_type = gen_params.get('algo_type', '')
+                restricted_ratio = algo_type == 'video_diffusion_img2vid'
+                
                 self.templates[template_id] = {
                     'name': master.get('name'),
                     'uuid': master.get('uuid'),
-                    'algo_type': gen_params.get('algo_type'),
+                    'algo_type': algo_type,
                     'endpoint': gen_params.get('generate_path', '').replace('/api/gw', ''),
                     'result_endpoint': self._get_result_endpoint(gen_params),
                     'module': params.get('module'),
@@ -67,6 +71,9 @@ class TemplateManager:
                     # 保存失效标记
                     'deprecated': gen_params.get('deprecated', False),
                     'deprecated_reason': gen_params.get('deprecated_reason', ''),
+                    # 标记受限比例
+                    'restricted_ratio': restricted_ratio,
+                    'supported_ratios': ['1:1'] if restricted_ratio else ['16:9', '1:1', '9:16', '4:3', '3:4'],
                 }
             
             print(f"已加载 {len(self.templates)} 个模板")

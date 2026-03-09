@@ -864,14 +864,34 @@ class VivagoClient:
         # 判断输入是本地图片路径还是已上传的UUID
         if image_input.startswith('j_') and len(image_input) < 50:
             # 是已上传的UUID
-            image_uuid = image_input
-            actual_wh_ratio = wh_ratio if wh_ratio else "1:1"
-            logger.info(f"Using existing image UUID: {image_uuid}")
+            input_uuid = image_input
+            logger.info(f"Using existing image UUID: {input_uuid}")
         else:
             # 是本地图片路径，需要预处理和上传
             logger.info(f"Preprocessing image: {image_input}")
-            image_uuid, actual_wh_ratio = self.preprocess_image_for_template(image_input, wh_ratio)
-            logger.info(f"Preprocessed with ratio: {actual_wh_ratio}")
+            input_uuid, detected_ratio = self.preprocess_image_for_template(image_input, wh_ratio)
+            logger.info(f"Preprocessed with ratio: {detected_ratio}")
+        
+        # 检查模板是否有比例限制
+        restricted_ratio = template_config.get('restricted_ratio', False) if template_config else False
+        
+        if restricted_ratio:
+            # 强制使用 1:1 比例
+            actual_wh_ratio = "1:1"
+            logger.warning(f"Template '{template}' is restricted to 1:1 ratio only (API limitation)")
+        else:
+            # 使用指定比例或默认 1:1
+            actual_wh_ratio = wh_ratio if wh_ratio else "1:1"
+        
+        # 如果需要不同比例，重新预处理图片
+        if restricted_ratio and wh_ratio != "1:1":
+            logger.info(f"Re-processing image to 1:1 ratio...")
+            if not image_input.startswith('j_') or len(image_input) >= 50:
+                # 是本地路径，重新处理
+                input_uuid, _ = self.preprocess_image_for_template(image_input, "1:1")
+            # 如果是UUID，需要重新上传（简化处理：提示用户）
+        
+        image_uuid = input_uuid
         
         # 构建请求数据
         try:
