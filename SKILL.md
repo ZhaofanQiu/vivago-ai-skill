@@ -1,6 +1,6 @@
 ---
 name: vivago-ai
-description: Generate images and videos using Vivago AI (智小象) platform. Supports text-to-image, image-to-image, image editing, and image-to-video generation. Use when the user wants to create AI-generated images or videos, transform existing images, or perform image editing tasks through the Vivago AI API.
+description: Generate images and videos using Vivago AI (智小象) platform. Supports text-to-image, image-to-image, image-to-video, and keyframe-to-video generation. Use when the user wants to create AI-generated images or videos, transform existing images, or perform image style transfer through the Vivago AI API.
 ---
 
 # Vivago AI Skill
@@ -11,12 +11,12 @@ Integration with Vivago AI (智小象) platform for AI-powered image and video g
 
 ### Image Generation
 - **Text to Image** (`txt2img`): Generate images from text descriptions
-- **Image to Image** (`img2img`): Transform existing images based on prompts
-- **Image Edit** (`image_easy_edit`): Edit images with easy edit mode
+- **Image to Image** (`img2img`): Transform existing images based on prompts, including style transfer, image editing, and multi-image fusion
 
 ### Video Generation
 - **Text to Video** (`txt2vid`): Generate videos from text descriptions
 - **Image to Video** (`img2vid`): Generate videos from static images
+- **Keyframe to Video** (`keyframe_to_video`): Generate transition videos from start and end keyframes
 - **Video Templates** (`template_to_video`): 181 pre-defined video effects
 - Supports multiple model versions (v3Pro, v3L, kling-video-o1)
 
@@ -92,6 +92,16 @@ results = client.image_to_video(
     duration=5
 )
 
+# Keyframe to video (using start and end images)
+results = client.keyframe_to_video(
+    prompt="smooth transition from start to end",
+    start_image_uuid=client.upload_image("/path/to/start.jpg"),
+    end_image_uuid=client.upload_image("/path/to/end.jpg"),
+    port=PortName.V3PRO,
+    wh_ratio=AspectRatio.RATIO_16_9,
+    duration=5
+)
+
 # Video Templates - use pre-defined effects
 results = client.template_to_video(
     image_uuid=client.upload_image("/path/to/image.jpg"),
@@ -162,6 +172,7 @@ from scripts.enums import (
 |---------|-------------------|---------|
 | Text to Image | kling-image-o1 | kling-image-o1 |
 | Image to Video | v3Pro, v3L, kling-video-o1 | v3Pro |
+| Keyframe to Video | v3Pro, v3L | v3Pro |
 
 ### Aspect Ratios
 
@@ -230,14 +241,38 @@ https://media.vivago.ai/b1268f08-ac32-4b83-863f-a419797d768e.mp4
 
 **Why**: Feishu does not support playable video attachments. Sending video files directly will result in delivery failure or unplayable content.
 
-### Image Download Limitation
+### Image Download
 
-⚠️ **Vivago AI images have access restrictions**: Due to hotlink protection, generated images cannot be directly downloaded via API.
+Images can be downloaded using the correct URL format:
 
-**Workaround:**
-1. Images are generated successfully and saved to your Vivago account
-2. View and download images from: https://vivago.ai/history/image
-3. The API returns image IDs that you can use to locate your images
+```
+https://storage.vivago.ai/image/{image_name}.jpg
+```
+
+**Example:**
+```python
+from scripts import create_client
+import requests
+
+client = create_client()
+
+# Generate image
+results = client.text_to_image(prompt="a cute cat")
+image_name = results[0].get('image', '').replace('p_', '')  # Remove 'p_' prefix
+
+# Download image
+image_url = f"https://storage.vivago.ai/image/{image_name}.jpg"
+response = requests.get(image_url)
+with open("output.jpg", "wb") as f:
+    f.write(response.content)
+```
+
+**Sending via Feishu:**
+```python
+# Download and send through Feishu
+image_data = requests.get(image_url).content
+# Then send image_data as file attachment via Feishu API
+```
 
 ### Asynchronous Processing
 - API calls are asynchronous with automatic polling
