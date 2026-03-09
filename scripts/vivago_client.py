@@ -20,6 +20,7 @@ from exceptions import (
     VivagoAPIError, InvalidPortError, MissingCredentialError,
     TaskFailedError, TaskRejectedError, TaskTimeoutError, ImageUploadError
 )
+from config_loader import load_ports_config
 
 logger = logging.getLogger(__name__)
 
@@ -75,17 +76,19 @@ class VivagoClient:
             )
     
     def _load_ports_config(self, config_path: Optional[str] = None) -> Dict:
-        """Load API ports configuration"""
-        if config_path is None:
-            # Default to same directory as this file
-            config_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                "api_ports.json"
-            )
+        """Load API ports configuration
         
+        优先使用新的分体式配置加载器，支持 config/ 目录或回退到 api_ports.json
+        """
         try:
-            with open(config_path, 'r', encoding='utf-8') as f:
-                return json.load(f)
+            # 使用新的配置加载器
+            if config_path:
+                # 如果指定了路径，使用旧的方式加载
+                with open(config_path, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            else:
+                # 使用新的分体式配置加载
+                return load_ports_config()
         except Exception as e:
             logger.warning(f"Failed to load ports config: {e}, using defaults")
             return self._default_ports_config()
