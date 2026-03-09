@@ -15,12 +15,12 @@ import requests
 import boto3
 from botocore.config import Config
 
-from enums import TaskStatus, AspectRatio, PortCategory, PortName, ModuleName
-from exceptions import (
+from .enums import TaskStatus, AspectRatio, PortCategory, PortName, ModuleName
+from .exceptions import (
     VivagoAPIError, InvalidPortError, MissingCredentialError,
     TaskFailedError, TaskRejectedError, TaskTimeoutError, ImageUploadError
 )
-from config_loader import load_ports_config
+from .config_loader import load_ports_config
 
 logger = logging.getLogger(__name__)
 
