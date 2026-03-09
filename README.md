@@ -14,11 +14,14 @@ AI image and video generation using Vivago AI (智小象) platform.
 - [API参考](docs/api_reference.md) - 完整API文档
 - [架构设计](docs/architecture.md) - 系统设计
 - [测试指南](docs/testing.md) - 如何测试
-- [测试报告](TEST_REPORT.md) - 完整测试报告
-- [测试报告 2026-03-08](TEST_REPORT_2026_03_08.md) - 模板测试报告
 - [测试策略](docs/TEST_STRATEGY_OPTIMIZED.md) - 智能测试优化策略
 - [故障排查](docs/troubleshooting.md) - 常见问题
 - [更新日志](CHANGELOG.md) - 版本历史
+
+### 历史测试报告
+
+- [测试报告 2026-03-08](docs/archive/reports/TEST_REPORT_2026_03_08.md) - 模板测试报告
+- [测试报告 2026-03-07](docs/archive/reports/TEST_REPORT.md) - 完整测试报告
 
 ## 📊 功能状态
 
