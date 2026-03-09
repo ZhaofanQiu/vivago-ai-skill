@@ -722,7 +722,7 @@ class VivagoClient:
             List of generated video results
         """
         # 使用模板管理器获取配置
-        from template_manager import get_template_manager
+        from .template_manager import get_template_manager
         
         manager = get_template_manager()
         template_config = manager.get_template(template)
