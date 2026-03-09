@@ -17,7 +17,7 @@ Integration with Vivago AI (智小象) platform for AI-powered image and video g
 ### Video Generation
 - **Text to Video** (`txt2vid`): Generate videos from text descriptions
 - **Image to Video** (`img2vid`): Generate videos from static images
-- **Video Templates** (`template_to_video`): 134 pre-defined video effects
+- **Video Templates** (`template_to_video`): 181 pre-defined video effects
 - Supports multiple model versions (v3Pro, v3L, kling-video-o1)
 
 ### Additional Features
@@ -25,6 +25,27 @@ Integration with Vivago AI (智小象) platform for AI-powered image and video g
 - Batch generation (up to 4 images)
 - Multiple aspect ratios (1:1, 4:3, 3:4, 16:9, 9:16)
 - Automatic retry with polling
+
+## Architecture
+
+### Core Modules
+
+```
+scripts/
+├── vivago_client.py       # Main API client
+├── template_manager.py    # Template management
+├── config_loader.py       # Configuration loading
+├── enums.py              # Type enums (TaskStatus, AspectRatio, etc.)
+├── exceptions.py         # Structured exceptions
+└── config/               # Modular configuration files
+```
+
+### Code Quality
+
+- **Type Safety**: Complete type annotations and enums
+- **Exception Handling**: Structured exception hierarchy
+- **CI/CD**: GitHub Actions for automated testing
+- **Modular Config**: Split configuration files for maintainability
 
 ## Setup
 
@@ -47,7 +68,9 @@ pip install -r requirements.txt
 ### Python API
 
 ```python
-from scripts.vivago_client import create_client
+from scripts import create_client, VivagoClient
+from scripts.enums import AspectRatio, PortName, TaskStatus
+from scripts.exceptions import TaskFailedError, TaskTimeoutError
 
 # Create client
 client = create_client()
@@ -55,7 +78,8 @@ client = create_client()
 # Text to image
 results = client.text_to_image(
     prompt="a beautiful sunset over mountains",
-    wh_ratio="16:9",
+    port=PortName.KLING_IMAGE,  # or PortName.NANO_BANANA
+    wh_ratio=AspectRatio.RATIO_16_9,
     batch_size=2
 )
 
@@ -63,7 +87,8 @@ results = client.text_to_image(
 results = client.image_to_video(
     prompt="camera slowly zooming out",
     image_uuid=client.upload_image("/path/to/image.jpg"),
-    wh_ratio="16:9",
+    port=PortName.V3PRO,
+    wh_ratio=AspectRatio.RATIO_16_9,
     duration=5
 )
 
@@ -71,8 +96,30 @@ results = client.image_to_video(
 results = client.template_to_video(
     image_uuid=client.upload_image("/path/to/image.jpg"),
     template="ghibli",  # See available templates below
-    wh_ratio="9:16"
+    wh_ratio=AspectRatio.RATIO_9_16
 )
+```
+
+### Error Handling
+
+```python
+from scripts.exceptions import (
+    TaskFailedError,
+    TaskRejectedError,
+    TaskTimeoutError,
+    InvalidPortError
+)
+
+try:
+    results = client.image_to_video(...)
+except TaskFailedError as e:
+    print(f"Task failed: {e.task_id}")
+except TaskRejectedError as e:
+    print(f"Content rejected: {e.reason}")
+except TaskTimeoutError as e:
+    print(f"Timeout after {e.timeout_seconds}s")
+except InvalidPortError as e:
+    print(f"Invalid port: {e.port}, available: {e.available}")
 ```
 
 ### Command Line
@@ -98,6 +145,17 @@ python scripts/img2video.py \
 
 ## API Reference
 
+### Enums
+
+```python
+from scripts.enums import (
+    TaskStatus,      # PENDING, COMPLETED, PROCESSING, FAILED, REJECTED
+    AspectRatio,     # RATIO_1_1, RATIO_4_3, RATIO_16_9, etc.
+    PortCategory,    # TEXT_TO_IMAGE, IMAGE_TO_VIDEO, etc.
+    PortName         # KLING_IMAGE, V3PRO, NANO_BANANA, etc.
+)
+```
+
 ### Models
 
 | Feature | Available Versions | Default |
@@ -115,21 +173,41 @@ python scripts/img2video.py \
 
 ### Task Status Codes
 
-- `0` - Pending
-- `1` - Completed
-- `2` - Processing
-- `3` - Failed
-- `4` - Rejected (content review)
+```python
+from scripts.enums import TaskStatus
+
+TaskStatus.PENDING     # 0 - Pending
+TaskStatus.COMPLETED   # 1 - Completed
+TaskStatus.PROCESSING  # 2 - Processing
+TaskStatus.FAILED      # 3 - Failed
+TaskStatus.REJECTED    # 4 - Rejected (content review)
+```
 
 ## File Structure
 
 ```
 vivago-ai-skill/
 ├── scripts/
+│   ├── __init__.py         # Package exports
 │   ├── vivago_client.py    # Core API client
-│   ├── txt2img.py          # Text to image CLI
-│   └── img2video.py        # Image to video CLI
-├── requirements.txt        # Dependencies
+│   ├── template_manager.py # Template management
+│   ├── config_loader.py    # Configuration loader
+│   ├── enums.py            # Type enums
+│   ├── exceptions.py       # Exception classes
+│   ├── logging_config.py   # Logging configuration
+│   └── config/             # Modular config files
+│       ├── base.json
+│       ├── text_to_image.json
+│       ├── image_to_video.json
+│       └── ...
+├── tests/
+│   ├── conftest.py         # Pytest configuration
+│   ├── archive/            # Archived tests
+│   └── ...
+├── docs/                   # Documentation
+├── .github/workflows/      # CI configuration
+├── requirements.txt
+├── README.md
 └── SKILL.md               # This file
 ```
 
@@ -174,13 +252,26 @@ The client handles common errors:
 - Network timeouts (with retry)
 - Rate limiting (with exponential backoff)
 - Invalid parameters (validation before API call)
-- Task failures (status code 3 or 4)
+- Task failures (structured exceptions)
 
-For detailed error codes, see Vivago AI API documentation.
+### Exception Hierarchy
+
+```
+VivagoError (base)
+├── VivagoAPIError
+├── MissingCredentialError
+├── InvalidPortError
+├── ImageUploadError
+├── TemplateNotFoundError
+└── TaskError
+    ├── TaskFailedError
+    ├── TaskRejectedError
+    └── TaskTimeoutError
+```
 
 ## Video Templates Reference
 
-The following **134 video templates** are available via `template_to_video()`:
+The following **181 video templates** are available via `template_to_video()`:
 
 ### Quick Categories
 
@@ -255,8 +346,9 @@ for tid, name in sorted(templates.items()):
 ```
 
 ### Usage Example
+
 ```python
-from scripts.vivago_client import create_client
+from scripts import create_client
 
 client = create_client()
 
@@ -277,3 +369,23 @@ results = client.template_to_video(
     wh_ratio="9:16"
 )
 ```
+
+## Changelog
+
+### v0.9.0 (2026-03-09)
+- ✅ Code review complete (P0-P3)
+- ✅ Added GitHub Actions CI
+- ✅ Added type safety module (enums.py)
+- ✅ Added structured exceptions (exceptions.py)
+- ✅ Split configuration into modular files
+- ✅ Archived redundant code and tests
+- ✅ Pinned dependency versions
+
+### v0.8.2 (2026-03-08)
+- ✅ Template testing: 44 templates, 40 passed (90.9%)
+- ✅ Fixed metallic_liquid naming issue
+- ✅ Marked long_hair as deprecated
+
+### v0.8.0 (2026-03-07)
+- ✅ Completed Tier 1-4 testing
+- ✅ Established smart test optimization system
