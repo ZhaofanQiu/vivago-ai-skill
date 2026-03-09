@@ -229,6 +229,8 @@ class TemplateManager:
             'template_id': template['template_id'],
             'upstream_id': kwargs.get('upstream_id', ''),
             'pipeline_id': kwargs.get('pipeline_id', ''),
+            'create_type': 'effect_video_generate',
+            'cost_number': kwargs.get('cost_number', 30),
             'request_id': kwargs.get('request_id', '')
         }
         
