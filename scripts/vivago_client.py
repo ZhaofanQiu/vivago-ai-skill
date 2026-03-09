@@ -24,6 +24,31 @@ from .config_loader import load_ports_config
 
 logger = logging.getLogger(__name__)
 
+# 视频模板支持的宽高比
+SUPPORTED_RATIOS = ["16:9", "1:1", "9:16", "4:3", "3:4"]
+
+def parse_ratio(ratio_str: str) -> float:
+    """解析宽高比字符串，返回宽/高的数值"""
+    try:
+        w, h = ratio_str.split(":")
+        return float(w) / float(h)
+    except:
+        return 1.0
+
+def find_closest_ratio(image_ratio: float) -> str:
+    """找到与图片比例最接近的支持的宽高比"""
+    min_diff = float('inf')
+    closest = "1:1"
+    
+    for ratio in SUPPORTED_RATIOS:
+        r = parse_ratio(ratio)
+        diff = abs(image_ratio - r)
+        if diff < min_diff:
+            min_diff = diff
+            closest = ratio
+    
+    return closest
+
 
 class VivagoClient:
     """
@@ -221,6 +246,96 @@ class VivagoClient:
         )
         
         return image_uuid
+    
+    def preprocess_image_for_template(self, image_path: str, target_ratio: str = None) -> Tuple[str, str]:
+        """
+        为视频模板预处理图片
+        
+        1. 检测图片实际比例
+        2. 如果图片比例在支持列表中，直接使用
+        3. 如果不在，裁剪到最近的支持比例
+        4. 上传处理后的图片
+        
+        Args:
+            image_path: 原始图片路径
+            target_ratio: 指定的目标比例（可选），如果为None则自动检测
+            
+        Returns:
+            (image_uuid, actual_wh_ratio): 上传后的图片UUID和实际使用的宽高比
+        """
+        import cv2
+        import numpy as np
+        
+        if not self.s3_client:
+            raise MissingCredentialError("Storage credentials not provided. Cannot upload images.")
+        
+        # 读取图片
+        image = cv2.imread(image_path)
+        if image is None:
+            raise ImageUploadError(image_path, "Failed to read image file")
+        
+        height, width = image.shape[:2]
+        actual_ratio = width / height
+        
+        # 如果指定了目标比例，使用它；否则找到最接近的支持比例
+        if target_ratio and target_ratio in SUPPORTED_RATIOS:
+            closest_ratio = target_ratio
+        else:
+            closest_ratio = find_closest_ratio(actual_ratio)
+        
+        target_ratio_val = parse_ratio(closest_ratio)
+        
+        # 检查是否需要裁剪
+        current_ratio = width / height
+        ratio_diff = abs(current_ratio - target_ratio_val)
+        
+        # 如果比例差异大于阈值（1%），需要裁剪
+        if ratio_diff > 0.01:
+            logger.info(f"Image ratio {current_ratio:.3f} differs from target {closest_ratio} ({target_ratio_val:.3f}), cropping...")
+            
+            # 计算裁剪区域（居中裁剪）
+            if current_ratio > target_ratio_val:
+                # 图片太宽，需要裁掉左右
+                new_width = int(height * target_ratio_val)
+                start_x = (width - new_width) // 2
+                image = image[:, start_x:start_x + new_width]
+            else:
+                # 图片太高，需要裁掉上下
+                new_height = int(width / target_ratio_val)
+                start_y = (height - new_height) // 2
+                image = image[start_y:start_y + new_height, :]
+            
+            logger.info(f"Cropped image to {image.shape[1]}x{image.shape[0]} ({closest_ratio})")
+        
+        # 调整大小（最大边不超过1024）
+        height, width = image.shape[:2]
+        max_side = 1024
+        
+        if height > width:
+            scale = max_side / height
+        else:
+            scale = max_side / width
+        
+        if scale < 1:
+            new_width = int(width * scale)
+            new_height = int(height * scale)
+            image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_AREA)
+        
+        # 压缩并上传
+        image_uuid = f"j_{uuid.uuid4()}"
+        compression_params = [cv2.IMWRITE_JPEG_QUALITY, 80]
+        _, encoded_image = cv2.imencode('.jpg', image, compression_params)
+        
+        self.s3_client.put_object(
+            Body=encoded_image.tobytes(),
+            Bucket=self.STORAGE_BUCKET,
+            Key=image_uuid,
+            ContentType='image/jpeg'
+        )
+        
+        logger.info(f"Preprocessed and uploaded image {image_path} -> {image_uuid} with ratio {closest_ratio}")
+        
+        return image_uuid, closest_ratio
     
     # ==================== Core API Call ====================
     
@@ -702,9 +817,9 @@ class VivagoClient:
     
     def template_to_video(
         self,
-        image_uuid: str,
+        image_input: str,
         template: str = "renovation_old_photos",
-        wh_ratio: str = "1:1",
+        wh_ratio: str = None,
         **kwargs
     ) -> Optional[List[Dict]]:
         """
@@ -713,9 +828,9 @@ class VivagoClient:
         使用预定义模板生成特效视频，支持动态加载模板配置
         
         Args:
-            image_uuid: 输入图片UUID
+            image_input: 输入图片路径或已上传的UUID (以 'j_' 开头的UUID)
             template: 模板名称 (renovation_old_photos, barbie, ash_out 等)
-            wh_ratio: 宽高比 (16:9, 1:1, 9:16, 3:4, 4:3)
+            wh_ratio: 宽高比 (16:9, 1:1, 9:16, 3:4, 4:3)，None则自动检测并裁剪
             **kwargs: 额外参数
             
         Returns:
@@ -746,16 +861,28 @@ class VivagoClient:
             version = template_config['version']
             port_name = template
         
+        # 判断输入是本地图片路径还是已上传的UUID
+        if image_input.startswith('j_') and len(image_input) < 50:
+            # 是已上传的UUID
+            image_uuid = image_input
+            actual_wh_ratio = wh_ratio if wh_ratio else "1:1"
+            logger.info(f"Using existing image UUID: {image_uuid}")
+        else:
+            # 是本地图片路径，需要预处理和上传
+            logger.info(f"Preprocessing image: {image_input}")
+            image_uuid, actual_wh_ratio = self.preprocess_image_for_template(image_input, wh_ratio)
+            logger.info(f"Preprocessed with ratio: {actual_wh_ratio}")
+        
         # 构建请求数据
         try:
-            data = manager.build_request_data(template, image_uuid, wh_ratio=wh_ratio, **kwargs)
+            data = manager.build_request_data(template, image_uuid, wh_ratio=actual_wh_ratio, **kwargs)
         except ValueError:
             # 如果模板管理器中没有，使用默认构建逻辑
             data = self._build_default_template_data(
-                image_uuid, template, wh_ratio, module, version, template_id, **kwargs
+                image_uuid, template, actual_wh_ratio, module, version, template_id, **kwargs
             )
         
-        logger.info(f"Using template: {port_name} ({display_name}) ⚠️ 2-3 minutes")
+        logger.info(f"Using template: {port_name} ({display_name}) with ratio {actual_wh_ratio} ⚠️ 2-3 minutes")
         
         # 使用默认30分钟超时配置（防止重复计费）
         return self.call_api(
