@@ -1,77 +1,55 @@
 #!/usr/bin/env python3
 """
-日志配置
-提供统一的日志设置
+统一日志配置
+
+Usage:
+    from logging_config import get_logger
+    logger = get_logger(__name__)
 """
 import logging
 import sys
-from pathlib import Path
 from typing import Optional
 
 
-def setup_logging(
+DEFAULT_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+DEFAULT_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
+
+
+def configure_logging(
     level: int = logging.INFO,
-    log_file: Optional[str] = None,
-    format_string: Optional[str] = None
-) -> logging.Logger:
+    format_str: str = DEFAULT_FORMAT,
+    date_format: str = DEFAULT_DATE_FORMAT,
+    handler: Optional[logging.Handler] = None
+) -> None:
     """
-    设置日志配置
+    配置根日志记录器
     
     Args:
-        level: 日志级别 (DEBUG, INFO, WARNING, ERROR)
-        log_file: 日志文件路径（可选）
-        format_string: 自定义格式（可选）
-        
-    Returns:
-        配置好的logger
+        level: 日志级别，默认 INFO
+        format_str: 日志格式
+        date_format: 日期格式
+        handler: 自定义handler，默认使用StreamHandler
     """
-    if format_string is None:
-        format_string = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    if handler is None:
+        handler = logging.StreamHandler(sys.stdout)
     
-    # 创建formatter
-    formatter = logging.Formatter(format_string)
+    formatter = logging.Formatter(format_str, date_format)
+    handler.setFormatter(formatter)
     
-    # 获取根logger
-    logger = logging.getLogger()
-    logger.setLevel(level)
+    # 配置根记录器
+    root_logger = logging.getLogger()
+    root_logger.setLevel(level)
+    root_logger.addHandler(handler)
     
-    # 清除现有handlers
-    logger.handlers.clear()
-    
-    # 添加控制台handler
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setLevel(level)
-    console_handler.setFormatter(formatter)
-    logger.addHandler(console_handler)
-    
-    # 添加文件handler（如果指定）
-    if log_file:
-        log_path = Path(log_file)
-        log_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        file_handler = logging.FileHandler(log_file, encoding='utf-8')
-        file_handler.setLevel(level)
-        file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
-    
-    return logger
+    # 设置第三方库的日志级别
+    logging.getLogger('urllib3').setLevel(logging.WARNING)
+    logging.getLogger('botocore').setLevel(logging.WARNING)
 
 
 def get_logger(name: str) -> logging.Logger:
-    """
-    获取指定名称的logger
-    
-    Args:
-        name: logger名称，通常用 __name__
-        
-    Returns:
-        logger实例
-    """
+    """获取命名日志记录器"""
     return logging.getLogger(name)
 
 
-# 默认日志配置
-default_setup = lambda: setup_logging(
-    level=logging.INFO,
-    format_string='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+# 默认配置（在导入时自动应用）
+configure_logging()

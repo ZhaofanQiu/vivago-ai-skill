@@ -4,13 +4,9 @@
 综合考虑历史结果、风险等级、覆盖率、积分成本
 实现高性价比测试
 """
-import sys
-import os
 from typing import List, Dict, Tuple
 from dataclasses import dataclass
 from enum import Enum
-
-sys.path.insert(0, os.path.dirname(__file__))
 
 from test_history_manager import get_test_history_manager, FunctionTestRecord
 

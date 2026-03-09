@@ -3,18 +3,7 @@
 Tier 3: 核心功能冒烟测试
 图片功能: 16积分 (文生图 + 图生图)
 """
-import sys
 import os
-
-sys.path.insert(0, '/root/.openclaw/workspace/skills/vivago-ai-skill/scripts')
-
-# 加载环境变量
-with open('/root/.openclaw/workspace/skills/vivago-ai-skill/.env', 'r') as f:
-    for line in f:
-        if '=' in line and not line.startswith('#'):
-            key, value = line.strip().split('=', 1)
-            os.environ[key] = value
-
 from vivago_client import create_client
 
 print("="*60)
