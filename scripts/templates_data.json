@@ -17263,6 +17263,8 @@
         "upstream_id": "",
         "pipeline_id": ""
       },
+      "deprecated": true,
+      "deprecated_reason": "API endpoint returns frequent failures - template is no longer supported by Vivago AI",
       "params_version": "v3"
     }
   },

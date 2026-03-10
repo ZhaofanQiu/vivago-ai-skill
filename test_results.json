@@ -1,0 +1,47 @@
+{
+  "test_start": "2026-03-10T14:00:01.014812",
+  "test_image": "j_daeef3b0-9cd7-4741-87e8-31fab45f89c1",
+  "templates": {
+    "1960s": {
+      "success": false,
+      "error": "HTTPSConnectionPool(host='vivago.ai', port=443): Read timed out. (read timeout=20)",
+      "submit_time": "2026-03-10T14:00:01.014852",
+      "result_type": "unknown"
+    },
+    "animal_and_turkey": {
+      "success": false,
+      "error": "HTTPSConnectionPool(host='vivago.ai', port=443): Read timed out. (read timeout=20)",
+      "submit_time": "2026-03-10T14:00:21.489659",
+      "result_type": "unknown"
+    },
+    "1970s": {
+      "success": false,
+      "error": "HTTPSConnectionPool(host='vivago.ai', port=443): Read timed out. (read timeout=20)",
+      "submit_time": "2026-03-10T14:00:42.055715",
+      "result_type": "unknown"
+    },
+    "couple_kissing": {
+      "success": false,
+      "error": "HTTPSConnectionPool(host='vivago.ai', port=443): Read timed out. (read timeout=20)",
+      "submit_time": "2026-03-10T14:01:02.559139",
+      "result_type": "unknown"
+    },
+    "hold_deceased": {
+      "success": false,
+      "error": "Timeout",
+      "submit_time": "2026-03-10T14:01:22.966546",
+      "complete_time": "2026-03-10T14:06:32.429148",
+      "result_type": "timeout",
+      "task_id": "0143bee4-9ab2-4e8b-9500-f2436b34f8c8"
+    }
+  },
+  "test_end": "2026-03-10T14:06:32.429236",
+  "stats": {
+    "passed": 0,
+    "failed": 4,
+    "rejected": 0,
+    "timeout": 1,
+    "video": 0,
+    "image": 0
+  }
+}

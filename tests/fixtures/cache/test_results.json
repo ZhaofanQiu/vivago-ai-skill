@@ -8,8 +8,8 @@
     "image_to_video": "✅ 成功",
     "text_to_video": "✅ 成功",
     "keyframe_to_video": "✅ 成功",
-    "template_to_video": "✅ 成功",
-    "cached_at": "2026-03-08T11:34:16.352021"
+    "template_to_video": "❌ 失败: VivagoClient.template_to_video() missing 1 require",
+    "cached_at": "2026-03-10T15:18:39.763442"
   },
   "port_v3l_img2vid": {
     "status": "success",

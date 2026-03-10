@@ -1,12 +1,7 @@
 #!/usr/bin/env python3
 """
-严格串行模板测试脚本
-- 逐个测试，一个完成再下一个
-- 验证最终结果（不只是提交）
-- 区分视频/图片结果类型
-- 更新测试报告到 TEMPLATE_TEST_REPORT.md
+第二轮模板测试 - 10个随机模板
 """
-
 import sys
 sys.path.insert(0, '/root/.openclaw/workspace/skills/vivago-ai-skill')
 
@@ -15,6 +10,7 @@ from scripts.template_manager import get_template_manager
 import requests
 import json
 import time
+import random
 from datetime import datetime
 
 # 配置
@@ -22,21 +18,18 @@ TEST_IMAGE_UUID = 'j_daeef3b0-9cd7-4741-87e8-31fab45f89c1'
 MAX_WAIT_TIME = 300  # 最大等待5分钟
 POLL_INTERVAL = 10   # 每10秒轮询一次
 
+# 第二轮测试的10个随机模板
+TEST_TEMPLATES = [
+    '1970s', 'instant_sadness', '1970s_punk_animation', 'bring_comics_to_life', 
+    'couple_kissing', '1940s_suit_portrait', 'hold_deceased', 'photo_restore', 
+    '1960s', 'animal_and_turkey'
+]
+
 client = create_client()
 manager = get_template_manager()
 
-# 混合测试：2个通过 + 3个超时
-TEST_TEMPLATES = [
-    '1960s',           # 之前通过
-    'animal_and_turkey',  # 之前通过
-    '1970s',           # 之前超时（但单独测试成功过）
-    'couple_kissing',  # 之前超时
-    'hold_deceased',   # 之前超时
-]
-
 def poll_task_result(task_id, result_endpoint):
     """轮询任务结果，直到完成或超时"""
-    # 使用 GET 请求查询结果
     url = f"{client.base_url}{result_endpoint}?task_id={task_id}"
     headers_get = client.headers
     
@@ -47,47 +40,33 @@ def poll_task_result(task_id, result_endpoint):
             result = resp.json()
             
             if result.get('code') == 0:
-                result_data = result.get('result', {})
-                
-                # 首先检查 sub_task_results (Vivago API 标准响应格式)
-                sub_results = result_data.get('sub_task_results', []) if isinstance(result_data, dict) else []
-                if sub_results and len(sub_results) > 0:
-                    task_info = sub_results[0]
+                results = result.get('result', [])
+                if results and len(results) > 0:
+                    task_info = results[0]
                     status = task_info.get('task_status', 0)
-                # 兼容处理：直接检查 result 是否为任务信息
-                elif isinstance(result_data, dict) and 'task_status' in result_data:
-                    task_info = result_data
-                    status = task_info.get('task_status', 0)
-                elif isinstance(result_data, list) and len(result_data) > 0:
-                    task_info = result_data[0]
-                    status = task_info.get('task_status', 0)
-                else:
-                    status = 0
-                
-                # 状态: 0=等待, 1=完成, 2=处理中, 3=失败, 4=被拒绝
-                if status == 1:
-                    return {'status': 'completed', 'data': task_info}
-                elif status == 3:
-                    return {'status': 'failed', 'error': 'Task failed'}
-                elif status == 4:
-                    return {'status': 'rejected', 'error': 'Content rejected'}
+                    
+                    if status == 1:
+                        return {'status': 'completed', 'data': task_info}
+                    elif status == 3:
+                        return {'status': 'failed', 'error': 'Task failed'}
+                    elif status == 4:
+                        return {'status': 'rejected', 'error': 'Content rejected'}
             
             time.sleep(POLL_INTERVAL)
         except Exception as e:
-            print(f"  轮询错误: {e}")
+            print(f"  轮询错误: {type(e).__name__}: {e}")
+            import traceback
+            traceback.print_exc()
             time.sleep(POLL_INTERVAL)
     
     return {'status': 'timeout', 'error': 'Max wait time exceeded'}
 
 def determine_result_type(task_data):
     """判断结果类型是视频还是图片"""
-    # 检查是否有视频URL
     if task_data.get('video'):
         return 'video'
-    # 检查是否有图片URL
     if task_data.get('image'):
         return 'image'
-    # 检查其他可能的字段
     if 'video' in str(task_data).lower():
         return 'video'
     if 'image' in str(task_data).lower() or 'img' in str(task_data).lower():
@@ -101,9 +80,15 @@ def test_single_template(template_id):
         return {'success': False, 'error': 'Template not found', 'result_type': 'unknown'}
     
     name = template.get('display_name', template_id)
+    
+    # 随机选择比例
+    supported = template.get('supported_ratios', ['1:1'])
+    wh_ratio = random.choice(supported)
+    
     print(f"\n{'='*60}")
     print(f"测试: {name} ({template_id})")
     print(f"算法: {template.get('algo_type')}")
+    print(f"比例: {wh_ratio}")
     print(f"{'='*60}")
     
     # 1. 提交任务
@@ -111,7 +96,7 @@ def test_single_template(template_id):
     submit_time = datetime.now().isoformat()
     
     try:
-        data = manager.build_request_data(template_id, TEST_IMAGE_UUID, wh_ratio='9:16')
+        data = manager.build_request_data(template_id, TEST_IMAGE_UUID, wh_ratio=wh_ratio)
         url = f"{client.base_url}{template['endpoint']}"
         headers_post = {**client.headers, 'Content-Type': 'application/json'}
         
@@ -125,7 +110,8 @@ def test_single_template(template_id):
                 'success': False,
                 'error': error_msg,
                 'submit_time': submit_time,
-                'result_type': 'unknown'
+                'result_type': 'unknown',
+                'wh_ratio': wh_ratio
             }
         
         task_id = result.get('result', {}).get('task_id')
@@ -137,7 +123,8 @@ def test_single_template(template_id):
             'success': False,
             'error': str(e),
             'submit_time': submit_time,
-            'result_type': 'unknown'
+            'result_type': 'unknown',
+            'wh_ratio': wh_ratio
         }
     
     # 2. 轮询等待结果
@@ -156,7 +143,8 @@ def test_single_template(template_id):
             'submit_time': submit_time,
             'complete_time': complete_time,
             'result_type': result_type,
-            'task_id': task_id
+            'task_id': task_id,
+            'wh_ratio': wh_ratio
         }
     elif poll_result['status'] == 'rejected':
         print(f"3. 🚫 敏感内容违规")
@@ -166,7 +154,8 @@ def test_single_template(template_id):
             'submit_time': submit_time,
             'complete_time': complete_time,
             'result_type': 'rejected',
-            'task_id': task_id
+            'task_id': task_id,
+            'wh_ratio': wh_ratio
         }
     elif poll_result['status'] == 'failed':
         print(f"3. ❌ 任务失败")
@@ -176,7 +165,8 @@ def test_single_template(template_id):
             'submit_time': submit_time,
             'complete_time': complete_time,
             'result_type': 'failed',
-            'task_id': task_id
+            'task_id': task_id,
+            'wh_ratio': wh_ratio
         }
     else:  # timeout
         print(f"3. ⏱️ 超时")
@@ -186,25 +176,18 @@ def test_single_template(template_id):
             'submit_time': submit_time,
             'complete_time': complete_time,
             'result_type': 'timeout',
-            'task_id': task_id
+            'task_id': task_id,
+            'wh_ratio': wh_ratio
         }
-
-def update_report(test_results):
-    """更新测试报告文件"""
-    # 这里可以添加更新 MARKDOWN 文件的逻辑
-    # 为简化，先保存JSON格式的详细结果
-    with open('test_results.json', 'w', encoding='utf-8') as f:
-        json.dump(test_results, f, indent=2, ensure_ascii=False)
-    print(f"\n✅ 测试结果已保存到 test_results.json")
 
 def main():
     """主函数：严格串行测试所有模板"""
     print("="*60)
-    print("Vivago AI 模板严格串行测试")
+    print("Vivago AI 第二轮模板测试 - 10个随机模板")
     print("="*60)
     print(f"测试图片: {TEST_IMAGE_UUID}")
     print(f"模板数量: {len(TEST_TEMPLATES)}")
-    print(f"测试策略: 严格串行，验证最终结果")
+    print(f"测试策略: 严格串行，随机比例")
     print("="*60)
     
     results = {
@@ -249,11 +232,13 @@ def main():
     results['stats'] = stats
     
     # 保存结果
-    update_report(results)
+    with open('test_results_round2.json', 'w', encoding='utf-8') as f:
+        json.dump(results, f, indent=2, ensure_ascii=False)
+    print(f"\n✅ 测试结果已保存到 test_results_round2.json")
     
     # 最终报告
     print(f"\n\n{'='*60}")
-    print("测试完成!")
+    print("第二轮测试完成!")
     print(f"{'='*60}")
     print(f"✅ 通过: {stats['passed']}")
     print(f"   - 视频结果: {stats['video']}")
@@ -261,6 +246,13 @@ def main():
     print(f"❌ 失败: {stats['failed']}")
     print(f"🚫 违规: {stats['rejected']}")
     print(f"⏱️ 超时: {stats['timeout']}")
+    
+    # 详细结果
+    print(f"\n详细结果:")
+    for tid, result in results['templates'].items():
+        status = "✅" if result['success'] else "❌"
+        ratio = result.get('wh_ratio', 'unknown')
+        print(f"  {status} {tid} ({ratio})")
 
 if __name__ == '__main__':
     main()

@@ -6,13 +6,15 @@ Tier 3 视频功能测试
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'scripts'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'tests'))
+# 添加正确的路径
+sys.path.insert(0, '/root/.openclaw/workspace/skills/vivago-ai-skill')
+sys.path.insert(0, '/root/.openclaw/workspace/skills/vivago-ai-skill/scripts')
+sys.path.insert(0, '/root/.openclaw/workspace/skills/vivago-ai-skill/tests')
 
 from dotenv import load_dotenv
 load_dotenv()
 
-from vivago_client import create_client
+from scripts.vivago_client import create_client
 from fixtures.cache_manager import get_cache_manager
 
 print('='*60)
