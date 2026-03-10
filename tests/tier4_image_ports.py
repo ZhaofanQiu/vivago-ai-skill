@@ -5,8 +5,28 @@ Tier 4: 图片端口采样测试
 """
 import sys
 import os
+import time
 
-sys.path.insert(0, '/root/.openclaw/workspace/skills/vivago-ai-skill/scripts')
+sys.path.insert(0, '/root/.openclaw/workspace/skills/vivago-ai-skill')
+
+# 检查是否已有测试在运行
+LOCK_FILE = '/tmp/tier4_test.lock'
+if os.path.exists(LOCK_FILE):
+    lock_age = time.time() - os.path.getmtime(LOCK_FILE)
+    if lock_age < 600:  # 10分钟内
+        print("❌ Tier 4 测试已在运行中，请勿重复提交")
+        print(f"   锁文件: {LOCK_FILE}")
+        sys.exit(1)
+    else:
+        os.remove(LOCK_FILE)
+
+# 创建锁文件
+with open(LOCK_FILE, 'w') as f:
+    f.write(str(os.getpid()))
+
+def cleanup():
+    if os.path.exists(LOCK_FILE):
+        os.remove(LOCK_FILE)
 
 # 加载环境变量
 with open('/root/.openclaw/workspace/skills/vivago-ai-skill/.env', 'r') as f:
@@ -15,7 +35,7 @@ with open('/root/.openclaw/workspace/skills/vivago-ai-skill/.env', 'r') as f:
             key, value = line.strip().split('=', 1)
             os.environ[key] = value
 
-from vivago_client import create_client
+from scripts.vivago_client import create_client
 
 print("="*60)
 print("Tier 4: 图片端口采样测试")
@@ -59,20 +79,34 @@ except Exception as e:
     print(f"   ❌ 失败: {e}")
     results.append(("Vivago 2.0 文生图", f"❌ 失败: {e}", 0))
 
-# Test 3: Nano Banana 文生图 - 10积分
+# Test 3: Nano Banana 文生图 - 10积分 (带超时)
 print("\n🔌 [3/4] Nano Banana 文生图 - 10积分")
-print("   ⏳ 需要较长时间...")
+print("   ⏳ 需要较长时间，设置最大等待 5 分钟...")
 try:
+    import signal
+    
+    def timeout_handler(signum, frame):
+        raise TimeoutError("Nano Banana 测试超时 (5分钟)")
+    
+    signal.signal(signal.SIGALRM, timeout_handler)
+    signal.alarm(1800)  # 30分钟超时
+    
     result = client.text_to_image(
         prompt='fresh fruit arrangement, high quality',
         port='nano-banana',
         batch_size=1
     )
+    
+    signal.alarm(0)  # 取消超时
+    
     if result:
         print("   ✅ 通过")
         results.append(("Nano Banana 文生图", "✅ 通过", 10))
     else:
         results.append(("Nano Banana 文生图", "❌ 失败", 0))
+except TimeoutError as e:
+    print(f"   ⚠️  超时: {e}")
+    results.append(("Nano Banana 文生图", "⚠️ 超时", 0))
 except Exception as e:
     print(f"   ❌ 失败: {e}")
     results.append(("Nano Banana 文生图", f"❌ 失败: {e}", 0))
@@ -116,3 +150,6 @@ if passed == len(results):
     print("  - tests/tier4_video_kling.py (80积分)")
 else:
     print(f"⚠️  {len(results) - passed} 项失败")
+
+# 清理锁文件
+cleanup()

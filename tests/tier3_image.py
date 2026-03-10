@@ -4,7 +4,7 @@ Tier 3: 核心功能冒烟测试
 图片功能: 16积分 (文生图 + 图生图)
 """
 import os
-from vivago_client import create_client
+from scripts.vivago_client import create_client
 
 print("="*60)
 print("Tier 3: 核心功能冒烟测试")

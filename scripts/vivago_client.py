@@ -370,7 +370,7 @@ class VivagoClient:
             url = f"{self.base_url}{endpoint}"
             headers_post = {**self.headers, "Content-Type": "application/json"}
             
-            response = requests.post(url, json=data, headers=headers_post)
+            response = requests.post(url, json=data, headers=headers_post, timeout=1800)  # 30分钟
             
             if response.status_code != 200:
                 logger.error(f"API error: {response.status_code} - {response.text}")
@@ -414,7 +414,7 @@ class VivagoClient:
         
         for attempt in range(max_retries):
             try:
-                response = requests.get(url, headers=headers_get)
+                response = requests.get(url, headers=headers_get, timeout=1800)  # 30分钟
                 
                 if response.status_code != 200:
                     logger.warning(f"Poll failed: {response.status_code}")
@@ -986,7 +986,7 @@ class VivagoClient:
         
         for url in urls_to_try:
             try:
-                resp = requests.get(url, headers=self.headers, timeout=30, allow_redirects=True)
+                resp = requests.get(url, headers=self.headers, timeout=1800, allow_redirects=True)  # 30分钟
                 if resp.status_code == 200 and len(resp.content) > 1000:
                     with open(output_path, 'wb') as f:
                         f.write(resp.content)
@@ -1017,7 +1017,7 @@ class VivagoClient:
         
         try:
             # 视频下载不需要 Authorization header
-            resp = requests.get(url, timeout=120, allow_redirects=True)
+            resp = requests.get(url, timeout=1800, allow_redirects=True)  # 30分钟
             if resp.status_code == 200 and len(resp.content) > 10000:  # 视频至少 10KB
                 with open(output_path, 'wb') as f:
                     f.write(resp.content)

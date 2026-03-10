@@ -5,14 +5,13 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'scripts'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'tests'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from dotenv import load_dotenv
 load_dotenv()
 
-from vivago_client import create_client
-from fixtures.cache_manager import get_cache_manager
+from scripts.vivago_client import create_client
+from tests.fixtures.cache_manager import get_cache_manager
 
 print('='*60)
 print('视频测试: 图生视频 (Image-to-Video)')
