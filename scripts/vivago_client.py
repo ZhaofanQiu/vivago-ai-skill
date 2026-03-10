@@ -817,9 +817,10 @@ class VivagoClient:
     
     def template_to_video(
         self,
-        image_input: str,
+        image_input: str = None,
         template: str = "renovation_old_photos",
         wh_ratio: str = None,
+        image_uuid: str = None,
         **kwargs
     ) -> Optional[List[Dict]]:
         """
@@ -831,11 +832,21 @@ class VivagoClient:
             image_input: 输入图片路径或已上传的UUID (以 'j_' 开头的UUID)
             template: 模板名称 (renovation_old_photos, barbie, ash_out 等)
             wh_ratio: 宽高比 (16:9, 1:1, 9:16, 3:4, 4:3)，None则自动检测并裁剪
+            image_uuid: 兼容参数，与 image_input 相同
             **kwargs: 额外参数
             
         Returns:
             List of generated video results
         """
+        # 处理参数兼容性：支持 image_input 或 image_uuid
+        if image_input is None and image_uuid is None:
+            raise ValueError("必须提供 image_input 或 image_uuid 参数")
+        
+        # 优先使用 image_input，如果为空则使用 image_uuid
+        actual_input = image_input if image_input is not None else image_uuid
+        
+        # 将 actual_input 赋值给 image_input 以便后续代码使用
+        image_input = actual_input
         # 使用模板管理器获取配置
         from .template_manager import get_template_manager
         
