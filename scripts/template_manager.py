@@ -238,7 +238,20 @@ class TemplateManager:
             'pipeline_id': kwargs.get('pipeline_id', ''),
             'create_type': 'effect_video_generate',
             'cost_number': kwargs.get('cost_number', 30),
-            'request_id': kwargs.get('request_id', '')
+            'request_id': kwargs.get('request_id', ''),
+            # 新增 create_submit 字段（网页端必需）
+            'create_submit': {
+                'create_type': 'effect_video_generate',
+                'cost_number': kwargs.get('cost_number', 30),
+                'create_number': 1,
+                'model_provider': 'vivago',
+                'model_name': f"{template['module']}-{template['version']}",
+                'effect_type': 'video',
+                'effect_id': template['template_id'],
+                'effect_name': template['name'],
+                'upload_type': 'assets',
+                'resource_type': 'image'
+            }
         }
         
         return data
