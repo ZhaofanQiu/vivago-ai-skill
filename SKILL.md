@@ -53,9 +53,10 @@ scripts/
 
 ```bash
 export HIDREAM_TOKEN="your_vivago_api_token"
-export STORAGE_AK="your_storage_access_key"
-export STORAGE_SK="your_storage_secret_key"
 ```
+
+> **Note:** `STORAGE_AK` and `STORAGE_SK` are no longer required as of v0.4.0. The image upload now uses pre-signed URLs provided by the Vivago API.
+
 
 ### Installation
 

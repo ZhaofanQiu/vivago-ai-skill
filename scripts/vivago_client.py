@@ -10,6 +10,7 @@ import os
 import time
 import uuid
 import logging
+import warnings
 from typing import Optional, Dict, Any, List, Tuple
 import requests
 import boto3
@@ -208,15 +209,153 @@ class VivagoClient:
     
     # ==================== File Upload ====================
     
-    def upload_image(self, image_path: str) -> str:
-        """Upload image to Vivago storage"""
+    def upload_image(self, image_path: str, max_side: int = 1024, quality: int = 80) -> str:
+        """
+        上传图片到 Vivago 存储 (默认使用 v2 方式)
+        
+        这是新的默认实现，使用预签名 URL 方式上传。
+        旧版 S3 上传方式仍可通过 upload_image_legacy 访问，但已标记为废弃。
+        
+        Args:
+            image_path: 图片文件路径
+            max_side: 图片最大边长，超过则缩放 (默认1024)
+            quality: JPEG 压缩质量 (默认80)
+            
+        Returns:
+            image_uuid: 上传后的图片 UUID (格式: j_xxxx)
+            
+        Raises:
+            ImageUploadError: 上传失败
+        """
+        return self.upload_image_v2(image_path, max_side, quality)
+    
+    def upload_image_v2(self, image_path: str, max_side: int = 1024, quality: int = 80) -> str:
+        """
+        上传图片到 Vivago 存储 (v2 - 新方式，使用预签名 URL)
+        
+        新流程:
+        1. GET /prod-api/user/google_key/hidreamai-image → 获取预签名 URL
+        2. PUT 预签名 URL + 图片二进制数据 → 完成上传
+        
+        Args:
+            image_path: 图片文件路径
+            max_side: 图片最大边长，超过则缩放 (默认1024)
+            quality: JPEG 压缩质量 (默认80)
+            
+        Returns:
+            image_uuid: 上传后的图片 UUID (格式: j_xxxx)
+            
+        Raises:
+            ImageUploadError: 上传失败
+        """
+        import cv2
+        
+        # 生成唯一的图片 UUID
+        image_uuid = f"j_{uuid.uuid4()}"
+        logger.info(f"Uploading image {image_path} -> {image_uuid} (v2)")
+        
+        # 步骤1: 读取并处理图片
+        image = cv2.imread(image_path)
+        if image is None:
+            raise ImageUploadError(image_path, "Failed to read image file")
+        
+        # 缩放图片
+        height, width = image.shape[:2]
+        if height > width:
+            scale = max_side / height
+        else:
+            scale = max_side / width
+        
+        if scale < 1:
+            new_width = int(width * scale)
+            new_height = int(height * scale)
+            image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_AREA)
+            logger.info(f"Resized image to {new_width}x{new_height}")
+        
+        # JPEG 压缩
+        compression_params = [cv2.IMWRITE_JPEG_QUALITY, quality]
+        _, encoded_image = cv2.imencode('.jpg', image, compression_params)
+        image_data = encoded_image.tobytes()
+        
+        # 步骤2: 获取预签名上传 URL
+        base_url = "https://vivago.ai"
+        endpoint = "/prod-api/user/google_key/hidreamai-image"
+        
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json"
+        }
+        
+        params = {
+            "filename": image_uuid,
+            "content_type": "image/jpeg"
+        }
+        
+        try:
+            response = requests.get(
+                f"{base_url}{endpoint}",
+                headers=headers,
+                params=params,
+                timeout=30
+            )
+            response.raise_for_status()
+            
+            result = response.json()
+            if result.get('code') != 0:
+                raise ImageUploadError(
+                    image_path, 
+                    f"Failed to get upload URL: {result.get('message')}"
+                )
+            
+            presigned_url = result.get('result')
+            if not presigned_url:
+                raise ImageUploadError(image_path, "No presigned URL in response")
+            
+            logger.info(f"Got presigned URL (length: {len(presigned_url)})")
+            
+        except requests.RequestException as e:
+            raise ImageUploadError(image_path, f"Failed to get upload URL: {e}")
+        
+        # 步骤3: 使用预签名 URL 上传图片
+        try:
+            upload_response = requests.put(
+                presigned_url,
+                data=image_data,
+                headers={"Content-Type": "image/jpeg"},
+                timeout=60
+            )
+            upload_response.raise_for_status()
+            
+            logger.info(f"Image uploaded successfully: {image_uuid}")
+            return image_uuid
+            
+        except requests.RequestException as e:
+            raise ImageUploadError(image_path, f"Failed to upload image: {e}")
+    
+    def upload_image_legacy(self, image_path: str) -> str:
+        """
+        [已废弃] 上传图片到 Vivago 存储 (旧 S3 方式)
+        
+        警告: 此方法使用旧的 S3 直接上传方式，可能随时失效。
+        请使用 upload_image() 或 upload_image_v2() 方法。
+        
+        Deprecated:
+            将在未来版本中移除。请迁移到 upload_image()。
+        """
+        warnings.warn(
+            "upload_image_legacy() is deprecated and may be removed in a future version. "
+            "Use upload_image() or upload_image_v2() instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+        
         if not self.s3_client:
             raise MissingCredentialError("Storage credentials not provided. Cannot upload images.")
         
         import cv2
         
         image_uuid = f"j_{uuid.uuid4()}"
-        logger.info(f"Uploading image {image_path} -> {image_uuid}")
+        logger.info(f"Uploading image {image_path} -> {image_uuid} (legacy S3)")
         
         image = cv2.imread(image_path)
         if image is None:
@@ -254,7 +393,7 @@ class VivagoClient:
         1. 检测图片实际比例
         2. 如果图片比例在支持列表中，直接使用
         3. 如果不在，裁剪到最近的支持比例
-        4. 上传处理后的图片
+        4. 上传处理后的图片 (使用新的 v2 上传方式)
         
         Args:
             image_path: 原始图片路径
@@ -265,9 +404,8 @@ class VivagoClient:
         """
         import cv2
         import numpy as np
-        
-        if not self.s3_client:
-            raise MissingCredentialError("Storage credentials not provided. Cannot upload images.")
+        import tempfile
+        import os
         
         # 读取图片
         image = cv2.imread(image_path)
@@ -321,21 +459,24 @@ class VivagoClient:
             new_height = int(height * scale)
             image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_AREA)
         
-        # 压缩并上传
-        image_uuid = f"j_{uuid.uuid4()}"
-        compression_params = [cv2.IMWRITE_JPEG_QUALITY, 80]
-        _, encoded_image = cv2.imencode('.jpg', image, compression_params)
+        # 保存到临时文件，然后使用新的上传方式
+        with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as tmp:
+            temp_path = tmp.name
         
-        self.s3_client.put_object(
-            Body=encoded_image.tobytes(),
-            Bucket=self.STORAGE_BUCKET,
-            Key=image_uuid,
-            ContentType='image/jpeg'
-        )
-        
-        logger.info(f"Preprocessed and uploaded image {image_path} -> {image_uuid} with ratio {closest_ratio}")
-        
-        return image_uuid, closest_ratio
+        try:
+            compression_params = [cv2.IMWRITE_JPEG_QUALITY, 80]
+            cv2.imwrite(temp_path, image, compression_params)
+            
+            # 使用新的 v2 上传方式
+            image_uuid = self.upload_image_v2(temp_path)
+            
+            logger.info(f"Preprocessed and uploaded image {image_path} -> {image_uuid} with ratio {closest_ratio}")
+            
+            return image_uuid, closest_ratio
+        finally:
+            # 清理临时文件
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
     
     # ==================== Core API Call ====================
     
@@ -1175,9 +1316,12 @@ def create_client(
     Create Vivago client from environment or parameters.
     
     Environment variables:
-        HIDREAM_TOKEN: API token
-        STORAGE_AK: Storage access key
-        STORAGE_SK: Storage secret key
+        HIDREAM_TOKEN: API token (required)
+    
+    Deprecated:
+        STORAGE_AK and STORAGE_SK are no longer required for image upload.
+        They are kept only for backward compatibility with upload_image_legacy().
+        These parameters will be removed in a future version.
     """
     token = token or os.environ.get("HIDREAM_TOKEN")
     storage_ak = storage_ak or os.environ.get("STORAGE_AK")

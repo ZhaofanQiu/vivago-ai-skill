@@ -89,9 +89,10 @@ pip install -r requirements.txt
 
 ```bash
 export HIDREAM_TOKEN="your_vivago_api_token"
-export STORAGE_AK="your_storage_access_key"
-export STORAGE_SK="your_storage_secret_key"
 ```
+
+> **Note:** `STORAGE_AK` and `STORAGE_SK` are no longer required. The new image upload method uses pre-signed URLs instead of direct S3 access.
+
 
 ### 3. 使用示例
 

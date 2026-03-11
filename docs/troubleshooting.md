@@ -25,9 +25,8 @@ cp .env.example .env
 
 **排查**:
 ```python
-# 检查凭证
-export STORAGE_AK="your_access_key"
-export STORAGE_SK="your_secret_key"
+# 检查 token 是否有效
+export HIDREAM_TOKEN="your_vivago_api_token"
 
 # 检查图片存在
 ls -la /path/to/image.jpg
@@ -37,9 +36,12 @@ file /path/to/image.jpg
 ```
 
 **常见原因**:
-- 存储凭证过期
+- API token 过期或无效
 - 网络问题
-- 图片格式不支持
+- 图片格式不支持 (仅支持 JPEG/PNG)
+- 图片过大 (建议不超过 5MB)
+
+**注意**: 从 v0.4.0 开始，图片上传不再需要 STORAGE_AK/SK。如果仍然需要旧的上传方式，请使用 `upload_image_legacy()` 方法（已废弃）。
 
 ### 3. 任务超时
 

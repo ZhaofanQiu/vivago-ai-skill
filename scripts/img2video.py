@@ -102,24 +102,20 @@ def main():
     parser.add_argument(
         '--storage-ak',
         default=os.environ.get('STORAGE_AK'),
-        help='Storage access key (or set STORAGE_AK env var)'
+        help='[Deprecated] Storage access key - no longer required'
     )
     
     parser.add_argument(
         '--storage-sk',
         default=os.environ.get('STORAGE_SK'),
-        help='Storage secret key (or set STORAGE_SK env var)'
+        help='[Deprecated] Storage secret key - no longer required'
     )
     
     args = parser.parse_args()
     
     # Create client
     try:
-        client = create_client(
-            token=args.token,
-            storage_ak=args.storage_ak,
-            storage_sk=args.storage_sk
-        )
+        client = create_client(token=args.token)
     except ValueError as e:
         logger.error(f"Failed to create client: {e}")
         sys.exit(1)

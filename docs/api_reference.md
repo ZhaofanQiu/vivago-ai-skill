@@ -10,12 +10,26 @@ from scripts.vivago_client import create_client
 # 从环境变量读取凭证
 client = create_client()
 
-# 或者显式传入
-client = create_client(
-    token="your_token",
-    storage_ak="your_ak",
-    storage_sk="your_sk"
-)
+# 或者显式传入 token
+client = create_client(token="your_token")
+
+# 注意: storage_ak 和 storage_sk 参数已废弃，仅在调用 upload_image_legacy() 时需要
+```
+
+### 图片上传
+
+```python
+# 上传本地图片
+image_uuid = client.upload_image("/path/to/image.jpg")
+
+# 或者使用 v2 方法（显式指定）
+image_uuid = client.upload_image_v2("/path/to/image.jpg")
+
+# 旧方法（已废弃，需要 STORAGE_AK/SK）
+import warnings
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    image_uuid = client.upload_image_legacy("/path/to/image.jpg")
 ```
 
 ### 文生图 (text_to_image)

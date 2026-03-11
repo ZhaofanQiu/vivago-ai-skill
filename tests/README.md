@@ -128,9 +128,9 @@ python tests/smart_test_optimizer.py
 
 ```bash
 HIDREAM_TOKEN=your_token
-STORAGE_AK=your_access_key
-STORAGE_SK=your_secret_key
 ```
+
+> **Note:** `STORAGE_AK` and `STORAGE_SK` are no longer required for testing.
 
 ### 测试图片
 
