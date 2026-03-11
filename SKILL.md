@@ -49,7 +49,24 @@ scripts/
 
 ## Setup
 
+### Prerequisites
+
+Before using this skill, you need to obtain a Vivago.ai API Token:
+
+#### Step 1: Login to Vivago.ai
+1. Visit [https://vivago.ai/](https://vivago.ai/) and log in to your account
+2. Check your remaining credits and consider subscribing to a suitable plan if needed
+
+#### Step 2: Obtain Your Token
+1. After logging in, visit [https://vivago.ai/prod-api/user/token](https://vivago.ai/prod-api/user/token)
+2. The page will return your API Token (in JWT format)
+3. Copy this Token for configuration
+
+> **Security Note**: The Token is your credential for accessing the API. Please keep it secure and do not share it with others.
+
 ### Environment Variables
+
+Once you have your Token, set the environment variable:
 
 ```bash
 export HIDREAM_TOKEN="your_vivago_api_token"

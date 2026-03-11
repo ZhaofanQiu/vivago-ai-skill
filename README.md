@@ -85,7 +85,24 @@ scripts/
 pip install -r requirements.txt
 ```
 
-### 2. 配置环境变量
+### 2. 获取 API Token
+
+在使用本项目之前，您需要获取 Vivago.ai 的 API Token：
+
+#### 步骤 1: 登录 Vivago.ai
+1. 访问 [https://vivago.ai/](https://vivago.ai/) 并登录您的账号
+2. 检查剩余积分，根据需要选择合适的订阅套餐
+
+#### 步骤 2: 获取 Token
+1. 登录后，访问 [https://vivago.ai/prod-api/user/token](https://vivago.ai/prod-api/user/token)
+2. 页面将返回您的 API Token（格式为 JWT 字符串）
+3. 复制该 Token 用于后续配置
+
+> **提示**: Token 是访问 API 的凭证，请妥善保管，不要泄露给他人。
+
+### 3. 配置环境变量
+
+获取 Token 后，设置环境变量：
 
 ```bash
 export HIDREAM_TOKEN="your_vivago_api_token"
